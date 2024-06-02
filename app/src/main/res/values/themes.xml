@@ -1,9 +1,18 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- Base application theme -->
     <style name="Base.Theme.Agrotesmobile" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="android:statusBarColor">@color/black</item>
+        <item name="android:navigationBarColor">@color/black</item>
     </style>
 
-    <style name="Theme.Agrotesmobile" parent="Base.Theme.Agrotesmobile" />
+    <style name="Theme.Agrotesmobile" parent="Base.Theme.Agrotesmobile"/>
+
+    <!-- custom shapeImageVIew setengah lingkaran  -->
+    <style name="semi_circle">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeBottomLeft">100%</item>
+        <item name="cornerSizeBottomRight">100%</item>
+    </style>
+
 </resources>
