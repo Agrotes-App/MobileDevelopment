@@ -1,4 +1,4 @@
-package com.example.agrotes_mobile
+package com.example.agrotes_mobile.ui.activities
 
 import android.content.Intent
 import android.os.Build
@@ -9,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.agrotes_mobile.R
 import com.example.agrotes_mobile.databinding.ActivitySignupBinding
 
 class SignupActivity : AppCompatActivity() {
@@ -44,10 +45,7 @@ class SignupActivity : AppCompatActivity() {
             window.insetsController?.hide(WindowInsets.Type.statusBars())
         } else {
             @Suppress("DEPRECATION")
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
+            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         }
     }
 }

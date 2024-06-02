@@ -1,4 +1,4 @@
-package com.example.agrotes_mobile
+package com.example.agrotes_mobile.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.agrotes_mobile.R
 import com.example.agrotes_mobile.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
