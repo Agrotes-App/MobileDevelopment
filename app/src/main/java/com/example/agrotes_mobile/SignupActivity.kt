@@ -9,14 +9,14 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.agrotes_mobile.databinding.ActivityLoginBinding
+import com.example.agrotes_mobile.databinding.ActivitySignupBinding
 
-class LoginActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityLoginBinding
+class SignupActivity : AppCompatActivity() {
+    private lateinit var binding: ActivitySignupBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
+        binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         enableEdgeToEdge()
@@ -25,15 +25,15 @@ class LoginActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         setupView()
         setupAction()
     }
 
     private fun setupAction() {
-        with(binding){
-            btnLogin.setOnClickListener { TODO() }
-            tvDontHaveAccount.setOnClickListener {
-                startActivity(Intent(this@LoginActivity, SignupActivity::class.java))
+        with(binding) {
+            tvHaveAccount.setOnClickListener {
+                startActivity(Intent(this@SignupActivity, LoginActivity::class.java))
                 finish()
             }
         }
@@ -44,7 +44,10 @@ class LoginActivity : AppCompatActivity() {
             window.insetsController?.hide(WindowInsets.Type.statusBars())
         } else {
             @Suppress("DEPRECATION")
-            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
         }
     }
 }
