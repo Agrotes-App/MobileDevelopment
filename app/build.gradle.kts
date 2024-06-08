@@ -48,7 +48,11 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
 
     //smooth bottom bar
-    implementation (libs.smoothbottombar)
+    implementation(libs.chip.navigation.bar)
+
+    //navigation
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

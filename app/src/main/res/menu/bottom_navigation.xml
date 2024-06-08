@@ -1,22 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/item_1"
+        android:id="@+id/navigation_main"
         android:icon="@drawable/ic_email"
-        android:title="Home" />
+        android:title="Home"
+        app:cnb_backgroundColor="#33426D51"
+        app:cnb_iconColor="@color/primary"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_textColor="@color/primary" />
 
     <item
-        android:id="@+id/item_2"
+        android:id="@+id/navigation_history"
         android:icon="@drawable/ic_email"
-        android:title="History" />
+        android:title="History"
+        app:cnb_backgroundColor="#33426D51"
+        app:cnb_iconColor="@color/primary"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_textColor="@color/primary" />
 
     <item
-        android:id="@+id/item_3"
+        android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_email"
-        android:title="Profile" />
+        android:title="Profile"
+        app:cnb_backgroundColor="#33426D51"
+        app:cnb_iconColor="@color/primary"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_textColor="@color/primary" />
 
-    <item
-        android:id="@+id/item_4"
-        android:icon="@drawable/ic_email"
-        android:title="Profile" />
 </menu>
