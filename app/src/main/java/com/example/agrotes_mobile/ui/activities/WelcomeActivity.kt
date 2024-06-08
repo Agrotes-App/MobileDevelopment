@@ -59,8 +59,14 @@ class WelcomeActivity : AppCompatActivity() {
                 startActivity(intent, optionsCompat.toBundle())
             }
             btnSignup.setOnClickListener {
+                val optionsCompat: ActivityOptionsCompat =
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        this@WelcomeActivity,
+                        Pair(customBackgroundWelcome, "custom_background"),
+                        Pair(ivAppIcon, "app_icon"),
+                    )
                 val intent = Intent(this@WelcomeActivity, SignupActivity::class.java)
-                startActivity(intent)
+                startActivity(intent, optionsCompat.toBundle())
             }
         }
     }

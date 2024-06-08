@@ -65,13 +65,7 @@ class LoginActivity : AppCompatActivity() {
             btnLogin.setOnClickListener { TODO() }
             tvDontHaveAccount.setOnClickListener {
                 val intent = Intent(this@LoginActivity, SignupActivity::class.java)
-                val activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    this@LoginActivity,
-                    Pair(customBackgroundLogin, "custom_background"),
-                    Pair(ivAppIcon, "app_icon"),
-                )
-
-                startActivity(intent, activityOptionsCompat.toBundle())
+                startActivity(intent)
                 finish()
             }
         }

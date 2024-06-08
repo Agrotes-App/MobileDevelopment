@@ -8,15 +8,6 @@
     android:background="@color/white"
     tools:context=".ui.activities.SignupActivity">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="64dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintGuide_percent="0.24"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/custom_background_register"
         android:layout_width="match_parent"
@@ -37,10 +28,10 @@
         android:contentDescription="@string/iv_app_icon"
         android:src="@mipmap/ic_launcher_round"
         android:transitionName="app_icon"
-        app:layout_constraintBottom_toBottomOf="@id/guideline"
+        app:layout_constraintBottom_toBottomOf="@id/custom_background_register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guideline" />
+        app:layout_constraintTop_toBottomOf="@id/custom_background_register"/>
 
     <LinearLayout
         android:id="@+id/register_input_layout"
