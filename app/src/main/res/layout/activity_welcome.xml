@@ -13,11 +13,12 @@
         android:layout_width="match_parent"
         android:layout_height="500dp"
         android:scaleType="centerCrop"
+        android:transitionName="custom_background"
         android:src="@drawable/background_leaf"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearance="@style/semi_circle_welcome" />
+        app:shapeAppearance="@style/semi_circle" />
 
 
     <ImageView
@@ -26,6 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="56dp"
         android:contentDescription="@string/iv_app_icon"
+        android:transitionName="app_icon"
         android:src="@mipmap/ic_launcher_round"
         app:layout_constraintBottom_toBottomOf="@id/custom_background_welcome"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,6 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="12dp"
         android:layout_marginBottom="8dp"
+        android:transitionName="btn_login"
         android:text="Log in"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

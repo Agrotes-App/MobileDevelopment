@@ -13,10 +13,5 @@
         <item name="cornerSizeBottomLeft">50%</item>
         <item name="cornerSizeBottomRight">50%</item>
     </style>
-
-    <style name="semi_circle_welcome">
-        <item name="cornerSizeBottomLeft">50%</item>
-        <item name="cornerSizeBottomRight">50%</item>
-    </style>
-
+    
 </resources>

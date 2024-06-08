@@ -5,8 +5,11 @@ import android.os.Build
 import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowManager
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.agrotes_mobile.R
@@ -37,15 +40,38 @@ class LoginActivity : AppCompatActivity() {
             window.insetsController?.hide(WindowInsets.Type.statusBars())
         } else {
             @Suppress("DEPRECATION")
-            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
         }
     }
 
     private fun setupAction() {
-        with(binding){
+        with(binding) {
+            // Handle back button
+            onBackPressedDispatcher.addCallback {
+                val optionsCompat: ActivityOptionsCompat =
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        this@LoginActivity,
+                        Pair(customBackgroundLogin, "custom_background"),
+                        Pair(ivAppIcon, "app_icon"),
+                        Pair(btnLogin, "btn_login")
+                    )
+                val intent = Intent(this@LoginActivity, WelcomeActivity::class.java)
+                startActivity(intent, optionsCompat.toBundle())
+            }
+
             btnLogin.setOnClickListener { TODO() }
             tvDontHaveAccount.setOnClickListener {
-                startActivity(Intent(this@LoginActivity, SignupActivity::class.java))
+                val intent = Intent(this@LoginActivity, SignupActivity::class.java)
+                val activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    this@LoginActivity,
+                    Pair(customBackgroundLogin, "custom_background"),
+                    Pair(ivAppIcon, "app_icon"),
+                )
+
+                startActivity(intent, activityOptionsCompat.toBundle())
                 finish()
             }
         }

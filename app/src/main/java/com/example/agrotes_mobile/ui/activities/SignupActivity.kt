@@ -5,8 +5,12 @@ import android.os.Build
 import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.window.OnBackInvokedDispatcher
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.agrotes_mobile.R
@@ -33,8 +37,21 @@ class SignupActivity : AppCompatActivity() {
 
     private fun setupAction() {
         with(binding) {
+            // Handle back button
+            onBackPressedDispatcher.addCallback {
+                val optionsCompat: ActivityOptionsCompat =
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        this@SignupActivity,
+                        Pair(customBackgroundRegister, "custom_background"),
+                        Pair(ivAppIcon, "app_icon"),
+                    )
+                val intent = Intent(this@SignupActivity, WelcomeActivity::class.java)
+                startActivity(intent, optionsCompat.toBundle())
+            }
+
             tvHaveAccount.setOnClickListener {
-                startActivity(Intent(this@SignupActivity, LoginActivity::class.java))
+                val intent = Intent(this@SignupActivity, LoginActivity::class.java)
+                startActivity(intent)
                 finish()
             }
         }

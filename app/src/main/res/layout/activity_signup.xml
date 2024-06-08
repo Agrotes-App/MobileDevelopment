@@ -22,15 +22,16 @@
         android:layout_width="match_parent"
         android:layout_height="180dp"
         android:scaleType="centerCrop"
-        android:transitionName="custom_background"
         android:src="@drawable/background_leaf"
-        app:layout_constraintStart_toStartOf="parent"
+        android:transitionName="custom_background"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearance="@style/semi_circle" />
 
     <ImageView
-        android:id="@+id/app_icon"
+        android:id="@+id/iv_app_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/iv_app_icon"
