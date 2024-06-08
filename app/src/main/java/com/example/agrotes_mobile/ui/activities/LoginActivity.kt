@@ -32,6 +32,15 @@ class LoginActivity : AppCompatActivity() {
         setupAction()
     }
 
+    private fun setupView() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        } else {
+            @Suppress("DEPRECATION")
+            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        }
+    }
+
     private fun setupAction() {
         with(binding){
             btnLogin.setOnClickListener { TODO() }
@@ -42,12 +51,5 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupView() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
-        } else {
-            @Suppress("DEPRECATION")
-            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        }
-    }
+
 }
