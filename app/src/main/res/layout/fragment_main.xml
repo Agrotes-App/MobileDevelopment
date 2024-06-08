@@ -6,9 +6,6 @@
     android:background="#77426D51"
     tools:context=".ui.fragment.MainFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Main Fragment"/>
+
 
 </FrameLayout>

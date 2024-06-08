@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowManager
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
@@ -47,6 +48,11 @@ class WelcomeActivity : AppCompatActivity() {
 
     private fun setupAction() {
         with(binding) {
+            // Handle back button
+            onBackPressedDispatcher.addCallback {
+                finishAffinity()
+            }
+
             btnLogin.setOnClickListener {
                 val optionsCompat: ActivityOptionsCompat =
                     ActivityOptionsCompat.makeSceneTransitionAnimation(

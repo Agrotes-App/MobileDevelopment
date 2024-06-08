@@ -2,22 +2,15 @@ package com.example.agrotes_mobile.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.PopupMenu
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import com.example.agrotes_mobile.R
 import com.example.agrotes_mobile.databinding.ActivityMainBinding
 import com.example.agrotes_mobile.ui.fragment.HistoryFragment
 import com.example.agrotes_mobile.ui.fragment.MainFragment
 import com.example.agrotes_mobile.ui.fragment.ProfileFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity() {
@@ -41,6 +34,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    // run on start
     private fun initFragment() {
         binding.bottomBar.setItemSelected(R.id.navigation_main)
 
