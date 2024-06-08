@@ -5,7 +5,6 @@ import android.os.Build
 import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowManager
-import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
@@ -13,15 +12,14 @@ import androidx.core.util.Pair
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.agrotes_mobile.R
-import com.example.agrotes_mobile.databinding.ActivityLoginBinding
+import com.example.agrotes_mobile.databinding.ActivityWelcomeBinding
 
-
-class LoginActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityLoginBinding
+class WelcomeActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityWelcomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
+        binding = ActivityWelcomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         enableEdgeToEdge()
@@ -49,33 +47,21 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setupAction() {
         with(binding) {
-            // Handle back button
-            onBackPressedDispatcher.addCallback {
+            btnLogin.setOnClickListener {
                 val optionsCompat: ActivityOptionsCompat =
                     ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        this@LoginActivity,
-                        Pair(customBackgroundLogin, "custom_background"),
+                        this@WelcomeActivity,
+                        Pair(customBackgroundWelcome, "custom_background"),
                         Pair(ivAppIcon, "app_icon"),
-                        Pair(btnLogin, "btn_login")
+                        Pair(btnLogin, "btn_login"),
                     )
-                val intent = Intent(this@LoginActivity, WelcomeActivity::class.java)
+                val intent = Intent(this@WelcomeActivity, LoginActivity::class.java)
                 startActivity(intent, optionsCompat.toBundle())
             }
-
-            btnLogin.setOnClickListener { TODO() }
-            tvDontHaveAccount.setOnClickListener {
-                val intent = Intent(this@LoginActivity, SignupActivity::class.java)
-                val activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    this@LoginActivity,
-                    Pair(customBackgroundLogin, "custom_background"),
-                    Pair(ivAppIcon, "app_icon"),
-                )
-
-                startActivity(intent, activityOptionsCompat.toBundle())
-                finish()
+            btnSignup.setOnClickListener {
+                val intent = Intent(this@WelcomeActivity, SignupActivity::class.java)
+                startActivity(intent)
             }
         }
     }
-
-
 }
