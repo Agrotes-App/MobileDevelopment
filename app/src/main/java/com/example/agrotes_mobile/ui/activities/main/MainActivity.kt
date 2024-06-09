@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
         initFragment()
         setupBottomBar()
-        setupButton()
+        setupAction()
 
     }
 
@@ -46,17 +46,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupBottomBar() {
-        binding.bottomBar.setOnItemSelectedListener {menu ->
-            when(menu){
+        binding.bottomBar.setOnItemSelectedListener { menu ->
+            when (menu) {
                 R.id.navigation_main -> {
-                   initFragment()
+                    initFragment()
                 }
+
                 R.id.navigation_history -> {
                     val historyFragment = HistoryFragment()
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.nav_host_fragment, historyFragment)
                         .commit()
                 }
+
                 R.id.navigation_profile -> {
                     val profileFragment = ProfileFragment()
                     supportFragmentManager.beginTransaction()
@@ -67,9 +69,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupButton() {
-        binding.btn.setOnClickListener {
-            startActivity(Intent(this@MainActivity, WelcomeActivity::class.java))
+    private fun setupAction() {
+        with(binding) {
+            btn.setOnClickListener {
+                startActivity(Intent(this@MainActivity, WelcomeActivity::class.java))
+            }
         }
     }
 }

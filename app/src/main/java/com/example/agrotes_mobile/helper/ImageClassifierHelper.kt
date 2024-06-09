@@ -19,9 +19,9 @@ import org.tensorflow.lite.task.vision.classifier.ImageClassifier
 class ImageClassifierHelper(
     private var threshold: Float = 0.1f,
     private var maxResults: Int = 3,
-    val modelName: String = "chilli_v1.tflite",
+    private val modelName: String = "chilli_v1.tflite",
     val context: Context,
-    val classifierListener: ClassifierListener?
+    private val classifierListener: ClassifierListener?
 ) {
     private var imageClassifier: ImageClassifier? = null
 
