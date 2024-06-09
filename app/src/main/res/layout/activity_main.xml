@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activities.MainActivity">
+    tools:context=".ui.activities.main.MainActivity">
 
     <com.ismaeldivita.chipnavigation.ChipNavigationBar
         android:id="@+id/bottomBar"
@@ -14,6 +14,7 @@
         android:layout_gravity="bottom"
         android:paddingVertical="8dp"
         android:background="@color/white"
+        android:elevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

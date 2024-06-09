@@ -1,4 +1,4 @@
-package com.example.agrotes_mobile.ui.activities
+package com.example.agrotes_mobile.ui.activities.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.agrotes_mobile.R
 import com.example.agrotes_mobile.databinding.ActivityMainBinding
+import com.example.agrotes_mobile.ui.activities.WelcomeActivity
 import com.example.agrotes_mobile.ui.fragment.HistoryFragment
 import com.example.agrotes_mobile.ui.fragment.MainFragment
 import com.example.agrotes_mobile.ui.fragment.ProfileFragment

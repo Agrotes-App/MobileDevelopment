@@ -13,5 +13,11 @@
         <item name="cornerSizeBottomLeft">50%</item>
         <item name="cornerSizeBottomRight">50%</item>
     </style>
+
+    <!-- custom fab lingkaran  -->
+    <style name="fab_rounded">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
     
 </resources>
