@@ -6,7 +6,7 @@
     android:background="@color/background_primary"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activities.WelcomeActivity">
+    tools:context=".ui.activities.welcome.WelcomeActivity">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/custom_background_welcome"

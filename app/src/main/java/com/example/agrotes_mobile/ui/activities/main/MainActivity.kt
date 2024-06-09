@@ -8,7 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.agrotes_mobile.R
 import com.example.agrotes_mobile.databinding.ActivityMainBinding
-import com.example.agrotes_mobile.ui.activities.WelcomeActivity
+import com.example.agrotes_mobile.ui.activities.welcome.WelcomeActivity
 import com.example.agrotes_mobile.ui.fragment.HistoryFragment
 import com.example.agrotes_mobile.ui.fragment.MainFragment
 import com.example.agrotes_mobile.ui.fragment.ProfileFragment

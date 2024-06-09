@@ -36,6 +36,7 @@ android {
 
     buildFeatures{
         viewBinding = true
+        mlModelBinding = true
     }
 }
 
@@ -53,6 +54,18 @@ dependencies {
     //navigation
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+
+    //tflite
+    implementation(libs.tensorflow.lite.support)
+    implementation(libs.tensorflow.lite.metadata)
+
+    //tflite task vision
+    implementation(libs.tensorflow.lite.task.vision)
+
+    //camera
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
