@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.prediction.PredictionActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/main_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/background_leaf"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearance="@style/semi_circle_10" />
+
+                <TextView
+                    android:id="@+id/tv_disease_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Disease Name"
+                    android:textSize="32dp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_photo" />
+
+                <TextView
+                    android:id="@+id/tv_plant_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Plant Name"
+                    android:textColor="@color/primary"
+                    android:textSize="24dp"
+                    app:layout_constraintStart_toStartOf="@id/tv_disease_name"
+                    app:layout_constraintTop_toBottomOf="@id/tv_disease_name" />
+
+                <TextView
+                    android:id="@+id/also_known_as"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Also Known As :"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@id/tv_disease_name"
+                    app:layout_constraintTop_toBottomOf="@id/tv_plant_name" />
+
+                <TextView
+                    android:id="@+id/tv_alternative_disease_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Alternative Disease Name"
+                    android:textColor="@color/black_50"
+                    android:textStyle="italic"
+                    app:layout_constraintBottom_toBottomOf="@id/also_known_as"
+                    app:layout_constraintStart_toEndOf="@id/also_known_as"
+                    app:layout_constraintTop_toTopOf="@id/also_known_as" />
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="May 12, 2024"
+                    android:textColor="@color/black_50"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_disease_name" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:backgroundTint="@color/light_green"
+                    android:text="Save Prediction"
+                    app:layout_constraintTop_toBottomOf="@id/tv_alternative_disease_name" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/overview_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/main_layout">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
+
+
+                <ImageView
+                    android:id="@+id/iv_overview_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_overview"
+                    app:tint="@color/primary"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="8dp"/>
+
+                <TextView
+                    android:id="@+id/tv_overview_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Overview"
+                    android:layout_marginStart="6dp"
+                    android:textColor="@color/primary"
+                    app:layout_constraintTop_toTopOf="@id/iv_overview_icon"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_overview_icon"
+                    app:layout_constraintStart_toEndOf="@id/iv_overview_icon"
+                    android:textSize="26dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/overview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="6dp"
+                    app:layout_constraintTop_toBottomOf="@id/iv_overview_icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_margin="8dp"
+                    android:text="@string/tes"/>
+
+                <View
+                    android:id="@+id/overview_line1"
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_weight="3"
+                    android:background="@color/black_50"
+                    android:layout_marginVertical="16dp"
+                    android:layout_marginHorizontal="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/overview"/>
+
+                <ImageView
+                    android:id="@+id/iv_causes_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_causes"
+                    android:layout_marginTop="16dp"
+                    app:tint="@color/primary"
+                    app:layout_constraintTop_toBottomOf="@id/overview_line1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="8dp"/>
+
+                <TextView
+                    android:id="@+id/tv_causes_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Causes"
+                    android:layout_marginStart="6dp"
+                    android:textColor="@color/primary"
+                    app:layout_constraintTop_toTopOf="@id/iv_causes_icon"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_causes_icon"
+                    app:layout_constraintStart_toEndOf="@id/iv_causes_icon"
+                    android:textSize="26dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/causes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="6dp"
+                    app:layout_constraintTop_toBottomOf="@id/iv_causes_icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_margin="8dp"
+                    android:textStyle="bold"
+                    android:text="GodZilla, Ikan Hiu, Pak Rt"/>
+
+                <View
+                    android:id="@+id/overview_line2"
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_weight="3"
+                    android:background="@color/black_50"
+                    android:layout_marginVertical="16dp"
+                    android:layout_marginHorizontal="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/causes"/>
+
+                <ImageView
+                    android:id="@+id/iv_prevention_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_prevention"
+                    android:layout_marginTop="16dp"
+                    app:tint="@color/primary"
+                    app:layout_constraintTop_toBottomOf="@id/overview_line2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="8dp"/>
+
+                <TextView
+                    android:id="@+id/tv_prevention_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Prevention"
+                    android:layout_marginStart="6dp"
+                    android:textColor="@color/primary"
+                    app:layout_constraintTop_toTopOf="@id/iv_prevention_icon"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_prevention_icon"
+                    app:layout_constraintStart_toEndOf="@id/iv_prevention_icon"
+                    android:textSize="26dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/prevention"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="6dp"
+                    app:layout_constraintTop_toBottomOf="@id/iv_prevention_icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_margin="8dp"
+                    android:text="@string/tes"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+        
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</ScrollView>

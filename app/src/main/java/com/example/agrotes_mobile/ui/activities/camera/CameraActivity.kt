@@ -1,6 +1,7 @@
 package com.example.agrotes_mobile.ui.activities.camera
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -23,6 +24,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.agrotes_mobile.R
 import com.example.agrotes_mobile.databinding.ActivityCameraBinding
 import com.example.agrotes_mobile.helper.ImageClassifierHelper
+import com.example.agrotes_mobile.ui.activities.prediction.PredictionActivity
 import org.tensorflow.lite.task.vision.classifier.Classifications
 import java.text.NumberFormat
 import java.util.concurrent.Executors
@@ -61,6 +63,10 @@ class CameraActivity : AppCompatActivity() {
 
         if (!allPermissionsGranted()) {
             requestPermissionLauncher.launch(REQUIRED_PERMISSION)
+        }
+
+        binding.fabCapture.setOnClickListener {
+            startActivity(Intent(this@CameraActivity, PredictionActivity::class.java))
         }
     }
 
