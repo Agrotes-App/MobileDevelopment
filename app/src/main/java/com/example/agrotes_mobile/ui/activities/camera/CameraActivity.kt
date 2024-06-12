@@ -1,5 +1,7 @@
 package com.example.agrotes_mobile.ui.activities.camera
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +9,7 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
@@ -26,8 +29,23 @@ import java.util.concurrent.Executors
 
 class CameraActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCameraBinding
-    private lateinit var imageClassifierHelper: ImageClassifierHelper
     private var cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+
+    // request permission
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) {
+                showToast("Permission request granted")
+            } else {
+                showToast("Permission request denied")
+            }
+        }
+
+    // Permission check
+    private fun allPermissionsGranted() = ContextCompat.checkSelfPermission(
+        this,
+        REQUIRED_PERMISSION
+    ) == PackageManager.PERMISSION_GRANTED
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,77 +58,49 @@ class CameraActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        if (!allPermissionsGranted()) {
+            requestPermissionLauncher.launch(REQUIRED_PERMISSION)
+        }
+    }
+
+    public override fun onResume() {
+        super.onResume()
+        hideSystemUI()
+        startCamera()
     }
 
     private fun startCamera() {
-        imageClassifierHelper = ImageClassifierHelper(
-            context = this,
-            classifierListener = object : ImageClassifierHelper.ClassifierListener {
-                override fun onError(error: String) {
-                    runOnUiThread {
-                        Toast.makeText(this@CameraActivity, error, Toast.LENGTH_SHORT).show()
-                    }
-                }
-
-                override fun onResults(results: List<Classifications>?, inferenceTime: Long) {
-                    runOnUiThread {
-                        results?.let { it ->
-                            if (it.isNotEmpty() && it[0].categories.isNotEmpty()) {
-                                println(it)
-                                val sortedCategories =
-                                    it[0].categories.sortedByDescending { it?.score }
-                                val displayResult =
-                                    sortedCategories.joinToString("\n") {
-                                        "${it.label} " + NumberFormat.getPercentInstance()
-                                            .format(it.score).trim()
-                                    }
-                                binding.tvResult.text = displayResult
-                                binding.tvInferenceTime.text = "$inferenceTime ms"
-                            } else {
-                                binding.tvResult.text = ""
-                                binding.tvInferenceTime.text = ""
-                            }
-                        }
-                    }
-                }
-
-            }
-        )
-
-        // Initialize CameraX
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
         cameraProviderFuture.addListener({
-            val resolutionSelector = ResolutionSelector.Builder()
-                .setAspectRatioStrategy(AspectRatioStrategy.RATIO_16_9_FALLBACK_AUTO_STRATEGY)
-                .build()
-            val imageAnalyzer = ImageAnalysis.Builder()
-                .setResolutionSelector(resolutionSelector)
-                .setTargetRotation(binding.viewFinder.display.rotation)
-                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
-                .build()
-            imageAnalyzer.setAnalyzer(Executors.newSingleThreadExecutor()) { image ->
-                imageClassifierHelper.classifyImage(image)
-            }
-
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-            val preview = Preview.Builder().build().also {
-                it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
-            }
+            val preview = Preview.Builder()
+                .build()
+                .also {
+                    it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
+                }
+
             try {
                 cameraProvider.unbindAll()
                 cameraProvider.bindToLifecycle(
                     this,
                     cameraSelector,
-                    preview,
-                    imageAnalyzer
+                    preview
                 )
             } catch (exc: Exception) {
-                Toast.makeText(this@CameraActivity, "Gagal memunculkan kamera.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@CameraActivity,
+                    "Gagal memunculkan kamera.",
+                    Toast.LENGTH_SHORT
+                ).show()
                 Log.e(TAG, "startCamera: ${exc.message}")
             }
         }, ContextCompat.getMainExecutor(this))
+    }
+
+    private fun takePhoto() {
+        // takePhoto
     }
 
     private fun hideSystemUI() {
@@ -126,9 +116,10 @@ class CameraActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
+    private fun showToast(message: String) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+
     companion object {
         private const val TAG = "CameraActivity"
-        const val EXTRA_CAMERAX_IMAGE = "CameraX Image"
-        const val CAMERAX_RESULT = 200
+        private const val REQUIRED_PERMISSION = Manifest.permission.CAMERA
     }
 }
