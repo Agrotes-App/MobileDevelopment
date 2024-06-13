@@ -5,27 +5,18 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".ui.activities.LoginActivity">
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="64dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintGuide_percent="0.28"
-        app:layout_constraintStart_toStartOf="parent" />
+    android:background="@color/background_primary"
+    tools:context=".ui.activities.login.LoginActivity">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/custom_background_login"
         android:layout_width="match_parent"
         android:layout_height="210dp"
         android:scaleType="centerCrop"
-        android:transitionName="custom_background"
         android:src="@drawable/background_leaf"
-        app:layout_constraintStart_toStartOf="parent"
+        android:transitionName="custom_background"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearance="@style/semi_circle" />
 
@@ -33,13 +24,13 @@
         android:id="@+id/iv_app_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:transitionName="app_icon"
         android:contentDescription="@string/iv_app_icon"
         android:src="@mipmap/ic_launcher_round"
-        app:layout_constraintTop_toTopOf="@id/guideline"
-        app:layout_constraintBottom_toBottomOf="@id/guideline"
+        android:transitionName="app_icon"
+        app:layout_constraintBottom_toBottomOf="@id/custom_background_login"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/custom_background_login" />
 
     <LinearLayout
         android:id="@+id/login_input_layout"
@@ -112,9 +103,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="12dp"
-        android:transitionName="btn_login"
         android:layout_marginVertical="8dp"
         android:text="Log In"
+        android:transitionName="btn_login"
         app:layout_constraintBottom_toTopOf="@id/layout_dont_have_account"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/navigation_main"
+        android:icon="@drawable/ic_home"
+        android:title="Home"
+        app:cnb_backgroundColor="#33426D51"
+        app:cnb_iconColor="@color/primary"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_textColor="@color/primary" />
+
+    <item
+        android:id="@+id/navigation_history"
+        android:icon="@drawable/ic_history"
+        android:title="History"
+        app:cnb_backgroundColor="#33426D51"
+        app:cnb_iconColor="@color/primary"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_textColor="@color/primary" />
+
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/ic_profile"
+        android:title="Profile"
+        app:cnb_backgroundColor="#33426D51"
+        app:cnb_iconColor="@color/primary"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_textColor="@color/primary" />
+
+</menu>
