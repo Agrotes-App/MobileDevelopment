@@ -2,7 +2,11 @@ package com.example.agrotes_mobile.helper
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
 import android.os.SystemClock
+import android.provider.MediaStore
 import android.util.Log
 import android.view.Surface
 import org.tensorflow.lite.DataType
@@ -18,8 +22,8 @@ import org.tensorflow.lite.task.vision.classifier.ImageClassifier
 
 class ImageClassifierHelper(
     private var threshold: Float = 0.1f,
-    private var maxResults: Int = 3,
-    private val modelName: String = "chilli_v1.tflite",
+    private var maxResults: Int = 1,
+    private val modelName: String = "agripredict.tflite",
     val context: Context,
     private val classifierListener: ClassifierListener?
 ) {
@@ -51,7 +55,7 @@ class ImageClassifierHelper(
     }
 
     // Classification function.
-    fun classifyImage(image: ImageProxy) {
+    fun classifyImage(uri: Uri) {
         if (imageClassifier == null) {
             setupImageClassifier()
         }
@@ -61,39 +65,27 @@ class ImageClassifierHelper(
             .add(CastOp(DataType.UINT8))
             .build()
 
-        // Convert Image Proxy ke Bitmap
-        val tensorImage = imageProcessor.process(TensorImage.fromBitmap(toBitmap(image)))
+        val contentResolver = context.contentResolver
 
-        // Mendapatkan orientasi gambar
-        val imageProcessingOptions = ImageProcessingOptions.builder()
-            .setOrientation(getOrientationFromRotation(image.imageInfo.rotationDegrees))
-            .build()
-
-        // inference(waktu)
-        var inferenceTime = SystemClock.uptimeMillis()
-        val results = imageClassifier?.classify(tensorImage, imageProcessingOptions)
-        inferenceTime = SystemClock.uptimeMillis() - inferenceTime
-        classifierListener?.onResults(results, inferenceTime)
-    }
-
-    private fun getOrientationFromRotation(rotation: Int): ImageProcessingOptions.Orientation {
-        return when (rotation) {
-            Surface.ROTATION_270 -> ImageProcessingOptions.Orientation.BOTTOM_RIGHT
-            Surface.ROTATION_180 -> ImageProcessingOptions.Orientation.RIGHT_BOTTOM
-            Surface.ROTATION_90 -> ImageProcessingOptions.Orientation.TOP_LEFT
-            else -> ImageProcessingOptions.Orientation.RIGHT_TOP
+        // Konversi uri ke bitmap
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            val source = ImageDecoder.createSource(contentResolver, uri)
+            ImageDecoder.decodeBitmap(source)
+        } else {
+            @Suppress("DEPRECATION")
+            MediaStore.Images.Media.getBitmap(contentResolver, uri)
         }
-    }
+            .copy(Bitmap.Config.ARGB_8888, true)?.let { bitmap ->
+                val tensorImage = imageProcessor.process(TensorImage.fromBitmap(bitmap))
+                var inferenceTime = SystemClock.uptimeMillis()
+                val results = imageClassifier?.classify(tensorImage)
 
-    private fun toBitmap(image: ImageProxy): Bitmap {
-        val bitmapBuffer = Bitmap.createBitmap(
-            image.width,
-            image.height,
-            Bitmap.Config.ARGB_8888
-        )
-        image.use { bitmapBuffer.copyPixelsFromBuffer(image.planes[0].buffer) }
-        image.close()
-        return bitmapBuffer
+                inferenceTime = SystemClock.uptimeMillis() - inferenceTime
+                classifierListener?.onResults(
+                    results,
+                    inferenceTime
+                )
+            }
     }
 
     // callback interface

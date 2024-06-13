@@ -24,7 +24,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.agrotes_mobile.R
 import com.example.agrotes_mobile.databinding.ActivityCameraBinding
-import com.example.agrotes_mobile.ui.activities.analyze.AnalyzeActivity
+import com.example.agrotes_mobile.ui.activities.prediction.PredictionActivity
 import com.example.agrotes_mobile.utils.createCustomTempFile
 
 class CameraActivity : AppCompatActivity() {
@@ -103,8 +103,8 @@ class CameraActivity : AppCompatActivity() {
 
         imageCapture.takePicture(outputOptions, ContextCompat.getMainExecutor(this), object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    val intent = Intent(this@CameraActivity, AnalyzeActivity::class.java)
-                    intent.putExtra(AnalyzeActivity.EXTRA_CAMERAX_IMAGE, output.savedUri.toString())
+                    val intent = Intent(this@CameraActivity, PredictionActivity::class.java)
+                    intent.putExtra(PredictionActivity.EXTRA_CAMERAX_IMAGE, output.savedUri.toString())
                     startActivity(intent)
                     finish()
                 }
@@ -122,8 +122,8 @@ class CameraActivity : AppCompatActivity() {
 
     private val launcherGallery = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
         if (uri != null) {
-            val intent = Intent(this@CameraActivity, AnalyzeActivity::class.java)
-            intent.putExtra(AnalyzeActivity.EXTRA_CAMERAX_IMAGE, uri.toString())
+            val intent = Intent(this@CameraActivity, PredictionActivity::class.java)
+            intent.putExtra(PredictionActivity.EXTRA_CAMERAX_IMAGE, uri.toString())
             startActivity(intent)
             finish()
         } else {
@@ -149,7 +149,5 @@ class CameraActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "CameraActivity"
         private const val REQUIRED_PERMISSION = Manifest.permission.CAMERA
-        const val EXTRA_CAMERAX_IMAGE = "CameraX Image"
-        const val CAMERAX_RESULT = 200
     }
 }
