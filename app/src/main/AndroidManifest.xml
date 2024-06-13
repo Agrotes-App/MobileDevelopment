@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
     <!-- internet permission -->
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <!-- camera permission -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- camera permission -->
     <uses-feature android:name="android.hardware.camera" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <!-- storage permission -->
+
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- storage permission -->
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
@@ -22,6 +20,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Agrotesmobile"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.activities.analyze.AnalyzeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.editProfile.EditProfileActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.activities.prediction.PredictionActivity"
             android:exported="false" />
