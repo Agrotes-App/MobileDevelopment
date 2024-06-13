@@ -3,6 +3,7 @@ package com.example.agrotes_mobile.ui.activities.camera
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -10,28 +11,21 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
-import androidx.camera.core.resolutionselector.AspectRatioStrategy
-import androidx.camera.core.resolutionselector.ResolutionSelector
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.agrotes_mobile.R
 import com.example.agrotes_mobile.databinding.ActivityCameraBinding
-import com.example.agrotes_mobile.helper.ImageClassifierHelper
 import com.example.agrotes_mobile.ui.activities.analyze.AnalyzeActivity
-import com.example.agrotes_mobile.ui.activities.prediction.PredictionActivity
 import com.example.agrotes_mobile.utils.createCustomTempFile
-import org.tensorflow.lite.task.vision.classifier.Classifications
-import java.text.NumberFormat
-import java.util.concurrent.Executors
 
 class CameraActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCameraBinding
@@ -41,11 +35,7 @@ class CameraActivity : AppCompatActivity() {
     // request permission
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
-            if (isGranted) {
-                showToast("Permission request granted")
-            } else {
-                showToast("Permission request denied")
-            }
+            if (isGranted) showToast("Permission request granted") else showToast("Permission request denied")
         }
 
     // Permission check
@@ -67,7 +57,14 @@ class CameraActivity : AppCompatActivity() {
             requestPermissionLauncher.launch(REQUIRED_PERMISSION)
         }
 
-        binding.fabCapture.setOnClickListener { takePhoto() }
+        setupAction()
+    }
+
+    private fun setupAction() {
+        with(binding){
+            fabCapture.setOnClickListener { takePhoto() }
+            fabGallery.setOnClickListener { startGallery() }
+        }
     }
 
     public override fun onResume() {
@@ -117,6 +114,21 @@ class CameraActivity : AppCompatActivity() {
                     Log.e(TAG, "onError: ${exc.message}")
                 }
             })
+    }
+
+    private fun startGallery() {
+        launcherGallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+    }
+
+    private val launcherGallery = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
+        if (uri != null) {
+            val intent = Intent(this@CameraActivity, AnalyzeActivity::class.java)
+            intent.putExtra(AnalyzeActivity.EXTRA_CAMERAX_IMAGE, uri.toString())
+            startActivity(intent)
+            finish()
+        } else {
+            Log.d("Photo Picker", "No media selected")
+        }
     }
 
     private fun hideSystemUI() {
