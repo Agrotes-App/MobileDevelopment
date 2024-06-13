@@ -6,4 +6,5 @@
     <color name="background_primary">#FBFDFC</color>
     <color name="black_50">#80000000</color>
     <color name="light_green">#34C767</color>
+    <color name="danger">#B3261E</color>
 </resources>
