@@ -2,12 +2,20 @@ package com.example.agrotes_mobile.di
 
 import android.content.Context
 import com.example.agrotes_mobile.data.local.room.DiseaseRoomDatabase
-import com.example.agrotes_mobile.repository.DiseaseRepository
+import com.example.agrotes_mobile.data.pref.UserPreference
+import com.example.agrotes_mobile.data.pref.dataStore
+import com.example.agrotes_mobile.data.remote.retrofit.ApiConfig
+import com.example.agrotes_mobile.repository.UserRepository
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 object Injection {
-    fun provideDiseaseRepository(context: Context): DiseaseRepository {
+    fun provideUserRepository(context: Context): UserRepository {
+        val pref = UserPreference.getInstance(context.dataStore)
+        val user = runBlocking { pref.getSession().first() }
+        val apiService = ApiConfig.getApiService(user.token)
         val database = DiseaseRoomDatabase.getDatabase(context)
         val dao = database.diseaseDao()
-        return DiseaseRepository.getInstance(dao)
+        return UserRepository.getInstance(apiService, pref, dao)
     }
 }
