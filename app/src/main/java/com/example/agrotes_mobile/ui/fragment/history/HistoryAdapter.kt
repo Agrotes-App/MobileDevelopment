@@ -1,10 +1,12 @@
 package com.example.agrotes_mobile.ui.fragment.history
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.agrotes_mobile.R
@@ -19,19 +21,17 @@ class HistoryAdapter(private val history: ArrayList<DiseaseEntity>) : RecyclerVi
         val plantDate: TextView = itemView.findViewById(R.id.tv_date)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_history, parent, false)
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: HistoryAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val data = history[position]
         holder.plantName.text = data.plantName
         holder.diseaseName.text = data.diseaseName
         holder.plantDate.text = data.date.toString()
-        Glide.with(holder.itemView.context)
-            .load(data.imageUri) // URL Gambar
-            .into(holder.photo) // imageView mana yang akan diterapkan
+        holder.photo.setImageURI(Uri.parse(data.imageUri))
     }
 
     override fun getItemCount(): Int = history.size

@@ -15,9 +15,8 @@ import com.example.agrotes_mobile.utils.ViewModelFactory
 
 class HistoryFragment : Fragment() {
     private lateinit var binding: FragmentHistoryBinding
-    private lateinit var recyclerView: RecyclerView
     private var histories: ArrayList<DiseaseEntity> = ArrayList()
-    private val viewmodel: HistoryViewModel by viewModels<HistoryViewModel>{
+    private val viewmodel: HistoryViewModel by viewModels<HistoryViewModel> {
         ViewModelFactory.getInstance(requireContext())
     }
 
@@ -35,16 +34,17 @@ class HistoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val layoutManager = LinearLayoutManager(context)
-        recyclerView = binding.rvHistory
-        recyclerView.layoutManager = layoutManager
-        val itemDecoration = DividerItemDecoration(context, layoutManager.orientation)
-        recyclerView.addItemDecoration(itemDecoration)
-        recyclerView.setHasFixedSize(true)
+        with(binding) {
+            rvHistory.layoutManager = layoutManager
+            val itemDecoration = DividerItemDecoration(context, layoutManager.orientation)
+            rvHistory.addItemDecoration(itemDecoration)
+            rvHistory.setHasFixedSize(true)
+        }
 
         viewmodel.getAllHistory().observe(viewLifecycleOwner) {
             histories.clear()
             histories.addAll(it)
-            recyclerView.adapter = HistoryAdapter(histories)
+            binding.rvHistory.adapter = HistoryAdapter(histories)
         }
     }
 }

@@ -13,7 +13,7 @@ interface DiseaseDao {
     @Query("SELECT * FROM disease_table ORDER BY id ASC")
     fun getAllHistory(): LiveData<List<DiseaseEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(entity: DiseaseEntity)
 
     @Delete
