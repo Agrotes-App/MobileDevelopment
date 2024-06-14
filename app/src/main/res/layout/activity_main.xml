@@ -20,7 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:cnb_menuResource="@menu/bottom_navigation" />
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"

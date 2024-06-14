@@ -5,28 +5,27 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.agrotes_mobile.R
+import com.example.agrotes_mobile.data.local.entity.DiseaseEntity
 import com.example.agrotes_mobile.databinding.FragmentHistoryBinding
-import com.example.agrotes_mobile.dummy.Model
+import com.example.agrotes_mobile.utils.ViewModelFactory
 
 class HistoryFragment : Fragment() {
     private lateinit var binding: FragmentHistoryBinding
-    private lateinit var recyclerView: RecyclerView
-    private val data = ArrayList<Model>()
+    private var histories: ArrayList<DiseaseEntity> = ArrayList()
+    private val viewmodel: HistoryViewModel by viewModels<HistoryViewModel> {
+        ViewModelFactory.getInstance(requireContext())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {}
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentHistoryBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -35,27 +34,17 @@ class HistoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val layoutManager = LinearLayoutManager(context)
-        recyclerView = binding.rvHistory
-        recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = HistoryAdapter(data)
-        val itemDecoration = DividerItemDecoration(context, layoutManager.orientation)
-        recyclerView.addItemDecoration(itemDecoration)
-        recyclerView.setHasFixedSize(true)
-
-        data.addAll(getData())
-
-    }
-
-    private fun getData(): ArrayList<Model> {
-        val photo = resources.getStringArray(R.array.data_photo)
-        val data = ArrayList<Model>()
-
-        for (i in photo.indices) {
-            val model = Model(photo[i])
-            data.add(model)
+        with(binding) {
+            rvHistory.layoutManager = layoutManager
+            val itemDecoration = DividerItemDecoration(context, layoutManager.orientation)
+            rvHistory.addItemDecoration(itemDecoration)
+            rvHistory.setHasFixedSize(true)
         }
-        return data
+
+        viewmodel.getAllHistory().observe(viewLifecycleOwner) {
+            histories.clear()
+            histories.addAll(it)
+            binding.rvHistory.adapter = HistoryAdapter(histories)
+        }
     }
-
-
 }

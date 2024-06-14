@@ -3,40 +3,53 @@ package com.example.agrotes_mobile.ui.activities.camera
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.OrientationEventListener
+import android.view.Surface
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
-import androidx.camera.core.resolutionselector.AspectRatioStrategy
-import androidx.camera.core.resolutionselector.ResolutionSelector
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.agrotes_mobile.R
 import com.example.agrotes_mobile.databinding.ActivityCameraBinding
-import com.example.agrotes_mobile.helper.ImageClassifierHelper
 import com.example.agrotes_mobile.ui.activities.prediction.PredictionActivity
-import org.tensorflow.lite.task.vision.classifier.Classifications
-import java.text.NumberFormat
-import java.util.concurrent.Executors
+import com.example.agrotes_mobile.utils.createCustomTempFile
 
 class CameraActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCameraBinding
+    private var imageCapture: ImageCapture? = null
     private var cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
-    // request permission
-    private val requestPermissionLauncher =
+    // request camera permission
+    private val cameraPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
             if (isGranted) {
+                showToast("Permission request granted")
+            } else {
+                showToast("Permission request denied")
+                finish()
+            }
+        }
+
+    // storage camera permission
+    private val storagePermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) {
+                startGallery()
                 showToast("Permission request granted")
             } else {
                 showToast("Permission request denied")
@@ -44,10 +57,8 @@ class CameraActivity : AppCompatActivity() {
         }
 
     // Permission check
-    private fun allPermissionsGranted() = ContextCompat.checkSelfPermission(
-        this,
-        REQUIRED_PERMISSION
-    ) == PackageManager.PERMISSION_GRANTED
+    private fun cameraPermissionsGranted() = ContextCompat.checkSelfPermission(this, CAMERAX_PERMISSION) == PackageManager.PERMISSION_GRANTED
+    private fun storagePermissionsGranted() = ContextCompat.checkSelfPermission(this, STORAGE_PERMISSION) == PackageManager.PERMISSION_GRANTED
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,12 +72,13 @@ class CameraActivity : AppCompatActivity() {
             insets
         }
 
-        if (!allPermissionsGranted()) {
-            requestPermissionLauncher.launch(REQUIRED_PERMISSION)
-        }
+        setupAction()
+    }
 
-        binding.fabCapture.setOnClickListener {
-            startActivity(Intent(this@CameraActivity, PredictionActivity::class.java))
+    private fun setupAction() {
+        with(binding) {
+            fabCapture.setOnClickListener { takePhoto() }
+            fabGallery.setOnClickListener { startGallery() }
         }
     }
 
@@ -77,36 +89,107 @@ class CameraActivity : AppCompatActivity() {
     }
 
     private fun startCamera() {
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
+        if (!cameraPermissionsGranted()) {
+            cameraPermissionLauncher.launch(CAMERAX_PERMISSION)
+        }else{
+            val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
-        cameraProviderFuture.addListener({
-            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-            val preview = Preview.Builder()
-                .build()
-                .also {
-                    it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
+            cameraProviderFuture.addListener({
+                val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+                val preview = Preview.Builder()
+                    .build()
+                    .also {
+                        it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
+                    }
+
+                imageCapture = ImageCapture.Builder().build()
+
+                try {
+                    cameraProvider.unbindAll()
+                    cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
+                } catch (exc: Exception) {
+                    Toast.makeText(this@CameraActivity, "Gagal memunculkan kamera.", Toast.LENGTH_SHORT)
+                        .show()
+                    Log.e(TAG, "startCamera: ${exc.message}")
                 }
-
-            try {
-                cameraProvider.unbindAll()
-                cameraProvider.bindToLifecycle(
-                    this,
-                    cameraSelector,
-                    preview
-                )
-            } catch (exc: Exception) {
-                Toast.makeText(
-                    this@CameraActivity,
-                    "Gagal memunculkan kamera.",
-                    Toast.LENGTH_SHORT
-                ).show()
-                Log.e(TAG, "startCamera: ${exc.message}")
-            }
-        }, ContextCompat.getMainExecutor(this))
+            }, ContextCompat.getMainExecutor(this))
+        }
     }
 
     private fun takePhoto() {
-        // takePhoto
+        val imageCapture = imageCapture ?: return
+        val photoFile = createCustomTempFile(application)
+        val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
+
+        imageCapture.takePicture(
+            outputOptions,
+            ContextCompat.getMainExecutor(this),
+            object : ImageCapture.OnImageSavedCallback {
+                override fun onImageSaved(output: ImageCapture.OutputFileResults) {
+                    val intent = Intent(this@CameraActivity, PredictionActivity::class.java)
+                    intent.putExtra(
+                        PredictionActivity.EXTRA_CAMERAX_IMAGE,
+                        output.savedUri.toString()
+                    )
+                    startActivity(intent)
+                    finish()
+                }
+
+                override fun onError(exc: ImageCaptureException) {
+                    showToast("Gagal mengambil gambar")
+                    Log.e(TAG, "onError: ${exc.message}")
+                }
+            })
+    }
+
+    private fun startGallery() {
+        if (!storagePermissionsGranted()) {
+            storagePermissionLauncher.launch(STORAGE_PERMISSION)
+        } else {
+            launcherGallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
+    }
+
+    private val launcherGallery =
+        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
+            if (uri != null) {
+                val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                contentResolver.takePersistableUriPermission(uri, flag)
+                val intent = Intent(this@CameraActivity, PredictionActivity::class.java)
+                intent.putExtra(PredictionActivity.EXTRA_CAMERAX_IMAGE, uri.toString())
+                startActivity(intent)
+                finish()
+            } else {
+                Log.d("Photo Picker", "No media selected")
+            }
+        }
+
+    // set orientation
+    private val orientationEventListener by lazy {
+        object : OrientationEventListener(this) {
+            override fun onOrientationChanged(orientation: Int) {
+                if (orientation == ORIENTATION_UNKNOWN) {
+                    return
+                }
+                val rotation = when (orientation) {
+                    in 45 until 135 -> Surface.ROTATION_270
+                    in 135 until 225 -> Surface.ROTATION_180
+                    in 225 until 315 -> Surface.ROTATION_90
+                    else -> Surface.ROTATION_0
+                }
+                imageCapture?.targetRotation = rotation
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        orientationEventListener.enable()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        orientationEventListener.disable()
     }
 
     private fun hideSystemUI() {
@@ -122,10 +205,12 @@ class CameraActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
-    private fun showToast(message: String) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    private fun showToast(message: String) =
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
     companion object {
         private const val TAG = "CameraActivity"
-        private const val REQUIRED_PERMISSION = Manifest.permission.CAMERA
+        private const val CAMERAX_PERMISSION = Manifest.permission.CAMERA
+        private const val STORAGE_PERMISSION = Manifest.permission.WRITE_EXTERNAL_STORAGE
     }
 }

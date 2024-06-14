@@ -3,6 +3,7 @@ package com.example.agrotes_mobile.ui.activities.main
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -11,11 +12,15 @@ import com.example.agrotes_mobile.databinding.ActivityMainBinding
 import com.example.agrotes_mobile.ui.activities.welcome.WelcomeActivity
 import com.example.agrotes_mobile.ui.fragment.history.HistoryFragment
 import com.example.agrotes_mobile.ui.fragment.main.MainFragment
-import com.example.agrotes_mobile.ui.fragment.ProfileFragment
+import com.example.agrotes_mobile.ui.fragment.profile.ProfileFragment
+import com.example.agrotes_mobile.utils.ViewModelFactory
 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private val viewModel: MainViewModel by viewModels {
+        ViewModelFactory.getInstance(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,10 +34,23 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        getSession()
         initFragment()
         setupBottomBar()
         setupAction()
 
+    }
+
+    private fun getSession() {
+        viewModel.getSession().observe(this){user ->
+            if (user.isLogin){
+                // nanti lakukan tutor !!!!!!!
+            }else{
+                intent = Intent(this@MainActivity, WelcomeActivity::class.java)
+                startActivity(intent)
+                finishAffinity()
+            }
+        }
     }
 
     // run on start
