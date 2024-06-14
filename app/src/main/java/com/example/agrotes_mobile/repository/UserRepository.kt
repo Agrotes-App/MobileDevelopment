@@ -39,6 +39,8 @@ class UserRepository(
 
     suspend fun saveSession(user: UserModel) = userPreference.saveSession(user)
 
+    suspend fun logout() = userPreference.logOut()
+
     fun getSession(): Flow<UserModel> = userPreference.getSession()
 
     fun getAllHistory(): LiveData<List<DiseaseEntity>> = diseaseDao.getAllHistory()

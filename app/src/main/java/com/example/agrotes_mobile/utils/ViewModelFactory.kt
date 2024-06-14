@@ -10,6 +10,7 @@ import com.example.agrotes_mobile.ui.activities.main.MainViewModel
 import com.example.agrotes_mobile.ui.activities.prediction.PredictionViewModel
 import com.example.agrotes_mobile.ui.activities.signup.SignupViewModel
 import com.example.agrotes_mobile.ui.fragment.history.HistoryViewModel
+import com.example.agrotes_mobile.ui.fragment.profile.ProfileViewModel
 
 class ViewModelFactory private constructor(private val userRepository: UserRepository) :
     ViewModelProvider.NewInstanceFactory() {
@@ -25,6 +26,9 @@ class ViewModelFactory private constructor(private val userRepository: UserRepos
             }
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
                 LoginViewModel(userRepository) as T
+            }
+            modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
+                ProfileViewModel(userRepository) as T
             }
             modelClass.isAssignableFrom(PredictionViewModel::class.java) -> {
                 PredictionViewModel(userRepository) as T
