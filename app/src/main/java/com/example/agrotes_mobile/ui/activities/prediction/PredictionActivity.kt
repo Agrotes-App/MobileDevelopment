@@ -5,19 +5,27 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.agrotes_mobile.R
+import com.example.agrotes_mobile.data.local.entity.DiseaseEntity
 import com.example.agrotes_mobile.databinding.ActivityPredictionBinding
 import com.example.agrotes_mobile.helper.ImageClassifierHelper
+import com.example.agrotes_mobile.utils.ViewModelFactory
 import org.tensorflow.lite.task.vision.classifier.Classifications
 
 class PredictionActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPredictionBinding
     private lateinit var imageClassifierHelper: ImageClassifierHelper
     private var currentImageUri: Uri? = null
+    private var predictionResult: DiseaseEntity? = null
+
+    private val viewModel: PredictionViewModel by viewModels<PredictionViewModel>{
+        ViewModelFactory.getInstance(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +43,9 @@ class PredictionActivity : AppCompatActivity() {
         val imageUri = intent.getStringExtra(EXTRA_CAMERAX_IMAGE)
         currentImageUri = imageUri?.toUri()
 
-        showImage()
         currentImageUri?.let { startAnalyze(it) }
+        showImage()
+        setupAction()
 
     }
 
@@ -47,7 +56,7 @@ class PredictionActivity : AppCompatActivity() {
         }
     }
 
-    private fun startAnalyze(uri: Uri){
+    private fun startAnalyze(uri: Uri) {
         imageClassifierHelper = ImageClassifierHelper(
             context = this,
             classifierListener = object : ImageClassifierHelper.ClassifierListener {
@@ -63,10 +72,20 @@ class PredictionActivity : AppCompatActivity() {
                             val label = categories.displayName
                             val score = categories.score
                             val time = inferenceTime.toString()
+                            predictionResult = DiseaseEntity(
+                                plantName = "DUMMY", // masih menunggu model dari machine learning
+                                diseaseName = label,
+                                date = System.currentTimeMillis(),
+                                imageUri = currentImageUri.toString()
+                            )
 
                             binding.tvDiseaseName.text = label
                         } else {
-                           Toast.makeText(this@PredictionActivity, "Tidak ada hasil", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this@PredictionActivity,
+                                "Tidak ada hasil",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
 
                     }
@@ -76,7 +95,17 @@ class PredictionActivity : AppCompatActivity() {
         imageClassifierHelper.classifyImage(uri)
     }
 
-    companion object{
+
+    private fun setupAction() {
+        binding.btnSave.setOnClickListener {
+            predictionResult.let {
+                if (it != null) { viewModel.insert(it) }
+                Toast.makeText(this, "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    companion object {
         const val EXTRA_CAMERAX_IMAGE = "extra_camerax_image"
     }
 }

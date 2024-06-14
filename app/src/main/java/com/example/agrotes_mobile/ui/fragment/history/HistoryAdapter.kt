@@ -8,9 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.agrotes_mobile.R
+import com.example.agrotes_mobile.data.local.entity.DiseaseEntity
 import com.example.agrotes_mobile.dummy.Model
 
-class HistoryAdapter(private val DataList: ArrayList<Model>) : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
+class HistoryAdapter(private val history: ArrayList<DiseaseEntity>) : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val plantName: TextView = itemView.findViewById(R.id.tv_plant_name)
         val diseaseName: TextView = itemView.findViewById(R.id.tv_disease_name)
@@ -24,13 +25,15 @@ class HistoryAdapter(private val DataList: ArrayList<Model>) : RecyclerView.Adap
     }
 
     override fun onBindViewHolder(holder: HistoryAdapter.ViewHolder, position: Int) {
-        val data = DataList[position]
-
+        val data = history[position]
+        holder.plantName.text = data.plantName
+        holder.diseaseName.text = data.diseaseName
+        holder.plantDate.text = data.date.toString()
         Glide.with(holder.itemView.context)
-            .load(data.photoUrl) // URL Gambar
+            .load(data.imageUri) // URL Gambar
             .into(holder.photo) // imageView mana yang akan diterapkan
     }
 
-    override fun getItemCount(): Int = DataList.size
+    override fun getItemCount(): Int = history.size
 
 }
