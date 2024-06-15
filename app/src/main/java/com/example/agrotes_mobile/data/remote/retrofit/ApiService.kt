@@ -1,12 +1,17 @@
 package com.example.agrotes_mobile.data.remote.retrofit
 
+import com.example.agrotes_mobile.data.remote.responses.DetailStoryResponse
+import com.example.agrotes_mobile.data.remote.responses.ListStoryItem
 import com.example.agrotes_mobile.data.remote.responses.LoginResponse
 import com.example.agrotes_mobile.data.remote.responses.RegisterResponse
+import com.example.agrotes_mobile.data.remote.responses.Story
 import com.example.agrotes_mobile.data.remote.responses.StoryResponse
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
     @FormUrlEncoded
@@ -26,6 +31,11 @@ interface ApiService {
 
     @GET("stories")
     suspend fun getStories(): StoryResponse
+
+    @GET("stories/{id}")
+    suspend fun getStoriesById(
+        @Path("id") id: String?,
+    ): DetailStoryResponse
 
 
 }

@@ -1,13 +1,11 @@
 package com.example.agrotes_mobile.ui.activities.detailHistory
 
 import android.os.Bundle
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.bumptech.glide.Glide
 import com.example.agrotes_mobile.R
 import com.example.agrotes_mobile.data.local.entity.DiseaseEntity
 import com.example.agrotes_mobile.databinding.ActivityDetailHistoryBinding
@@ -27,10 +25,10 @@ class DetailHistoryActivity : AppCompatActivity() {
             insets
         }
 
-        setupData()
+        setupView()
     }
 
-    private fun setupData() {
+    private fun setupView() {
         val data = intent.getParcelableExtra<DiseaseEntity>("extra_history") as DiseaseEntity
         with(binding){
             tvDiseaseName.text = data.diseaseName

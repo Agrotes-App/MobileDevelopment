@@ -9,7 +9,10 @@ import com.example.agrotes_mobile.data.remote.responses.RegisterResponse
 import com.example.agrotes_mobile.data.remote.retrofit.ApiService
 import com.example.agrotes_mobile.utils.Result
 import com.example.agrotes_mobile.data.pref.UserModel
+import com.example.agrotes_mobile.data.remote.responses.DetailStoryResponse
+import com.example.agrotes_mobile.data.remote.responses.ListStoryItem
 import com.example.agrotes_mobile.data.remote.responses.LoginResponse
+import com.example.agrotes_mobile.data.remote.responses.Story
 import com.example.agrotes_mobile.data.remote.responses.StoryResponse
 import com.example.agrotes_mobile.data.remote.retrofit.ApiConfig
 import kotlinx.coroutines.flow.Flow
@@ -21,15 +24,16 @@ class UserRepository(
     private var userPreference: UserPreference,
     private val diseaseDao: DiseaseDao
 ) {
-    fun signup(name: String, email: String, password: String): LiveData<Result<RegisterResponse>> = liveData {
-        emit(Result.Loading)
-        try {
-            val result = apiService.register(name, email, password)
-            emit(Result.Success(result))
-        } catch (e: Exception) {
-            emit(Result.Error(e.message.toString()))
+    fun signup(name: String, email: String, password: String): LiveData<Result<RegisterResponse>> =
+        liveData {
+            emit(Result.Loading)
+            try {
+                val result = apiService.register(name, email, password)
+                emit(Result.Success(result))
+            } catch (e: Exception) {
+                emit(Result.Error(e.message.toString()))
+            }
         }
-    }
 
     fun login(email: String, password: String): LiveData<Result<LoginResponse>> = liveData {
         emit(Result.Loading)
@@ -41,7 +45,7 @@ class UserRepository(
         }
     }
 
-    fun getAllDisease():LiveData<Result<StoryResponse>> = liveData {
+    fun getAllDisease(): LiveData<Result<StoryResponse>> = liveData {
         emit(Result.Loading)
         try {
             val token = runBlocking {
@@ -49,6 +53,19 @@ class UserRepository(
             }
             apiService = ApiConfig.getApiService(token)
             val result = apiService.getStories()
+            emit(Result.Success(result))
+        } catch (e: Exception) {
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
+    fun getDiseaseById(id: String?): LiveData<Result<DetailStoryResponse>> = liveData {
+        try {
+            val token = runBlocking {
+                userPreference.getSession().first().token
+            }
+            apiService = ApiConfig.getApiService(token)
+            val result = apiService.getStoriesById(id)
             emit(Result.Success(result))
         } catch (e: Exception) {
             emit(Result.Error(e.message.toString()))
