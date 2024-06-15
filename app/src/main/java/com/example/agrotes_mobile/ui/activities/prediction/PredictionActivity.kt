@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.agrotes_mobile.R
 import com.example.agrotes_mobile.data.local.entity.DiseaseEntity
 import com.example.agrotes_mobile.databinding.ActivityPredictionBinding
+import com.example.agrotes_mobile.helper.DateHelper
 import com.example.agrotes_mobile.helper.ImageClassifierHelper
 import com.example.agrotes_mobile.utils.ViewModelFactory
 import org.tensorflow.lite.task.vision.classifier.Classifications
@@ -75,7 +76,7 @@ class PredictionActivity : AppCompatActivity() {
                             predictionResult = DiseaseEntity(
                                 plantName = "DUMMY", // masih menunggu model dari machine learning
                                 diseaseName = label,
-                                date = System.currentTimeMillis(),
+                                date = DateHelper.getCurrentDate(),
                                 imageUri = currentImageUri.toString()
                             )
 

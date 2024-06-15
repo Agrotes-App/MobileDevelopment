@@ -11,7 +11,7 @@ import com.example.agrotes_mobile.R
 import com.example.agrotes_mobile.databinding.ActivityMainBinding
 import com.example.agrotes_mobile.ui.activities.welcome.WelcomeActivity
 import com.example.agrotes_mobile.ui.fragment.history.HistoryFragment
-import com.example.agrotes_mobile.ui.fragment.main.MainFragment
+import com.example.agrotes_mobile.ui.fragment.home.HomeFragment
 import com.example.agrotes_mobile.ui.fragment.profile.ProfileFragment
 import com.example.agrotes_mobile.utils.ViewModelFactory
 
@@ -57,9 +57,9 @@ class MainActivity : AppCompatActivity() {
     private fun initFragment() {
         binding.bottomBar.setItemSelected(R.id.navigation_main)
 
-        val mainFragment = MainFragment()
+        val homeFragment = HomeFragment()
         supportFragmentManager.beginTransaction()
-            .replace(R.id.nav_host_fragment, mainFragment)
+            .replace(R.id.nav_host_fragment, homeFragment)
             .commit()
     }
 

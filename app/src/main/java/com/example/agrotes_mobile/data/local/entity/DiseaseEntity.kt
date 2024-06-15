@@ -22,5 +22,5 @@ data class DiseaseEntity(
     var imageUri: String? = null,
 
     @ColumnInfo(name = "date")
-    var date: Long? = null,
+    var date: String? = null,
 )

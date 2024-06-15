@@ -10,6 +10,7 @@ import com.example.agrotes_mobile.data.remote.retrofit.ApiService
 import com.example.agrotes_mobile.data.Result
 import com.example.agrotes_mobile.data.pref.UserModel
 import com.example.agrotes_mobile.data.remote.responses.LoginResponse
+import com.example.agrotes_mobile.data.remote.responses.StoryResponse
 import kotlinx.coroutines.flow.Flow
 
 class UserRepository(
@@ -31,6 +32,16 @@ class UserRepository(
         emit(Result.Loading)
         try {
             val result = apiService.login(email, password)
+            emit(Result.Success(result))
+        } catch (e: Exception) {
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
+    fun getAllDisease():LiveData<Result<StoryResponse>> = liveData {
+        emit(Result.Loading)
+        try {
+            val result = apiService.getStories()
             emit(Result.Success(result))
         } catch (e: Exception) {
             emit(Result.Error(e.message.toString()))
