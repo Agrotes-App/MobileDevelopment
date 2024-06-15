@@ -40,11 +40,13 @@ class PredictionActivity : AppCompatActivity() {
             insets
         }
 
-        // imageUri from CameraActivity
+        // get image uri from CameraActivity
         val imageUri = intent.getStringExtra(EXTRA_CAMERAX_IMAGE)
         currentImageUri = imageUri?.toUri()
 
+        // start image classifier
         currentImageUri?.let { startAnalyze(it) }
+
         showImage()
         setupAction()
 
@@ -52,7 +54,7 @@ class PredictionActivity : AppCompatActivity() {
 
     private fun showImage() {
         currentImageUri?.let {
-            Log.d("Image URI", "showImage: $it")
+            Log.d(TAG, "showImage: $it")
             binding.ivPhoto.setImageURI(it)
         }
     }
@@ -62,7 +64,7 @@ class PredictionActivity : AppCompatActivity() {
             context = this,
             classifierListener = object : ImageClassifierHelper.ClassifierListener {
                 override fun onError(error: String) {
-                    Toast.makeText(this@PredictionActivity, error, Toast.LENGTH_SHORT).show()
+                   showToast(error)
                 }
 
                 override fun onResults(results: List<Classifications>?, inferenceTime: Long) {
@@ -71,8 +73,8 @@ class PredictionActivity : AppCompatActivity() {
                             println(it)
                             val categories = it[0].categories[0]
                             val label = categories.displayName
-                            val score = categories.score
-                            val time = inferenceTime.toString()
+                            // val score = categories.score
+                            // val time = inferenceTime.toString()
                             predictionResult = DiseaseEntity(
                                 plantName = "DUMMY", // masih menunggu model dari machine learning
                                 diseaseName = label,
@@ -82,13 +84,8 @@ class PredictionActivity : AppCompatActivity() {
 
                             binding.tvDiseaseName.text = label
                         } else {
-                            Toast.makeText(
-                                this@PredictionActivity,
-                                "Tidak ada hasil",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            showToast(getString(R.string.error_model_result))
                         }
-
                     }
                 }
             }
@@ -101,12 +98,17 @@ class PredictionActivity : AppCompatActivity() {
         binding.btnSave.setOnClickListener {
             predictionResult.let {
                 if (it != null) { viewModel.insert(it) }
-                Toast.makeText(this, "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
+                showToast(getString(R.string.data_saved))
             }
         }
     }
 
+    private fun showToast(message: String?) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
     companion object {
         const val EXTRA_CAMERAX_IMAGE = "extra_camerax_image"
+        const val TAG = "PredictionActivity"
     }
 }

@@ -10,8 +10,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.agrotes_mobile.R
 import com.example.agrotes_mobile.utils.Result
 import com.example.agrotes_mobile.data.remote.responses.ListStoryItem
 import com.example.agrotes_mobile.databinding.FragmentHomeBinding
@@ -29,18 +27,13 @@ class HomeFragment : Fragment() {
         arguments?.let {}
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         setupAction()
         setupCommonProblems()
@@ -50,6 +43,7 @@ class HomeFragment : Fragment() {
     private fun setupAction() {
         with(binding) {
             fabScan.setOnClickListener { toCameraActivity() }
+            btnScan.setOnClickListener { toCameraActivity() }
         }
     }
 
@@ -62,7 +56,7 @@ class HomeFragment : Fragment() {
 
                 is Result.Success -> {
                     setupAdapter(result.data.listStory)
-                    Log.d("ListStory", result.data.listStory.toString())
+                    Log.d(TAG, result.data.listStory.toString())
                     showLoading(false)
                 }
 
@@ -101,5 +95,9 @@ class HomeFragment : Fragment() {
 
     private fun showToast(message: String?) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    companion object{
+        const val TAG = "HomeFragment"
     }
 }

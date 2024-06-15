@@ -8,15 +8,13 @@ import android.os.Build
 import android.os.SystemClock
 import android.provider.MediaStore
 import android.util.Log
-import android.view.Surface
+import com.example.agrotes_mobile.R
 import org.tensorflow.lite.DataType
-import androidx.camera.core.ImageProxy
 import org.tensorflow.lite.support.common.ops.CastOp
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.image.ops.ResizeOp
 import org.tensorflow.lite.task.core.BaseOptions
-import org.tensorflow.lite.task.core.vision.ImageProcessingOptions
 import org.tensorflow.lite.task.vision.classifier.Classifications
 import org.tensorflow.lite.task.vision.classifier.ImageClassifier
 
@@ -34,6 +32,7 @@ class ImageClassifierHelper(
     }
 
     private fun setupImageClassifier() {
+        // Initialize Image Classifier.
         val optionsBuilder = ImageClassifier.ImageClassifierOptions.builder()
             .setScoreThreshold(threshold)
             .setMaxResults(maxResults)
@@ -41,25 +40,21 @@ class ImageClassifierHelper(
             .setNumThreads(4)
         optionsBuilder.setBaseOptions(baseOptionsBuilder.build())
 
-        // inisialisasi image classifier
+        // Initialize TF Lite Image Classifier.
         try {
-            imageClassifier = ImageClassifier.createFromFileAndOptions(
-                context,
-                modelName,
-                optionsBuilder.build()
-            )
+            imageClassifier = ImageClassifier.createFromFileAndOptions(context, modelName, optionsBuilder.build())
         } catch (e: IllegalStateException) {
-            classifierListener?.onError("Image classifier failed to initialize. See error logs for details")
+            classifierListener?.onError(context.getString(R.string.error_tflite))
             Log.e(TAG, e.message.toString())
         }
     }
 
-    // Classification function.
     fun classifyImage(uri: Uri) {
         if (imageClassifier == null) {
             setupImageClassifier()
         }
 
+        // Create preprocessor for the image.
         val imageProcessor = ImageProcessor.Builder()
             .add(ResizeOp(224, 224, ResizeOp.ResizeMethod.NEAREST_NEIGHBOR))
             .add(CastOp(DataType.UINT8))
@@ -67,7 +62,7 @@ class ImageClassifierHelper(
 
         val contentResolver = context.contentResolver
 
-        // Konversi uri ke bitmap
+        // Convert the input image to a TensorImage object.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             val source = ImageDecoder.createSource(contentResolver, uri)
             ImageDecoder.decodeBitmap(source)
@@ -81,14 +76,11 @@ class ImageClassifierHelper(
                 val results = imageClassifier?.classify(tensorImage)
 
                 inferenceTime = SystemClock.uptimeMillis() - inferenceTime
-                classifierListener?.onResults(
-                    results,
-                    inferenceTime
-                )
+                classifierListener?.onResults(results, inferenceTime)
             }
     }
 
-    // callback interface
+    // Listener for TF Lite based models.
     interface ClassifierListener {
         fun onResults(results: List<Classifications>?, inferenceTime: Long)
         fun onError(error: String)

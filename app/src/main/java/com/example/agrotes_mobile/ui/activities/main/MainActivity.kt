@@ -51,11 +51,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // run on start
     private fun initFragment() {
-        binding.bottomBar.setItemSelected(R.id.navigation_main)
-
         val homeFragment = HomeFragment()
+        binding.bottomBar.setItemSelected(R.id.navigation_main)
         supportFragmentManager.beginTransaction()
             .replace(R.id.nav_host_fragment, homeFragment)
             .commit()

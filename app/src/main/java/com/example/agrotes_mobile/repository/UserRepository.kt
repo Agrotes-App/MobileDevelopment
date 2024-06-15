@@ -10,22 +10,16 @@ import com.example.agrotes_mobile.data.remote.retrofit.ApiService
 import com.example.agrotes_mobile.utils.Result
 import com.example.agrotes_mobile.data.pref.UserModel
 import com.example.agrotes_mobile.data.remote.responses.DetailStoryResponse
-import com.example.agrotes_mobile.data.remote.responses.ListStoryItem
 import com.example.agrotes_mobile.data.remote.responses.LoginResponse
-import com.example.agrotes_mobile.data.remote.responses.Story
 import com.example.agrotes_mobile.data.remote.responses.StoryResponse
 import com.example.agrotes_mobile.data.remote.retrofit.ApiConfig
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
-class UserRepository(
-    private var apiService: ApiService,
-    private var userPreference: UserPreference,
-    private val diseaseDao: DiseaseDao
-) {
-    fun signup(name: String, email: String, password: String): LiveData<Result<RegisterResponse>> =
-        liveData {
+class UserRepository(private var apiService: ApiService, private var userPreference: UserPreference, private val diseaseDao: DiseaseDao) {
+
+    fun signup(name: String, email: String, password: String): LiveData<Result<RegisterResponse>> = liveData {
             emit(Result.Loading)
             try {
                 val result = apiService.register(name, email, password)
@@ -48,9 +42,7 @@ class UserRepository(
     fun getAllDisease(): LiveData<Result<StoryResponse>> = liveData {
         emit(Result.Loading)
         try {
-            val token = runBlocking {
-                userPreference.getSession().first().token
-            }
+            val token = runBlocking { userPreference.getSession().first().token }
             apiService = ApiConfig.getApiService(token)
             val result = apiService.getStories()
             emit(Result.Success(result))
@@ -61,9 +53,7 @@ class UserRepository(
 
     fun getDiseaseById(id: String?): LiveData<Result<DetailStoryResponse>> = liveData {
         try {
-            val token = runBlocking {
-                userPreference.getSession().first().token
-            }
+            val token = runBlocking { userPreference.getSession().first().token }
             apiService = ApiConfig.getApiService(token)
             val result = apiService.getStoriesById(id)
             emit(Result.Success(result))
@@ -73,14 +63,11 @@ class UserRepository(
     }
 
     suspend fun saveSession(user: UserModel) = userPreference.saveSession(user)
-
     suspend fun logout() = userPreference.logOut()
+    suspend fun insert(entity: DiseaseEntity) = diseaseDao.insert(entity)
 
     fun getSession(): Flow<UserModel> = userPreference.getSession()
-
     fun getAllHistory(): LiveData<List<DiseaseEntity>> = diseaseDao.getAllHistory()
-
-    suspend fun insert(entity: DiseaseEntity) = diseaseDao.insert(entity)
 
     companion object {
         @Volatile
@@ -88,7 +75,7 @@ class UserRepository(
         fun getInstance(
             apiService: ApiService,
             userPreference: UserPreference,
-            diseaseDao: DiseaseDao
+            diseaseDao: DiseaseDao,
         ): UserRepository = instance ?: synchronized(this) {
             instance ?: UserRepository(apiService, userPreference, diseaseDao)
         }.also { instance = it }

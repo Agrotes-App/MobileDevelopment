@@ -6,5 +6,5 @@ import com.example.agrotes_mobile.repository.UserRepository
 import kotlinx.coroutines.launch
 
 class ProfileViewModel(private val userRepository: UserRepository): ViewModel() {
-    fun logOut() = viewModelScope.launch{userRepository.logout()}
+    fun logOut() = viewModelScope.launch{ userRepository.logout() }
 }

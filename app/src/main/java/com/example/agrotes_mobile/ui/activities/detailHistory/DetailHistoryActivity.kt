@@ -29,6 +29,7 @@ class DetailHistoryActivity : AppCompatActivity() {
     }
 
     private fun setupView() {
+        @Suppress("DEPRECATION")
         val data = intent.getParcelableExtra<DiseaseEntity>("extra_history") as DiseaseEntity
         with(binding){
             tvDiseaseName.text = data.diseaseName

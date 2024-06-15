@@ -1,6 +1,5 @@
 package com.example.agrotes_mobile.ui.activities.detailDisease
 
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -8,7 +7,6 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
@@ -36,8 +34,7 @@ class DetailDiseaseActivity : AppCompatActivity() {
         }
 
         // Get id from intent
-        val id = intent.getStringExtra("extra_id")
-
+        val id = intent.getStringExtra(EXTRA_ID)
         getDiseaseById(id)
     }
 
@@ -59,13 +56,13 @@ class DetailDiseaseActivity : AppCompatActivity() {
                             .load(data?.photoUrl)
                             .into(ivPhoto)
                     }
-                    Log.d("TESS", data.toString())
+                    Log.d(TAG, data.toString())
                     showLoading(false)
                 }
 
                 is Result.Error -> {
                     showLoading(false)
-                    Log.d("ERROR", result.error)
+                    Log.d(TAG, result.error)
                     showToast(result.error)
                 }
             }
@@ -82,5 +79,6 @@ class DetailDiseaseActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_ID = "extra_id"
+        const val TAG = "DetailDiseaseActivity"
     }
 }

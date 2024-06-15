@@ -44,7 +44,6 @@ class HistoryAdapter: ListAdapter<DiseaseEntity, HistoryAdapter.ViewHolder>(DIFF
                             Pair(ivPhoto, "photo"),
                             Pair(tvDate, "date"),
                         )
-
                     itemView.context.startActivity(intent, optionsCompat.toBundle())
                 }
             }
@@ -56,7 +55,6 @@ class HistoryAdapter: ListAdapter<DiseaseEntity, HistoryAdapter.ViewHolder>(DIFF
             override fun areItemsTheSame(oldItem: DiseaseEntity, newItem: DiseaseEntity): Boolean {
                 return oldItem == newItem
             }
-
             override fun areContentsTheSame(oldItem: DiseaseEntity, newItem: DiseaseEntity): Boolean {
                 return oldItem == newItem
             }

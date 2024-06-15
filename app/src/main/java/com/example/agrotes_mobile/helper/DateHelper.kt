@@ -5,7 +5,6 @@ import java.util.Date
 import java.util.Locale
 
 object DateHelper {
-    // Get the current date and time in a specific format
     fun getCurrentDate(): String {
         val dateFormat = SimpleDateFormat("yyyy/MM/dd - HH:mm:ss", Locale.getDefault())
         val date = Date()

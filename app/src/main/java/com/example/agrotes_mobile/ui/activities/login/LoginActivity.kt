@@ -86,13 +86,12 @@ class LoginActivity : AppCompatActivity() {
                         )
 
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                        intent.flags =
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                         startActivity(intent)
                         finishAffinity()
 
-                        Log.d("Login", message)
-                        showToast("Login Success")
+                        Log.d(TAG, message)
+                        showToast(getString(R.string.login_success))
                         showLoading(false)
                     }
 
@@ -144,5 +143,9 @@ class LoginActivity : AppCompatActivity() {
 
     private fun showToast(message: String?) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    companion object{
+        const val TAG = "LoginActivity"
     }
 }
