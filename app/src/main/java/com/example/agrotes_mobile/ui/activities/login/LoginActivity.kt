@@ -18,7 +18,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.agrotes_mobile.R
-import com.example.agrotes_mobile.data.Result
+import com.example.agrotes_mobile.utils.Result
 import com.example.agrotes_mobile.data.pref.UserModel
 import com.example.agrotes_mobile.databinding.ActivityLoginBinding
 import com.example.agrotes_mobile.ui.activities.main.MainActivity

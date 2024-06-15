@@ -12,7 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agrotes_mobile.R
-import com.example.agrotes_mobile.data.Result
+import com.example.agrotes_mobile.utils.Result
 import com.example.agrotes_mobile.data.remote.responses.ListStoryItem
 import com.example.agrotes_mobile.databinding.FragmentHomeBinding
 import com.example.agrotes_mobile.dummy.Model
@@ -94,18 +94,6 @@ class HomeFragment : Fragment() {
         recyclerView = binding.rvCommonProblems
         recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)
-    }
-
-    // temporary function
-    private fun getData(): ArrayList<Model> {
-        val photo = resources.getStringArray(R.array.data_photo)
-        val data = ArrayList<Model>()
-
-        for (i in photo.indices) {
-            val model = Model(photo[i])
-            data.add(model)
-        }
-        return data
     }
 
     private fun showLoading(isLoading: Boolean) {

@@ -7,11 +7,14 @@ import com.example.agrotes_mobile.data.local.entity.DiseaseEntity
 import com.example.agrotes_mobile.data.pref.UserPreference
 import com.example.agrotes_mobile.data.remote.responses.RegisterResponse
 import com.example.agrotes_mobile.data.remote.retrofit.ApiService
-import com.example.agrotes_mobile.data.Result
+import com.example.agrotes_mobile.utils.Result
 import com.example.agrotes_mobile.data.pref.UserModel
 import com.example.agrotes_mobile.data.remote.responses.LoginResponse
 import com.example.agrotes_mobile.data.remote.responses.StoryResponse
+import com.example.agrotes_mobile.data.remote.retrofit.ApiConfig
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 class UserRepository(
     private var apiService: ApiService,
@@ -41,6 +44,10 @@ class UserRepository(
     fun getAllDisease():LiveData<Result<StoryResponse>> = liveData {
         emit(Result.Loading)
         try {
+            val token = runBlocking {
+                userPreference.getSession().first().token
+            }
+            apiService = ApiConfig.getApiService(token)
             val result = apiService.getStories()
             emit(Result.Success(result))
         } catch (e: Exception) {

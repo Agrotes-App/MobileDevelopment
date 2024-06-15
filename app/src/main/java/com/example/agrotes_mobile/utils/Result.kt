@@ -1,4 +1,4 @@
-package com.example.agrotes_mobile.data
+package com.example.agrotes_mobile.utils
 
 sealed class Result<out R> private constructor() {
     data class Success<out T>(val data: T) : Result<T>()

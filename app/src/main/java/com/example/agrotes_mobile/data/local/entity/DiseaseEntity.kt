@@ -6,6 +6,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(tableName = "disease_table")
 data class DiseaseEntity(
     @PrimaryKey(autoGenerate = true)
@@ -23,4 +24,4 @@ data class DiseaseEntity(
 
     @ColumnInfo(name = "date")
     var date: String? = null,
-)
+):Parcelable
