@@ -24,4 +24,4 @@ data class DiseaseEntity(
 
     @ColumnInfo(name = "date")
     var date: String? = null,
-):Parcelable
+) : Parcelable

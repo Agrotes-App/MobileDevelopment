@@ -15,13 +15,11 @@ import com.example.agrotes_mobile.R
 import com.example.agrotes_mobile.utils.Result
 import com.example.agrotes_mobile.data.remote.responses.ListStoryItem
 import com.example.agrotes_mobile.databinding.FragmentHomeBinding
-import com.example.agrotes_mobile.dummy.Model
 import com.example.agrotes_mobile.ui.activities.camera.CameraActivity
 import com.example.agrotes_mobile.utils.ViewModelFactory
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var recyclerView: RecyclerView
     private val viewModel: HomeViewModel by viewModels {
         ViewModelFactory.getInstance(requireContext())
     }
@@ -53,7 +51,6 @@ class HomeFragment : Fragment() {
         with(binding) {
             fabScan.setOnClickListener { toCameraActivity() }
         }
-
     }
 
     private fun setupCommonProblems() {
@@ -62,11 +59,13 @@ class HomeFragment : Fragment() {
                 is Result.Loading -> {
                     showLoading(true)
                 }
+
                 is Result.Success -> {
                     setupAdapter(result.data.listStory)
                     Log.d("ListStory", result.data.listStory.toString())
                     showLoading(false)
                 }
+
                 is Result.Error -> {
                     showLoading(false)
                     showToast(result.error)
@@ -90,10 +89,10 @@ class HomeFragment : Fragment() {
     private fun setupView() {
         val layoutManager = LinearLayoutManager(requireContext())
         layoutManager.orientation = LinearLayoutManager.HORIZONTAL
-        binding.rvCommonProblems.layoutManager = layoutManager
-        recyclerView = binding.rvCommonProblems
-        recyclerView.layoutManager = layoutManager
-        recyclerView.setHasFixedSize(true)
+        with(binding) {
+            rvCommonProblems.layoutManager = layoutManager
+            rvCommonProblems.setHasFixedSize(true)
+        }
     }
 
     private fun showLoading(isLoading: Boolean) {

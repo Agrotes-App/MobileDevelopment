@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.agrotes_mobile.data.remote.responses.ListStoryItem
 import com.example.agrotes_mobile.databinding.ItemDiseaseBinding
-import com.example.agrotes_mobile.dummy.Model
 import com.example.agrotes_mobile.ui.activities.detailDisease.DetailDiseaseActivity
 import com.example.agrotes_mobile.ui.activities.detailDisease.DetailDiseaseActivity.Companion.EXTRA_ID
 

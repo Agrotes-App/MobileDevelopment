@@ -24,12 +24,12 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
     }
 
     fun getSession(): Flow<UserModel> {
-        return dataStore.data.map { preference ->
+        return dataStore.data.map { preferences ->
             UserModel(
-                preference[TOKEN].toString(),
-                preference[NAME].toString(),
-                preference[USER_ID].toString(),
-                preference[IS_LOGIN] ?: false
+                preferences[TOKEN].toString(),
+                preferences[NAME].toString(),
+                preferences[USER_ID].toString(),
+                preferences[IS_LOGIN] ?: false
             )
         }
     }

@@ -37,8 +37,6 @@ class MainActivity : AppCompatActivity() {
         getSession()
         initFragment()
         setupBottomBar()
-        setupAction()
-
     }
 
     private fun getSession() {
@@ -83,14 +81,6 @@ class MainActivity : AppCompatActivity() {
                         .replace(R.id.nav_host_fragment, profileFragment)
                         .commit()
                 }
-            }
-        }
-    }
-
-    private fun setupAction() {
-        with(binding) {
-            btn.setOnClickListener {
-                startActivity(Intent(this@MainActivity, WelcomeActivity::class.java))
             }
         }
     }
