@@ -51,9 +51,7 @@ class WelcomeActivity : AppCompatActivity() {
     private fun setupAction() {
         with(binding) {
             // Handle back button
-            onBackPressedDispatcher.addCallback {
-                finishAffinity()
-            }
+            onBackPressedDispatcher.addCallback { finishAffinity() }
 
             btnLogin.setOnClickListener {
                 val optionsCompat: ActivityOptionsCompat =
@@ -66,6 +64,7 @@ class WelcomeActivity : AppCompatActivity() {
                 val intent = Intent(this@WelcomeActivity, LoginActivity::class.java)
                 startActivity(intent, optionsCompat.toBundle())
             }
+
             btnSignup.setOnClickListener {
                 val optionsCompat: ActivityOptionsCompat =
                     ActivityOptionsCompat.makeSceneTransitionAnimation(

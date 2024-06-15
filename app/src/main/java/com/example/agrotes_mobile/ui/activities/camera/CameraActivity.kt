@@ -38,9 +38,9 @@ class CameraActivity : AppCompatActivity() {
     private val cameraPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
             if (isGranted) {
-                showToast("Permission request granted")
+                showToast(getString(R.string.permission_granted))
             } else {
-                showToast("Permission request denied")
+                showToast(getString(R.string.permission_denied))
                 finish()
             }
         }
@@ -49,10 +49,10 @@ class CameraActivity : AppCompatActivity() {
     private val storagePermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
             if (isGranted) {
-                startGallery()
-                showToast("Permission request granted")
+                showToast(getString(R.string.permission_granted))
             } else {
-                showToast("Permission request denied")
+                showToast(getString(R.string.permission_denied))
+                finish()
             }
         }
 
@@ -98,18 +98,14 @@ class CameraActivity : AppCompatActivity() {
                 val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
                 val preview = Preview.Builder()
                     .build()
-                    .also {
-                        it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
-                    }
-
+                    .also { it.setSurfaceProvider(binding.viewFinder.surfaceProvider) }
                 imageCapture = ImageCapture.Builder().build()
 
                 try {
                     cameraProvider.unbindAll()
                     cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
                 } catch (exc: Exception) {
-                    Toast.makeText(this@CameraActivity, "Gagal memunculkan kamera.", Toast.LENGTH_SHORT)
-                        .show()
+                    showToast(getString(R.string.error_camera))
                     Log.e(TAG, "startCamera: ${exc.message}")
                 }
             }, ContextCompat.getMainExecutor(this))
@@ -121,22 +117,16 @@ class CameraActivity : AppCompatActivity() {
         val photoFile = createCustomTempFile(application)
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
 
-        imageCapture.takePicture(
-            outputOptions,
-            ContextCompat.getMainExecutor(this),
-            object : ImageCapture.OnImageSavedCallback {
+        imageCapture.takePicture(outputOptions, ContextCompat.getMainExecutor(this), object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val intent = Intent(this@CameraActivity, PredictionActivity::class.java)
-                    intent.putExtra(
-                        PredictionActivity.EXTRA_CAMERAX_IMAGE,
-                        output.savedUri.toString()
-                    )
+                    intent.putExtra(PredictionActivity.EXTRA_CAMERAX_IMAGE, output.savedUri.toString())
                     startActivity(intent)
                     finish()
                 }
 
                 override fun onError(exc: ImageCaptureException) {
-                    showToast("Gagal mengambil gambar")
+                    showToast(getString(R.string.error_camera))
                     Log.e(TAG, "onError: ${exc.message}")
                 }
             })
@@ -160,7 +150,7 @@ class CameraActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             } else {
-                Log.d("Photo Picker", "No media selected")
+                Log.d("Photo Picker", getString(R.string.error_photo_picker))
             }
         }
 

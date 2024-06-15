@@ -11,7 +11,7 @@ import com.example.agrotes_mobile.R
 import com.example.agrotes_mobile.databinding.ActivityMainBinding
 import com.example.agrotes_mobile.ui.activities.welcome.WelcomeActivity
 import com.example.agrotes_mobile.ui.fragment.history.HistoryFragment
-import com.example.agrotes_mobile.ui.fragment.main.MainFragment
+import com.example.agrotes_mobile.ui.fragment.home.HomeFragment
 import com.example.agrotes_mobile.ui.fragment.profile.ProfileFragment
 import com.example.agrotes_mobile.utils.ViewModelFactory
 
@@ -37,8 +37,6 @@ class MainActivity : AppCompatActivity() {
         getSession()
         initFragment()
         setupBottomBar()
-        setupAction()
-
     }
 
     private fun getSession() {
@@ -53,13 +51,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // run on start
     private fun initFragment() {
+        val homeFragment = HomeFragment()
         binding.bottomBar.setItemSelected(R.id.navigation_main)
-
-        val mainFragment = MainFragment()
         supportFragmentManager.beginTransaction()
-            .replace(R.id.nav_host_fragment, mainFragment)
+            .replace(R.id.nav_host_fragment, homeFragment)
             .commit()
     }
 
@@ -83,14 +79,6 @@ class MainActivity : AppCompatActivity() {
                         .replace(R.id.nav_host_fragment, profileFragment)
                         .commit()
                 }
-            }
-        }
-    }
-
-    private fun setupAction() {
-        with(binding) {
-            btn.setOnClickListener {
-                startActivity(Intent(this@MainActivity, WelcomeActivity::class.java))
             }
         }
     }

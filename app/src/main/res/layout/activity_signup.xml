@@ -89,7 +89,7 @@
             android:inputType="textEmailAddress"
             app:startIconDrawable="@drawable/ic_email">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <com.example.agrotes_mobile.customView.CustomEdtEmail
                 android:id="@+id/edt_email_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -105,7 +105,7 @@
             app:endIconMode="password_toggle"
             app:startIconDrawable="@drawable/ic_password">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <com.example.agrotes_mobile.customView.CustomEdtPassword
                 android:id="@+id/edt_password_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

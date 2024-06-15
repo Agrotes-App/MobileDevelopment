@@ -18,7 +18,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.agrotes_mobile.R
-import com.example.agrotes_mobile.data.Result
+import com.example.agrotes_mobile.utils.Result
 import com.example.agrotes_mobile.data.pref.UserModel
 import com.example.agrotes_mobile.databinding.ActivityLoginBinding
 import com.example.agrotes_mobile.ui.activities.main.MainActivity
@@ -86,13 +86,12 @@ class LoginActivity : AppCompatActivity() {
                         )
 
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                        intent.flags =
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                         startActivity(intent)
                         finishAffinity()
 
-                        Log.d("Login", message)
-                        showToast("Login Success")
+                        Log.d(TAG, message)
+                        showToast(getString(R.string.login_success))
                         showLoading(false)
                     }
 
@@ -144,5 +143,9 @@ class LoginActivity : AppCompatActivity() {
 
     private fun showToast(message: String?) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    companion object{
+        const val TAG = "LoginActivity"
     }
 }

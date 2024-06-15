@@ -16,10 +16,9 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import com.example.agrotes_mobile.R
-import com.example.agrotes_mobile.data.Result
+import com.example.agrotes_mobile.utils.Result
 import com.example.agrotes_mobile.databinding.ActivitySignupBinding
 import com.example.agrotes_mobile.ui.activities.welcome.WelcomeActivity
 import com.example.agrotes_mobile.ui.activities.login.LoginActivity
@@ -66,7 +65,10 @@ class SignupActivity : AppCompatActivity() {
             viewModel.signup(username, email, password).observe(this@SignupActivity) { result ->
                 if (result != null) {
                     when (result){
-                        is Result.Loading -> showLoading(true)
+                        is Result.Loading -> {
+                            showLoading(true)
+                        }
+
                         is Result.Success -> {
                             val message = result.data.message.toString()
 
@@ -75,13 +77,14 @@ class SignupActivity : AppCompatActivity() {
                             startActivity(intent)
                             finish()
 
-                            showToast("Login Berhasil")
-                            Log.d("SignupActivity", "Success: $message")
+                            showToast(getString(R.string.signup_success))
+                            Log.d(TAG, "Success: $message")
                             showLoading(false)
                         }
+
                         is Result.Error -> {
                             showToast(result.error)
-                            Log.e("SignupActivity", "Error: ${result.error}")
+                            Log.e(TAG, "Error: ${result.error}")
                             showLoading(false)
                         }
                     }
@@ -89,7 +92,6 @@ class SignupActivity : AppCompatActivity() {
             }
         }
     }
-
 
     private fun toSignupActivity() {
         val intent = Intent(this, LoginActivity::class.java)
@@ -127,5 +129,9 @@ class SignupActivity : AppCompatActivity() {
 
     private fun showToast(message: String?) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    companion object{
+        private const val TAG = "SignupActivity"
     }
 }

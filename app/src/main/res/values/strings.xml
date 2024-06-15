@@ -1,62 +1,17 @@
 <resources>
     <string name="app_name">Agrotes-mobile</string>
-    <string name="iv_app_icon">Aplication icon</string>
-
-    <!-- Dummy data start -->
+    <string name="iv_app_icon">Application icon</string>
     <string name="tes">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.</string>
-
-    <string-array name="plant_names">
-        <item>Padi</item>
-        <item>Jagung</item>
-        <item>Kedelai</item>
-        <item>Kacang Tanah</item>
-        <item>Tembakau</item>
-        <item>Kapas</item>
-        <item>Kelapa Sawit</item>
-        <item>Karet</item>
-        <item>Teh</item>
-        <item>Kopi</item>
-    </string-array>
-
-    <string-array name="disease_name">
-        <item>bacterial_leaf_blight</item>
-        <item>cercospora_leaf_spot</item>
-        <item>fusarium_wilt</item>
-        <item>phytium_root_rot</item>
-        <item>anthracnose</item>
-        <item>leaf_rust</item>
-        <item>seed_disease</item>
-        <item>mosaic_virus</item>
-        <item>mites</item>
-        <item>armyworms</item>
-    </string-array>
-
-    <string-array name="plant_name_descriptions">
-        <item>Bacterial Leaf Blight: A plant disease caused by bacteria that affects leaves, causing them to turn brown, spotty, and eventually wither.</item>
-        <item>Cercospora Leaf Spot: A fungal disease that causes circular or oval spots on leaves, leading to leaf defoliation.</item>
-        <item>Fusarium Wilt: A fungal disease that attacks the vascular system of plants, causing wilting, yellowing, and eventually death.</item>
-        <item>Phytium Root Rot: A fungal disease that damages plant roots, leading to stunted growth, wilting, and poor nutrient uptake.</item>
-        <item>Anthracnose: A fungal disease that causes sunken lesions on various plant parts, including fruits, leaves, and stems.</item>
-        <item>Leaf Rust: A fungal disease that forms orange or brown pustules on leaves, disrupting photosynthesis and weakening the plant.</item>
-        <item>Seed Disease: A group of diseases caused by fungi, bacteria, or viruses that infect seeds, preventing germination or causing weak seedlings.</item>
-        <item>Mosaic Virus: A group of viruses that cause distorted, mottled patterns on leaves, stunting plant growth and reducing yields.</item>
-        <item>Mites: Tiny arachnids that feed on plant sap, causing leaf discoloration, stippling, and webbing.</item>
-        <item>Armyworms: Caterpillars of moths that feed in large groups, defoliating plants and causing significant damage.</item>
-    </string-array>
-
-    <string-array name="data_photo">
-        <item>https://upload.wikimedia.org/wikipedia/commons/8/87/Ahmad_Dahlan.jpg</item>
-        <item>https://upload.wikimedia.org/wikipedia/commons/3/3f/Ahmad_Yani.jpg</item>
-        <item>https://upload.wikimedia.org/wikipedia/commons/e/ed/Bung_Tomo.jpg</item>
-        <item>https://upload.wikimedia.org/wikipedia/commons/b/be/Col_Gatot_Subroto%2C_Kenang-Kenangan_Pada_Panglima_Besar_Letnan_Djenderal_Soedirman%2C_p27.jpg</item>
-        <item>https://upload.wikimedia.org/wikipedia/commons/3/3a/Ki_Hadjar_Dewantara_Mimbar_Umum_18_October_1949_p2.jpg</item>
-        <item>https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/VP_Hatta.jpg/330px-VP_Hatta.jpg</item>
-        <item>https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Sudirman.jpg/486px-Sudirman.jpg</item>
-        <item>https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Presiden_Sukarno.jpg/330px-Presiden_Sukarno.jpg</item>
-        <item>https://upload.wikimedia.org/wikipedia/commons/a/a6/Supomo.jpg</item>
-        <item>https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/TanMalaka_DariPendjara_ed3.jpg/330px-TanMalaka_DariPendjara_ed3.jpg</item>
-    </string-array>
-
-    <!-- Dummy data end -->
+    <string name="error_tflite">Image classifier failed to initialize. See error logs for details</string>
+    <string name="permission_granted">Permission request granted</string>
+    <string name="permission_denied">Permission request denied</string>
+    <string name="error_camera">Camera not responding</string>
+    <string name="error_photo_picker">No media selected</string>
+    <string name="login_success">Login Success</string>
+    <string name="error_model_result">No Result</string>
+    <string name="data_saved">Data Saved</string>
+    <string name="signup_success">Register Success</string>
+    <string name="error_invalid_email">Invalid Email</string>
+    <string name="error_password_invalid">Password must be at least 8 characters</string>
 
 </resources>
