@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
@@ -60,8 +61,10 @@ class PredictionActivity : AppCompatActivity() {
     }
 
     private fun startAnalyze(uri: Uri) {
+        val model: String = intent.getStringExtra(EXTRA_MODEL).toString()
         imageClassifierHelper = ImageClassifierHelper(
             context = this,
+            modelName = model,
             classifierListener = object : ImageClassifierHelper.ClassifierListener {
                 override fun onError(error: String) {
                     showToast(error)
@@ -71,7 +74,6 @@ class PredictionActivity : AppCompatActivity() {
                     results?.let {
                         if (it.isNotEmpty() && it[0].categories.isNotEmpty()) {
                             println(it)
-                            Log.d("OUTPUT MODEL", it.toString())
                             val categories = it[0].categories[0]
                             val label = categories.label
                             val displayName = categories.displayName
@@ -84,10 +86,11 @@ class PredictionActivity : AppCompatActivity() {
                                 imageUri = currentImageUri.toString()
                             )
 
+                            Log.d("DEBUG", model)
                             with(binding) {
                                 tvDiseaseName.text = label
                                 tvPlantName.text = displayName
-                                tvDate.text= time
+                                tvDate.text = time
                                 tvAlternativeDiseaseName.text = score.toString()
                             }
 
@@ -119,6 +122,7 @@ class PredictionActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_CAMERAX_IMAGE = "extra_camerax_image"
+        const val EXTRA_MODEL = "extra_model"
         const val TAG = "PredictionActivity"
     }
 }

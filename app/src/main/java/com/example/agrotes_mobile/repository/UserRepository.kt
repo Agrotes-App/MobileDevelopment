@@ -12,10 +12,13 @@ import com.example.agrotes_mobile.data.remote.test.DetailStoryResponse
 import com.example.agrotes_mobile.data.remote.test.LoginResponse
 import com.example.agrotes_mobile.data.remote.test.StoryResponse
 import com.example.agrotes_mobile.data.remote.retrofit.ApiConfig
+import com.example.agrotes_mobile.data.remote.test.ErrorResponse
 import com.example.agrotes_mobile.data.remote.test.RegisterResponse
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import retrofit2.HttpException
 
 class UserRepository(private var apiService: ApiService, private var userPreference: UserPreference, private val diseaseDao: DiseaseDao) {
 
@@ -24,6 +27,11 @@ class UserRepository(private var apiService: ApiService, private var userPrefere
             try {
                 val result = apiService.register(name, email, password)
                 emit(Result.Success(result))
+            } catch (e: HttpException) {
+                val jsonInString = e.response()?.errorBody()?.string()
+                val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
+                e.printStackTrace()
+                emit(Result.Error(errorBody.message.toString()))
             } catch (e: Exception) {
                 emit(Result.Error(e.message.toString()))
             }
