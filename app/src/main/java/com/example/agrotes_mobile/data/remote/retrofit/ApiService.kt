@@ -1,5 +1,6 @@
 package com.example.agrotes_mobile.data.remote.retrofit
 
+import com.example.agrotes_mobile.data.remote.responses.weather.WeatherResponse
 import com.example.agrotes_mobile.data.remote.test.DetailStoryResponse
 import com.example.agrotes_mobile.data.remote.test.LoginResponse
 import com.example.agrotes_mobile.data.remote.test.RegisterResponse
@@ -9,6 +10,7 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
     @FormUrlEncoded
@@ -34,5 +36,10 @@ interface ApiService {
         @Path("id") id: String?,
     ): DetailStoryResponse
 
-
+    @GET("data/2.5/weather")
+    suspend fun getWeather(
+        @Query("lat") lat: Double,
+        @Query("lon") lon: Double,
+        @Query("appid") apiKey: String
+    ): WeatherResponse
 }

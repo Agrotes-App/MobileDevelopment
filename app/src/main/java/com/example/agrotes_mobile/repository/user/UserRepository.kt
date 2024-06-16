@@ -1,4 +1,4 @@
-package com.example.agrotes_mobile.repository
+package com.example.agrotes_mobile.repository.user
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
@@ -8,10 +8,12 @@ import com.example.agrotes_mobile.data.pref.UserPreference
 import com.example.agrotes_mobile.data.remote.retrofit.ApiService
 import com.example.agrotes_mobile.utils.Result
 import com.example.agrotes_mobile.data.pref.UserModel
+import com.example.agrotes_mobile.data.remote.responses.weather.WeatherResponse
 import com.example.agrotes_mobile.data.remote.test.DetailStoryResponse
 import com.example.agrotes_mobile.data.remote.test.LoginResponse
 import com.example.agrotes_mobile.data.remote.test.StoryResponse
 import com.example.agrotes_mobile.data.remote.retrofit.ApiConfig
+import com.example.agrotes_mobile.data.remote.retrofit.WeatherConfig
 import com.example.agrotes_mobile.data.remote.test.ErrorResponse
 import com.example.agrotes_mobile.data.remote.test.RegisterResponse
 import com.google.gson.Gson
@@ -76,6 +78,17 @@ class UserRepository(private var apiService: ApiService, private var userPrefere
 
     fun getSession(): Flow<UserModel> = userPreference.getSession()
     fun getAllHistory(): LiveData<List<DiseaseEntity>> = diseaseDao.getAllHistory()
+
+    fun getWeather(lat: Double, lon: Double, apiKey: String): LiveData<Result<WeatherResponse>> = liveData {
+        emit(Result.Loading)
+        try {
+            apiService = WeatherConfig.getApiService()
+            val result = apiService.getWeather(lat, lon, apiKey)
+            emit(Result.Success(result))
+        } catch (e: Exception) {
+            emit(Result.Error(e.message.toString()))
+        }
+    }
 
     companion object {
         @Volatile

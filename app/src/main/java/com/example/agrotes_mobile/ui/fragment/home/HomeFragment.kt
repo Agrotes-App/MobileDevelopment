@@ -10,12 +10,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.agrotes_mobile.utils.Result
 import com.example.agrotes_mobile.data.remote.test.ListStoryItem
 import com.example.agrotes_mobile.databinding.FragmentHomeBinding
 import com.example.agrotes_mobile.ui.adapter.DiseaseAdapter
 import com.example.agrotes_mobile.ui.activities.camera.CameraActivity
-import com.example.agrotes_mobile.ui.adapter.ArticleAdapter
 import com.example.agrotes_mobile.utils.ViewModelFactory
 
 class HomeFragment : Fragment() {
@@ -29,7 +29,11 @@ class HomeFragment : Fragment() {
         arguments?.let {}
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -40,6 +44,8 @@ class HomeFragment : Fragment() {
         setupAction()
         setupCommonProblems()
         setupAdapterView()
+
+        getWeather()
     }
 
     private fun setupAction() {
@@ -58,7 +64,6 @@ class HomeFragment : Fragment() {
 
                 is Result.Success -> {
                     setupDiseaseAdapter(result.data.listStory)
-                    setupArticlesAdapter(result.data.listStory) // sementara
                     Log.d(TAG, result.data.listStory.toString())
                     showLoading(false)
                 }
@@ -83,24 +88,65 @@ class HomeFragment : Fragment() {
         binding.rvCommonProblems.adapter = diseaseAdapter
     }
 
-    private fun setupArticlesAdapter(listStoryItem: List<ListStoryItem?>?) {
-        val articleAdapter = ArticleAdapter()
-        articleAdapter.submitList(listStoryItem)
-        binding.rvArticles.adapter = articleAdapter
-    }
-
     private fun setupAdapterView() {
         val horizontalLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val verticalLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         with(binding) {
             rvCommonProblems.layoutManager = horizontalLayoutManager
             rvCommonProblems.setHasFixedSize(true)
-
-            rvArticles.layoutManager = verticalLayoutManager
-            rvArticles.setHasFixedSize(true)
         }
 
+    }
+
+    private fun getWeather() {
+        viewModel.getWeather(
+            lat = -6.2146,
+            lon = 106.8451,
+            apiKey = "221e9601799e48d9a11c27d89b9da61a"
+        ).observe(requireActivity()) { result ->
+            when (result) {
+                is Result.Loading -> {
+                    showLoading(true)
+                }
+
+                is Result.Success -> {
+                    val responses = result.data
+                    val city = responses.name
+                    val weather = responses.weather?.get(0)?.main
+                    val temperature = responses.main?.temp?.toInt()
+                    val maxTemperature = responses.main?.tempMax?.toInt()
+                    val minTemperature = responses.main?.tempMin?.toInt()
+                    val icon = responses.weather?.get(0)?.icon
+                    val iconUrl = "https://openweathermap.org/img/wn/$icon@2x.png"
+
+                    val celsius = temperature?.minus(273)
+                    val max = maxTemperature?.minus(273)
+                    val min = minTemperature?.minus(273)
+
+                    val temp = "$celsius°"
+                    val maxTemp = "Max Temp: $max °C"
+                    val minTemp = "Min Temp: $min °C"
+
+                    with(binding){
+                        tvTemp.text = temp
+                        tvMaxTemp.text = maxTemp
+                        tvMinTemp.text = minTemp
+                        tvWeatherStatus.text = weather
+                        tvWeatherCity.text = city
+                        Glide.with(requireContext())
+                            .load(iconUrl)
+                            .into(ivWeatherIcon)
+                    }
+
+                    Log.d("CUACA", responses.toString())
+                    showLoading(false)
+                }
+
+                is Result.Error -> {
+
+                }
+            }
+        }
     }
 
     private fun showLoading(isLoading: Boolean) {
@@ -111,7 +157,7 @@ class HomeFragment : Fragment() {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
-    companion object{
+    companion object {
         const val TAG = "HomeFragment"
     }
 }

@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.agrotes_mobile.di.Injection
-import com.example.agrotes_mobile.repository.UserRepository
+import com.example.agrotes_mobile.repository.user.UserRepository
 import com.example.agrotes_mobile.ui.activities.detailDisease.DetailDiseaseViewModel
 import com.example.agrotes_mobile.ui.activities.login.LoginViewModel
 import com.example.agrotes_mobile.ui.activities.main.MainViewModel

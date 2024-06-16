@@ -2,7 +2,7 @@ package com.example.agrotes_mobile.data.remote.responses.weather
 
 import com.google.gson.annotations.SerializedName
 
-data class WeatherResponses(
+data class WeatherResponse(
 
 	@field:SerializedName("visibility")
 	val visibility: Int? = null,
@@ -44,31 +44,25 @@ data class WeatherResponses(
 	val wind: Wind? = null
 )
 
-data class Main(
+data class Coord(
 
-	@field:SerializedName("temp")
-	val temp: Any? = null,
+	@field:SerializedName("lon")
+	val lon: Any? = null,
 
-	@field:SerializedName("temp_min")
-	val tempMin: Any? = null,
+	@field:SerializedName("lat")
+	val lat: Any? = null
+)
 
-	@field:SerializedName("grnd_level")
-	val grndLevel: Int? = null,
+data class Wind(
 
-	@field:SerializedName("humidity")
-	val humidity: Int? = null,
+	@field:SerializedName("deg")
+	val deg: Int? = null,
 
-	@field:SerializedName("pressure")
-	val pressure: Int? = null,
+	@field:SerializedName("speed")
+	val speed: Any? = null,
 
-	@field:SerializedName("sea_level")
-	val seaLevel: Int? = null,
-
-	@field:SerializedName("feels_like")
-	val feelsLike: Any? = null,
-
-	@field:SerializedName("temp_max")
-	val tempMax: Any? = null
+	@field:SerializedName("gust")
+	val gust: Any? = null
 )
 
 data class Sys(
@@ -80,16 +74,40 @@ data class Sys(
 	val sunrise: Int? = null,
 
 	@field:SerializedName("sunset")
-	val sunset: Int? = null
+	val sunset: Int? = null,
+
+	@field:SerializedName("id")
+	val id: Int? = null,
+
+	@field:SerializedName("type")
+	val type: Int? = null
 )
 
-data class Coord(
+data class Main(
 
-	@field:SerializedName("lon")
-	val lon: Any? = null,
+	@field:SerializedName("temp")
+	val temp: Double? = null,
 
-	@field:SerializedName("lat")
-	val lat: Any? = null
+	@field:SerializedName("temp_min")
+	val tempMin: Double? = null,
+
+	@field:SerializedName("humidity")
+	val humidity: Int? = null,
+
+	@field:SerializedName("pressure")
+	val pressure: Int? = null,
+
+	@field:SerializedName("feels_like")
+	val feelsLike: Any? = null,
+
+	@field:SerializedName("temp_max")
+	val tempMax: Double? = null
+)
+
+data class Clouds(
+
+	@field:SerializedName("all")
+	val all: Int? = null
 )
 
 data class WeatherItem(
@@ -105,22 +123,4 @@ data class WeatherItem(
 
 	@field:SerializedName("id")
 	val id: Int? = null
-)
-
-data class Clouds(
-
-	@field:SerializedName("all")
-	val all: Int? = null
-)
-
-data class Wind(
-
-	@field:SerializedName("deg")
-	val deg: Int? = null,
-
-	@field:SerializedName("speed")
-	val speed: Any? = null,
-
-	@field:SerializedName("gust")
-	val gust: Any? = null
 )
