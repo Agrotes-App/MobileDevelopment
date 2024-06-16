@@ -1,9 +1,9 @@
 package com.example.agrotes_mobile.data.remote.retrofit
 
-import com.example.agrotes_mobile.data.remote.responses.DetailStoryResponse
-import com.example.agrotes_mobile.data.remote.responses.LoginResponse
-import com.example.agrotes_mobile.data.remote.responses.RegisterResponse
-import com.example.agrotes_mobile.data.remote.responses.StoryResponse
+import com.example.agrotes_mobile.data.remote.test.DetailStoryResponse
+import com.example.agrotes_mobile.data.remote.test.LoginResponse
+import com.example.agrotes_mobile.data.remote.test.RegisterResponse
+import com.example.agrotes_mobile.data.remote.test.StoryResponse
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -12,9 +12,9 @@ import retrofit2.http.Path
 
 interface ApiService {
     @FormUrlEncoded
-    @POST("register")
+    @POST("auth/register")
     suspend fun register(
-        @Field("name") name: String,
+        @Field("username") username: String,
         @Field("email") email: String,
         @Field("password") password: String,
     ): RegisterResponse

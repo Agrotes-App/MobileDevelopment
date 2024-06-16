@@ -24,7 +24,7 @@ class PredictionActivity : AppCompatActivity() {
     private var currentImageUri: Uri? = null
     private var predictionResult: DiseaseEntity? = null
 
-    private val viewModel: PredictionViewModel by viewModels<PredictionViewModel>{
+    private val viewModel: PredictionViewModel by viewModels<PredictionViewModel> {
         ViewModelFactory.getInstance(this)
     }
 
@@ -64,25 +64,33 @@ class PredictionActivity : AppCompatActivity() {
             context = this,
             classifierListener = object : ImageClassifierHelper.ClassifierListener {
                 override fun onError(error: String) {
-                   showToast(error)
+                    showToast(error)
                 }
 
                 override fun onResults(results: List<Classifications>?, inferenceTime: Long) {
                     results?.let {
                         if (it.isNotEmpty() && it[0].categories.isNotEmpty()) {
                             println(it)
+                            Log.d("OUTPUT MODEL", it.toString())
                             val categories = it[0].categories[0]
-                            val label = categories.displayName
-                            // val score = categories.score
-                            // val time = inferenceTime.toString()
+                            val label = categories.label
+                            val displayName = categories.displayName
+                            val score = categories.score
+                            val time = inferenceTime.toString()
                             predictionResult = DiseaseEntity(
-                                plantName = "DUMMY", // masih menunggu model dari machine learning
+                                plantName = displayName, // masih menunggu model dari machine learning
                                 diseaseName = label,
                                 date = DateHelper.getCurrentDate(),
                                 imageUri = currentImageUri.toString()
                             )
 
-                            binding.tvDiseaseName.text = label
+                            with(binding) {
+                                tvDiseaseName.text = label
+                                tvPlantName.text = displayName
+                                tvDate.text= time
+                                tvAlternativeDiseaseName.text = score.toString()
+                            }
+
                         } else {
                             showToast(getString(R.string.error_model_result))
                         }
@@ -97,7 +105,9 @@ class PredictionActivity : AppCompatActivity() {
     private fun setupAction() {
         binding.btnSave.setOnClickListener {
             predictionResult.let {
-                if (it != null) { viewModel.insert(it) }
+                if (it != null) {
+                    viewModel.insert(it)
+                }
                 showToast(getString(R.string.data_saved))
             }
         }

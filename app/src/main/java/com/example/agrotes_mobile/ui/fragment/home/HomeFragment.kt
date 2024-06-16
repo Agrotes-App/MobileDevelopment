@@ -11,9 +11,11 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agrotes_mobile.utils.Result
-import com.example.agrotes_mobile.data.remote.responses.ListStoryItem
+import com.example.agrotes_mobile.data.remote.test.ListStoryItem
 import com.example.agrotes_mobile.databinding.FragmentHomeBinding
+import com.example.agrotes_mobile.ui.adapter.DiseaseAdapter
 import com.example.agrotes_mobile.ui.activities.camera.CameraActivity
+import com.example.agrotes_mobile.ui.adapter.ArticleAdapter
 import com.example.agrotes_mobile.utils.ViewModelFactory
 
 class HomeFragment : Fragment() {
@@ -37,7 +39,7 @@ class HomeFragment : Fragment() {
 
         setupAction()
         setupCommonProblems()
-        setupView()
+        setupAdapterView()
     }
 
     private fun setupAction() {
@@ -55,7 +57,8 @@ class HomeFragment : Fragment() {
                 }
 
                 is Result.Success -> {
-                    setupAdapter(result.data.listStory)
+                    setupDiseaseAdapter(result.data.listStory)
+                    setupArticlesAdapter(result.data.listStory) // sementara
                     Log.d(TAG, result.data.listStory.toString())
                     showLoading(false)
                 }
@@ -74,19 +77,30 @@ class HomeFragment : Fragment() {
         startActivity(intent)
     }
 
-    private fun setupAdapter(listStoryItem: List<ListStoryItem?>?) {
-        val adapter = HomeAdapter()
-        adapter.submitList(listStoryItem)
-        binding.rvCommonProblems.adapter = adapter
+    private fun setupDiseaseAdapter(listStoryItem: List<ListStoryItem?>?) {
+        val diseaseAdapter = DiseaseAdapter()
+        diseaseAdapter.submitList(listStoryItem)
+        binding.rvCommonProblems.adapter = diseaseAdapter
     }
 
-    private fun setupView() {
-        val layoutManager = LinearLayoutManager(requireContext())
-        layoutManager.orientation = LinearLayoutManager.HORIZONTAL
+    private fun setupArticlesAdapter(listStoryItem: List<ListStoryItem?>?) {
+        val articleAdapter = ArticleAdapter()
+        articleAdapter.submitList(listStoryItem)
+        binding.rvArticles.adapter = articleAdapter
+    }
+
+    private fun setupAdapterView() {
+        val horizontalLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val verticalLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
         with(binding) {
-            rvCommonProblems.layoutManager = layoutManager
+            rvCommonProblems.layoutManager = horizontalLayoutManager
             rvCommonProblems.setHasFixedSize(true)
+
+            rvArticles.layoutManager = verticalLayoutManager
+            rvArticles.setHasFixedSize(true)
         }
+
     }
 
     private fun showLoading(isLoading: Boolean) {
