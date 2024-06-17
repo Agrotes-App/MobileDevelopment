@@ -68,7 +68,7 @@
                     android:text="Also Known As :"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="@id/tv_disease_name"
-                    app:layout_constraintTop_toBottomOf="@id/tv_date" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_plant_name" />
 
                 <TextView
                     android:id="@+id/tv_alternative_disease_name"
@@ -81,18 +81,6 @@
                     app:layout_constraintBottom_toBottomOf="@id/also_known_as"
                     app:layout_constraintStart_toEndOf="@id/also_known_as"
                     app:layout_constraintTop_toTopOf="@id/also_known_as" />
-
-                <TextView
-                    android:id="@+id/tv_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:transitionName="date"
-                    android:layout_marginEnd="8dp"
-                    android:text="May 12, 2024"
-                    android:textColor="@color/black_50"
-                    app:layout_constraintStart_toStartOf="@id/tv_disease_name"
-                    app:layout_constraintTop_toBottomOf="@id/tv_plant_name" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -137,7 +125,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/overview"
+                    android:id="@+id/tv_overview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="6dp"
@@ -157,7 +145,7 @@
                     android:layout_marginHorizontal="8dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/overview"/>
+                    app:layout_constraintTop_toBottomOf="@id/tv_overview"/>
 
                 <ImageView
                     android:id="@+id/iv_causes_icon"
@@ -184,7 +172,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/causes"
+                    android:id="@+id/tv_causes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="6dp"
@@ -205,7 +193,7 @@
                     android:layout_marginHorizontal="8dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/causes"/>
+                    app:layout_constraintTop_toBottomOf="@id/tv_causes"/>
 
                 <ImageView
                     android:id="@+id/iv_prevention_icon"
@@ -232,7 +220,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/prevention"
+                    android:id="@+id/tv_prevention"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="6dp"

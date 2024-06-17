@@ -46,14 +46,17 @@ class DetailDiseaseActivity : AppCompatActivity() {
                 }
 
                 is Result.Success -> {
-                    val data = result.data.story
+                    val data = result.data
                     with(binding) {
-                        tvDiseaseName.text = data?.name
-                        tvPlantName.text = data?.id
-                        tvDate.text= data?.createdAt
+                        tvDiseaseName.text = data.diseaseName
+                        tvPlantName.text = data.plantNames
+                        tvAlternativeDiseaseName.text = data.diseaseName
+                        tvOverview.text = data.description
+                        tvCauses.text = data.causes
+                        tvPrevention.text = data.prevention
                         Glide
                             .with(this@DetailDiseaseActivity)
-                            .load(data?.photoUrl)
+                            .load(data.photo)
                             .into(ivPhoto)
                     }
                     Log.d(TAG, data.toString())

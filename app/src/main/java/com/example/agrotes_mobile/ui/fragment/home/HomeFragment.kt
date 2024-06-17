@@ -94,7 +94,6 @@ class HomeFragment : Fragment() {
 
                 is Result.Success -> {
                     setupDiseaseAdapter(result.data)
-                    Log.d("SUCCESS", result.data.toString())
                     showLoading(false)
                 }
 

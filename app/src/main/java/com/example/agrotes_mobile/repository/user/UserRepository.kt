@@ -80,7 +80,6 @@ class UserRepository(
     fun getAllDiseases(): LiveData<Result<List<DiseaseResponses>>> = liveData {
         emit(Result.Loading)
         try {
-
             val token = runBlocking { userPreference.getSession().first().token }
             apiService = ApiConfig.getApiService(token)
             val result = apiService.getAllDiseases()
@@ -90,11 +89,11 @@ class UserRepository(
         }
     }
 
-    fun getDiseaseById(id: String?): LiveData<Result<DetailStoryResponse>> = liveData {
+    fun getDiseaseById(id: String?): LiveData<Result<DiseaseResponses>> = liveData {
         try {
             val token = runBlocking { userPreference.getSession().first().token }
             apiService = ApiConfig.getApiService(token)
-            val result = apiService.getStoriesById(id)
+            val result = apiService.getDiseaseById(id)
             emit(Result.Success(result))
         } catch (e: Exception) {
             emit(Result.Error(e.message.toString()))
