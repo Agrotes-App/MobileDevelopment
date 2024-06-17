@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -16,9 +18,17 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        // Get the API keys from local.properties
+        val properties = Properties()
+        properties.load(project.rootProject.file("local.properties").inputStream())
+
+        // Set API keys in BuildConfig
+        val apiKeyName = properties.getProperty("API_KEY") ?: ""
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "BASE_URL", "\"https://story-api.dicoding.dev/v1/\"")
         buildConfigField("String", "WEATHER_BASE_URL", "\"https://api.openweathermap.org/\"")
+        buildConfigField("String", "API_KEY", "\"$apiKeyName\"")
     }
 
     buildTypes {
@@ -98,6 +108,10 @@ dependencies {
     //coroutines
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
+
+    // location
+    implementation(libs.play.services.maps)
+    implementation(libs.play.services.location)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

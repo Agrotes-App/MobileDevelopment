@@ -1,6 +1,9 @@
 package com.example.agrotes_mobile.ui.fragment.home
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,6 +11,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -17,23 +22,34 @@ import com.example.agrotes_mobile.databinding.FragmentHomeBinding
 import com.example.agrotes_mobile.ui.adapter.DiseaseAdapter
 import com.example.agrotes_mobile.ui.activities.camera.CameraActivity
 import com.example.agrotes_mobile.utils.ViewModelFactory
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var lat: Double? = null
+    private var lon: Double? = null
     private val viewModel: HomeViewModel by viewModels {
         ViewModelFactory.getInstance(requireContext())
     }
+
+    // Location Permission
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            when {
+                permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> { getLocation()}
+                permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> { getLocation()}
+                else -> { Log.d("Permission", "No Permission")}
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {}
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -41,17 +57,31 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) && checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)){
+            with(binding) {
+                cardLocationPermission.alpha = 0f
+                tvLocationPermission.alpha = 0f
+                btnLocationPermission.alpha = 0f
+            }
+            getLocation()
+        }else{
+            with(binding) {
+                cardLocationPermission.alpha = 1f
+                tvLocationPermission.alpha = 1f
+                btnLocationPermission.alpha = 1f
+            }
+        }
+
         setupAction()
         setupCommonProblems()
         setupAdapterView()
-
-        getWeather()
     }
 
     private fun setupAction() {
         with(binding) {
             fabScan.setOnClickListener { toCameraActivity() }
             btnScan.setOnClickListener { toCameraActivity() }
+            btnLocationPermission.setOnClickListener{ getLocation() }
         }
     }
 
@@ -98,12 +128,37 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun getWeather() {
-        viewModel.getWeather(
-            lat = -6.2146,
-            lon = 106.8451,
-            apiKey = "221e9601799e48d9a11c27d89b9da61a"
-        ).observe(requireActivity()) { result ->
+    private fun checkPermission(permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(requireContext(), permission) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun getLocation(){
+        // Get current location
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+
+        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) && checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    with(binding) {
+                        cardLocationPermission.alpha = 0f
+                        tvLocationPermission.alpha = 0f
+                        btnLocationPermission.alpha = 0f
+                    }
+
+                    lat = location.latitude
+                    lon = location.longitude
+                    getWeather(lat, lon)
+                } else {
+                    Toast.makeText(requireContext(), "Location is not found. Try Again", Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else {
+            requestPermissionLauncher.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
+        }
+    }
+
+    private fun getWeather(lat: Double?, lon: Double?) {
+        viewModel.getWeather(lat, lon).observe(requireActivity()) { result ->
             when (result) {
                 is Result.Loading -> {
                     showLoading(true)
@@ -137,11 +192,8 @@ class HomeFragment : Fragment() {
                             .load(iconUrl)
                             .into(ivWeatherIcon)
                     }
-
-                    Log.d("CUACA", responses.toString())
                     showLoading(false)
                 }
-
                 is Result.Error -> {
 
                 }

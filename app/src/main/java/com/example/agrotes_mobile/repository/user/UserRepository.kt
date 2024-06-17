@@ -79,11 +79,11 @@ class UserRepository(private var apiService: ApiService, private var userPrefere
     fun getSession(): Flow<UserModel> = userPreference.getSession()
     fun getAllHistory(): LiveData<List<DiseaseEntity>> = diseaseDao.getAllHistory()
 
-    fun getWeather(lat: Double, lon: Double, apiKey: String): LiveData<Result<WeatherResponse>> = liveData {
+    fun getWeather(lat: Double?, lon: Double?): LiveData<Result<WeatherResponse>> = liveData {
         emit(Result.Loading)
         try {
             apiService = WeatherConfig.getApiService()
-            val result = apiService.getWeather(lat, lon, apiKey)
+            val result = apiService.getWeather(lat, lon)
             emit(Result.Success(result))
         } catch (e: Exception) {
             emit(Result.Error(e.message.toString()))

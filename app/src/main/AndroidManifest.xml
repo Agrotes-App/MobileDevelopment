@@ -2,10 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <!-- internet permission -->
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- camera permission -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Location permission -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <!-- camera permission -->
     <uses-feature android:name="android.hardware.camera" />
-
-    <uses-permission android:name="android.permission.CAMERA" /> <!-- storage permission -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- storage permission -->
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />

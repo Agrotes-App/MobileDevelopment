@@ -8,5 +8,5 @@ import com.example.agrotes_mobile.repository.user.UserRepository
 
 class HomeViewModel(private val userRepository: UserRepository) : ViewModel() {
     fun getAllDisease(): LiveData<Result<StoryResponse>> = userRepository.getAllDisease()
-    fun getWeather(lat: Double, lon: Double, apiKey: String) = userRepository.getWeather(lat, lon, apiKey)
+    fun getWeather(lat: Double?, lon: Double?) = userRepository.getWeather(lat, lon)
 }
