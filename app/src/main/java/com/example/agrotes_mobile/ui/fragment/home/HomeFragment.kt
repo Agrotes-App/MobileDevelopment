@@ -16,8 +16,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.agrotes_mobile.data.remote.responses.disease.DiseaseResponses
 import com.example.agrotes_mobile.utils.Result
-import com.example.agrotes_mobile.data.remote.responses.test.ListStoryItem
 import com.example.agrotes_mobile.databinding.FragmentHomeBinding
 import com.example.agrotes_mobile.ui.adapter.DiseaseAdapter
 import com.example.agrotes_mobile.ui.activities.camera.CameraActivity
@@ -93,13 +93,14 @@ class HomeFragment : Fragment() {
                 }
 
                 is Result.Success -> {
-                    setupDiseaseAdapter(result.data.listStory)
-                    Log.d(TAG, result.data.listStory.toString())
+                    setupDiseaseAdapter(result.data)
+                    Log.d("SUCCESS", result.data.toString())
                     showLoading(false)
                 }
 
                 is Result.Error -> {
                     showLoading(false)
+                    Log.d("ERROR", result.error)
                     showToast(result.error)
                 }
             }
@@ -112,9 +113,9 @@ class HomeFragment : Fragment() {
         startActivity(intent)
     }
 
-    private fun setupDiseaseAdapter(listStoryItem: List<ListStoryItem?>?) {
+    private fun setupDiseaseAdapter(listDiseaseItem: List<DiseaseResponses>) {
         val diseaseAdapter = DiseaseAdapter()
-        diseaseAdapter.submitList(listStoryItem)
+        diseaseAdapter.submitList(listDiseaseItem)
         binding.rvCommonProblems.adapter = diseaseAdapter
     }
 

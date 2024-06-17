@@ -15,9 +15,9 @@ import com.example.agrotes_mobile.data.remote.responses.auth.RegisterResponses
 import com.example.agrotes_mobile.data.remote.responses.auth.UpdateResponses
 import com.example.agrotes_mobile.data.remote.responses.auth.UserProfileResponses
 import com.example.agrotes_mobile.data.remote.responses.auth.UserUpdate
+import com.example.agrotes_mobile.data.remote.responses.disease.DiseaseResponses
 import com.example.agrotes_mobile.data.remote.responses.weather.WeatherResponse
 import com.example.agrotes_mobile.data.remote.responses.test.DetailStoryResponse
-import com.example.agrotes_mobile.data.remote.responses.test.StoryResponse
 import com.example.agrotes_mobile.data.remote.retrofit.ApiConfig
 import com.example.agrotes_mobile.data.remote.retrofit.WeatherConfig
 import kotlinx.coroutines.flow.Flow
@@ -77,12 +77,13 @@ class UserRepository(
         }
     }
 
-    fun getAllDisease(): LiveData<Result<StoryResponse>> = liveData {
+    fun getAllDiseases(): LiveData<Result<List<DiseaseResponses>>> = liveData {
         emit(Result.Loading)
         try {
+
             val token = runBlocking { userPreference.getSession().first().token }
             apiService = ApiConfig.getApiService(token)
-            val result = apiService.getStories()
+            val result = apiService.getAllDiseases()
             emit(Result.Success(result))
         } catch (e: Exception) {
             emit(Result.Error(e.message.toString()))

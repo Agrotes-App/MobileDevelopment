@@ -10,12 +10,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.agrotes_mobile.data.remote.responses.test.ListStoryItem
+import com.example.agrotes_mobile.data.remote.responses.disease.DiseaseResponses
 import com.example.agrotes_mobile.databinding.ItemDiseaseBinding
 import com.example.agrotes_mobile.ui.activities.detailDisease.DetailDiseaseActivity
 import com.example.agrotes_mobile.ui.activities.detailDisease.DetailDiseaseActivity.Companion.EXTRA_ID
 
-class DiseaseAdapter : ListAdapter<ListStoryItem, DiseaseAdapter.ViewHolder>(DIFF_CALLBACK) {
+class DiseaseAdapter : ListAdapter<DiseaseResponses, DiseaseAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemDiseaseBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -28,13 +28,13 @@ class DiseaseAdapter : ListAdapter<ListStoryItem, DiseaseAdapter.ViewHolder>(DIF
     }
 
     class ViewHolder(val binding: ItemDiseaseBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(result: ListStoryItem) {
+        fun bind(result: DiseaseResponses) {
             with(binding) {
-                tvDiseaseName.text = result.name
-                tvPlantName.text = result.id
+                tvDiseaseName.text = result.diseaseName
+                tvPlantName.text = result.plantNames
                 Glide
                     .with(itemView.context)
-                    .load(result.photoUrl)
+                    .load("https://th.bing.com/th/id/R.c226737a808cdbf3dafd25da793209ca?rik=284TtDMHKDbLPw&riu=http%3a%2f%2fwww.bio.brandeis.edu%2ffieldbio%2fmedicinal_plants%2fimages%2fpitcher_plant_close_full.jpg&ehk=6l3O%2f8BHLhC2udyF9tHFgvgZ7k9Y%2fTeLm6aF1sk8JSk%3d&risl=&pid=ImgRaw&r=0")
                     .into(ivPhoto)
 
                 itemView.setOnClickListener {
@@ -55,11 +55,11 @@ class DiseaseAdapter : ListAdapter<ListStoryItem, DiseaseAdapter.ViewHolder>(DIF
     }
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListStoryItem>() {
-            override fun areItemsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<DiseaseResponses>() {
+            override fun areItemsTheSame(oldItem: DiseaseResponses, newItem: DiseaseResponses): Boolean {
                 return oldItem == newItem
             }
-            override fun areContentsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
+            override fun areContentsTheSame(oldItem: DiseaseResponses, newItem: DiseaseResponses): Boolean {
                 return oldItem == newItem
             }
         }
