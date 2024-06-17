@@ -4,5 +4,5 @@ import androidx.lifecycle.ViewModel
 import com.example.agrotes_mobile.repository.user.UserRepository
 
 class SignupViewModel(private val userRepository: UserRepository) : ViewModel() {
-    fun signup(name: String, email: String, password: String) = userRepository.signup(name, email, password)
+    fun signup(username: String, email: String, password: String) = userRepository.signup(username, email, password)
 }

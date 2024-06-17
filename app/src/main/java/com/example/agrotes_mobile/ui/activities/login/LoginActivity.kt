@@ -71,10 +71,12 @@ class LoginActivity : AppCompatActivity() {
                     }
 
                     is Result.Success -> {
-                        val name = result.data.loginResult?.name.toString()
-                        val userId = result.data.loginResult?.userId.toString()
-                        val token = result.data.loginResult?.token.toString()
+                        val name = result.data.user?.username.toString()
+                        val userId = result.data.user?.id.toString()
+                        val token = result.data.token.toString()
                         val message = result.data.message.toString()
+
+                        Log.d("RESPONSE", token)
 
                         viewModel.saveSession(
                             UserModel(

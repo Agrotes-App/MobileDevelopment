@@ -26,7 +26,8 @@ android {
         val apiKeyName = properties.getProperty("API_KEY") ?: ""
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "BASE_URL", "\"https://story-api.dicoding.dev/v1/\"")
+//        buildConfigField("String", "BASE_URL", "\"https://story-api.dicoding.dev/v1/\"")
+        buildConfigField("String", "BASE_URL", "\"https://agrotes-1.et.r.appspot.com/\"")
         buildConfigField("String", "WEATHER_BASE_URL", "\"https://api.openweathermap.org/\"")
         buildConfigField("String", "API_KEY", "\"$apiKeyName\"")
     }

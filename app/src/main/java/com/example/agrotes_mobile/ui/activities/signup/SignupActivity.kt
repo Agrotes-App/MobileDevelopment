@@ -63,6 +63,9 @@ class SignupActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             viewModel.signup(username, email, password).observe(this@SignupActivity) { result ->
+
+                Log.d("DEBUG", "Result: $username, $email, $password")
+
                 if (result != null) {
                     when (result){
                         is Result.Loading -> {
@@ -70,7 +73,10 @@ class SignupActivity : AppCompatActivity() {
                         }
 
                         is Result.Success -> {
-                            val message = result.data.message.toString()
+                            val message = result.data.toString()
+
+                            Log.d("DEBUGG",message)
+
 
                             val intent = Intent(this@SignupActivity, LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK

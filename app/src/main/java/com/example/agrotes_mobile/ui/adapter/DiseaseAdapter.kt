@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.agrotes_mobile.data.remote.test.ListStoryItem
+import com.example.agrotes_mobile.data.remote.responses.test.ListStoryItem
 import com.example.agrotes_mobile.databinding.ItemDiseaseBinding
 import com.example.agrotes_mobile.ui.activities.detailDisease.DetailDiseaseActivity
 import com.example.agrotes_mobile.ui.activities.detailDisease.DetailDiseaseActivity.Companion.EXTRA_ID

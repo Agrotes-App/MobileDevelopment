@@ -1,4 +1,4 @@
-package com.example.agrotes_mobile.data.remote.test
+package com.example.agrotes_mobile.data.remote.responses.test
 
 import com.google.gson.annotations.SerializedName
 

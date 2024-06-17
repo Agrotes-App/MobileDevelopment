@@ -17,7 +17,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.agrotes_mobile.utils.Result
-import com.example.agrotes_mobile.data.remote.test.ListStoryItem
+import com.example.agrotes_mobile.data.remote.responses.test.ListStoryItem
 import com.example.agrotes_mobile.databinding.FragmentHomeBinding
 import com.example.agrotes_mobile.ui.adapter.DiseaseAdapter
 import com.example.agrotes_mobile.ui.activities.camera.CameraActivity

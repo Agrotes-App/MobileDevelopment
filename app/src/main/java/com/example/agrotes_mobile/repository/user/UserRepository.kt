@@ -8,41 +8,57 @@ import com.example.agrotes_mobile.data.pref.UserPreference
 import com.example.agrotes_mobile.data.remote.retrofit.ApiService
 import com.example.agrotes_mobile.utils.Result
 import com.example.agrotes_mobile.data.pref.UserModel
+import com.example.agrotes_mobile.data.remote.responses.auth.LoginErrorResponse
+import com.example.agrotes_mobile.data.remote.responses.auth.LoginRequest
+import com.example.agrotes_mobile.data.remote.responses.auth.LoginResponses
+import com.example.agrotes_mobile.data.remote.responses.auth.RegisterRequest
+import com.example.agrotes_mobile.data.remote.responses.auth.RegisterResponses
+import com.example.agrotes_mobile.data.remote.responses.auth.UpdateResponses
+import com.example.agrotes_mobile.data.remote.responses.auth.UserUpdate
 import com.example.agrotes_mobile.data.remote.responses.weather.WeatherResponse
-import com.example.agrotes_mobile.data.remote.test.DetailStoryResponse
-import com.example.agrotes_mobile.data.remote.test.LoginResponse
-import com.example.agrotes_mobile.data.remote.test.StoryResponse
+import com.example.agrotes_mobile.data.remote.responses.test.DetailStoryResponse
+import com.example.agrotes_mobile.data.remote.responses.test.StoryResponse
 import com.example.agrotes_mobile.data.remote.retrofit.ApiConfig
 import com.example.agrotes_mobile.data.remote.retrofit.WeatherConfig
-import com.example.agrotes_mobile.data.remote.test.ErrorResponse
-import com.example.agrotes_mobile.data.remote.test.RegisterResponse
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import retrofit2.HttpException
 
-class UserRepository(private var apiService: ApiService, private var userPreference: UserPreference, private val diseaseDao: DiseaseDao) {
+class UserRepository(
+    private var apiService: ApiService,
+    private var userPreference: UserPreference,
+    private val diseaseDao: DiseaseDao,
+) {
 
-    fun signup(name: String, email: String, password: String): LiveData<Result<RegisterResponse>> = liveData {
-            emit(Result.Loading)
-            try {
-                val result = apiService.register(name, email, password)
-                emit(Result.Success(result))
-            } catch (e: HttpException) {
-                val jsonInString = e.response()?.errorBody()?.string()
-                val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
-                e.printStackTrace()
-                emit(Result.Error(errorBody.message.toString()))
-            } catch (e: Exception) {
-                emit(Result.Error(e.message.toString()))
-            }
-        }
-
-    fun login(email: String, password: String): LiveData<Result<LoginResponse>> = liveData {
+    fun signup(username: String, email: String, password: String): LiveData<Result<RegisterResponses>> = liveData {
         emit(Result.Loading)
+        val request = RegisterRequest(username, email, password)
         try {
-            val result = apiService.login(email, password)
+            val result = apiService.register(request)
+            emit(Result.Success(result))
+        } catch (e: Exception) {
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
+    fun login(email: String, password: String): LiveData<Result<LoginResponses>> = liveData {
+        emit(Result.Loading)
+        val request = LoginRequest(email, password)
+        try {
+            val result = apiService.login(request)
+            emit(Result.Success(result))
+        }  catch (e: Exception) {
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
+    fun updateProfile(username: String, email: String, password: String): LiveData<Result<UpdateResponses>> = liveData {
+        emit(Result.Loading)
+        val request = UserUpdate(username, email, password)
+        try {
+            val result = apiService.update(request)
             emit(Result.Success(result))
         } catch (e: Exception) {
             emit(Result.Error(e.message.toString()))

@@ -1,16 +1,16 @@
-package com.example.agrotes_mobile.data.remote.test
+package com.example.agrotes_mobile.data.remote.responses.test
 
 import com.google.gson.annotations.SerializedName
 
 data class LoginResponse(
 
-    @field:SerializedName("loginResult")
+	@field:SerializedName("loginResult")
 	val loginResult: LoginResult? = null,
 
-    @field:SerializedName("error")
+	@field:SerializedName("error")
 	val error: Boolean? = null,
 
-    @field:SerializedName("message")
+	@field:SerializedName("message")
 	val message: String? = null
 )
 
@@ -24,4 +24,12 @@ data class LoginResult(
 
 	@field:SerializedName("token")
 	val token: String? = null
+)
+
+data class ErrorResponses(
+	@field:SerializedName("error")
+	val error: Boolean? = null,
+
+	@field:SerializedName("message")
+	val message: String? = null
 )
