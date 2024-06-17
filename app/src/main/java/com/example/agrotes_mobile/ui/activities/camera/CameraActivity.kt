@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -33,6 +34,7 @@ class CameraActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCameraBinding
     private var imageCapture: ImageCapture? = null
     private var cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+    var model: String? = null
 
     // request camera permission
     private val cameraPermissionLauncher =
@@ -71,6 +73,31 @@ class CameraActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder
+            .setTitle("I am the title")
+            .setItems(arrayOf("Item One", "Item Two", "Item Three")) { dialog, which ->
+                when (which) {
+                    0 -> {
+                        model = "agripredict.tflite"
+                        Toast.makeText(this, model, Toast.LENGTH_SHORT).show()
+                    }
+                    1 -> {
+                       model = "chilli_v3.tflite"
+                        Toast.makeText(this, model, Toast.LENGTH_SHORT).show()
+
+                    }
+                    2 -> {
+                        model = "model_tomato_with_metadata.tflite"
+                        Toast.makeText(this, model, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+
 
         setupAction()
     }
@@ -121,6 +148,7 @@ class CameraActivity : AppCompatActivity() {
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val intent = Intent(this@CameraActivity, PredictionActivity::class.java)
                     intent.putExtra(PredictionActivity.EXTRA_CAMERAX_IMAGE, output.savedUri.toString())
+                    intent.putExtra(PredictionActivity.EXTRA_MODEL, model)
                     startActivity(intent)
                     finish()
                 }
@@ -147,6 +175,7 @@ class CameraActivity : AppCompatActivity() {
                 contentResolver.takePersistableUriPermission(uri, flag)
                 val intent = Intent(this@CameraActivity, PredictionActivity::class.java)
                 intent.putExtra(PredictionActivity.EXTRA_CAMERAX_IMAGE, uri.toString())
+                intent.putExtra(PredictionActivity.EXTRA_MODEL, model)
                 startActivity(intent)
                 finish()
             } else {

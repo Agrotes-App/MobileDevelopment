@@ -21,7 +21,7 @@ import org.tensorflow.lite.task.vision.classifier.ImageClassifier
 class ImageClassifierHelper(
     private var threshold: Float = 0.1f,
     private var maxResults: Int = 1,
-    private val modelName: String = "agripredict.tflite",
+    private val modelName: String,
     val context: Context,
     private val classifierListener: ClassifierListener?
 ) {
@@ -57,7 +57,7 @@ class ImageClassifierHelper(
         // Create preprocessor for the image.
         val imageProcessor = ImageProcessor.Builder()
             .add(ResizeOp(224, 224, ResizeOp.ResizeMethod.NEAREST_NEIGHBOR))
-            .add(CastOp(DataType.UINT8))
+            .add(CastOp(DataType.FLOAT32))
             .build()
 
         val contentResolver = context.contentResolver

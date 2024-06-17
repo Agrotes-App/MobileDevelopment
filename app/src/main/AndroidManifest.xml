@@ -2,10 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <!-- internet permission -->
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- camera permission -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Location permission -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <!-- camera permission -->
     <uses-feature android:name="android.hardware.camera" />
-
-    <uses-permission android:name="android.permission.CAMERA" /> <!-- storage permission -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- storage permission -->
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
@@ -52,24 +56,9 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Trigger Google Play services to install the backported photo picker module. -->
-        <!-- suppress AndroidDomInspection -->
-        <service
-            android:name="com.google.android.gms.metadata.ModuleDependencies"
-            android:enabled="false"
-            android:exported="false"
-            tools:ignore="MissingClass">
-            <intent-filter>
-                <action android:name="com.google.android.gms.metadata.MODULE_DEPENDENCIES" />
-            </intent-filter>
-
-            <meta-data
-                android:name="photopicker_activity:0:required"
-                android:value="" />
-        </service>
+        </activity>
     </application>
 
 </manifest>
