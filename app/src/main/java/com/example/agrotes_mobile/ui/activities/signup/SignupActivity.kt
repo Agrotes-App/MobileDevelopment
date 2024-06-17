@@ -73,10 +73,9 @@ class SignupActivity : AppCompatActivity() {
                         }
 
                         is Result.Success -> {
-                            val message = result.data.toString()
+                            val message = result.data.createdUser?.id.toString()
 
                             Log.d("DEBUGG",message)
-
 
                             val intent = Intent(this@SignupActivity, LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK

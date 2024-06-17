@@ -19,8 +19,7 @@ class ProfileFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-        }
+        arguments?.let {}
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -36,8 +35,8 @@ class ProfileFragment : Fragment() {
 
     private fun setupAction() {
         with(binding){
-            btnLogout.setOnClickListener { logout() }
             btnEditProfile.setOnClickListener { toEditProfileActivity() }
+            btnLogout.setOnClickListener { logout() }
         }
     }
 

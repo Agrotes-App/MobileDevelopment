@@ -7,6 +7,7 @@ import com.example.agrotes_mobile.data.remote.responses.auth.LoginResponses
 import com.example.agrotes_mobile.data.remote.responses.auth.RegisterRequest
 import com.example.agrotes_mobile.data.remote.responses.auth.RegisterResponses
 import com.example.agrotes_mobile.data.remote.responses.auth.UpdateResponses
+import com.example.agrotes_mobile.data.remote.responses.auth.UserProfileResponses
 import com.example.agrotes_mobile.data.remote.responses.auth.UserUpdate
 import com.example.agrotes_mobile.data.remote.responses.weather.WeatherResponse
 import com.example.agrotes_mobile.data.remote.responses.test.DetailStoryResponse
@@ -32,6 +33,11 @@ interface ApiService {
 
     @PUT("auth/update")
     suspend fun update(@Body userUpdate: UserUpdate): UpdateResponses
+
+    @GET("auth/{id}")
+    suspend fun getUserById(
+        @Path("id") id: String?,
+    ): UserProfileResponses
 
     @GET("stories")
     suspend fun getStories(): StoryResponse

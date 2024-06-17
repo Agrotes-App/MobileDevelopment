@@ -8,23 +8,21 @@ import com.example.agrotes_mobile.data.pref.UserPreference
 import com.example.agrotes_mobile.data.remote.retrofit.ApiService
 import com.example.agrotes_mobile.utils.Result
 import com.example.agrotes_mobile.data.pref.UserModel
-import com.example.agrotes_mobile.data.remote.responses.auth.LoginErrorResponse
 import com.example.agrotes_mobile.data.remote.responses.auth.LoginRequest
 import com.example.agrotes_mobile.data.remote.responses.auth.LoginResponses
 import com.example.agrotes_mobile.data.remote.responses.auth.RegisterRequest
 import com.example.agrotes_mobile.data.remote.responses.auth.RegisterResponses
 import com.example.agrotes_mobile.data.remote.responses.auth.UpdateResponses
+import com.example.agrotes_mobile.data.remote.responses.auth.UserProfileResponses
 import com.example.agrotes_mobile.data.remote.responses.auth.UserUpdate
 import com.example.agrotes_mobile.data.remote.responses.weather.WeatherResponse
 import com.example.agrotes_mobile.data.remote.responses.test.DetailStoryResponse
 import com.example.agrotes_mobile.data.remote.responses.test.StoryResponse
 import com.example.agrotes_mobile.data.remote.retrofit.ApiConfig
 import com.example.agrotes_mobile.data.remote.retrofit.WeatherConfig
-import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-import retrofit2.HttpException
 
 class UserRepository(
     private var apiService: ApiService,
@@ -56,9 +54,23 @@ class UserRepository(
 
     fun updateProfile(username: String, email: String, password: String): LiveData<Result<UpdateResponses>> = liveData {
         emit(Result.Loading)
-        val request = UserUpdate(username, email, password)
+        val request = UserUpdate( username = username, email = email, password = password)
         try {
+            val token = runBlocking { userPreference.getSession().first().token }
+            apiService = ApiConfig.getApiService(token)
             val result = apiService.update(request)
+            emit(Result.Success(result))
+        } catch (e: Exception) {
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
+    fun getUserById(id: String?): LiveData<Result<UserProfileResponses>> = liveData {
+        emit(Result.Loading)
+        try {
+            val token = runBlocking { userPreference.getSession().first().token }
+            apiService = ApiConfig.getApiService(token)
+            val result = apiService.getUserById(id)
             emit(Result.Success(result))
         } catch (e: Exception) {
             emit(Result.Error(e.message.toString()))
@@ -109,11 +121,7 @@ class UserRepository(
     companion object {
         @Volatile
         private var instance: UserRepository? = null
-        fun getInstance(
-            apiService: ApiService,
-            userPreference: UserPreference,
-            diseaseDao: DiseaseDao,
-        ): UserRepository = instance ?: synchronized(this) {
+        fun getInstance(apiService: ApiService, userPreference: UserPreference, diseaseDao: DiseaseDao): UserRepository = instance ?: synchronized(this) {
             instance ?: UserRepository(apiService, userPreference, diseaseDao)
         }.also { instance = it }
     }

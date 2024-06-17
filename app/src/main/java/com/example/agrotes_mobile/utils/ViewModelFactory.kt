@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.agrotes_mobile.di.Injection
 import com.example.agrotes_mobile.repository.user.UserRepository
 import com.example.agrotes_mobile.ui.activities.detailDisease.DetailDiseaseViewModel
+import com.example.agrotes_mobile.ui.activities.editProfile.EditProfileViewModel
 import com.example.agrotes_mobile.ui.activities.login.LoginViewModel
 import com.example.agrotes_mobile.ui.activities.main.MainViewModel
 import com.example.agrotes_mobile.ui.activities.prediction.PredictionViewModel
@@ -40,6 +41,9 @@ class ViewModelFactory private constructor(private val userRepository: UserRepos
             }
             modelClass.isAssignableFrom(PredictionViewModel::class.java) -> {
                 PredictionViewModel(userRepository) as T
+            }
+            modelClass.isAssignableFrom(EditProfileViewModel::class.java) -> {
+                EditProfileViewModel(userRepository) as T
             }
             modelClass.isAssignableFrom(HistoryViewModel::class.java) -> {
                 HistoryViewModel(userRepository) as T

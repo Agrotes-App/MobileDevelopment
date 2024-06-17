@@ -2,27 +2,19 @@ package com.example.agrotes_mobile.data.remote.responses.auth
 
 import com.google.gson.annotations.SerializedName
 
-data class LoginResponses(
+data class UserProfileResponses(
 
-	@field:SerializedName("message")
-	val message: String? = null,
-
-	@field:SerializedName("user")
-	val user: User? = null,
-
-	@field:SerializedName("token")
-	val token: String? = null
-)
-
-data class LoginRequest(
-	@field:SerializedName("email")
-	val email: String? = null,
+	@field:SerializedName("createdAt")
+	val createdAt: String? = null,
 
 	@field:SerializedName("password")
 	val password: String? = null,
-)
 
-data class User(
+	@field:SerializedName("profile_Photo")
+	val profilePhoto: Any? = null,
+
+	@field:SerializedName("updateAt")
+	val updateAt: String? = null,
 
 	@field:SerializedName("id")
 	val id: String? = null,
