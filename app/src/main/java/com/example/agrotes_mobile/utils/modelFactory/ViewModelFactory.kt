@@ -9,6 +9,7 @@ import com.example.agrotes_mobile.ui.activities.detailDisease.DetailDiseaseViewM
 import com.example.agrotes_mobile.ui.activities.editProfile.EditProfileViewModel
 import com.example.agrotes_mobile.ui.activities.login.LoginViewModel
 import com.example.agrotes_mobile.ui.activities.main.MainViewModel
+import com.example.agrotes_mobile.ui.activities.password.PasswordViewModel
 import com.example.agrotes_mobile.ui.activities.prediction.PredictionViewModel
 import com.example.agrotes_mobile.ui.activities.signup.SignupViewModel
 import com.example.agrotes_mobile.ui.fragment.history.HistoryViewModel
@@ -44,6 +45,9 @@ class ViewModelFactory private constructor(private val userRepository: UserRepos
             }
             modelClass.isAssignableFrom(EditProfileViewModel::class.java) -> {
                 EditProfileViewModel(userRepository) as T
+            }
+            modelClass.isAssignableFrom(PasswordViewModel::class.java) -> {
+                PasswordViewModel(userRepository) as T
             }
             modelClass.isAssignableFrom(HistoryViewModel::class.java) -> {
                 HistoryViewModel(userRepository) as T

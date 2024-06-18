@@ -75,6 +75,24 @@ class UserRepository(private var apiService: ApiService, private var userPrefere
         }
     }
 
+    fun updatePassword(password: String): LiveData<Result<UpdateResponses>> = liveData {
+        emit(Result.Loading)
+        val request = UserUpdate(password = password)
+        try {
+            val token = runBlocking { userPreference.getSession().first().token }
+            apiService = ApiConfig.getApiService(token)
+            val result = apiService.update(request)
+            emit(Result.Success(result))
+        }catch (e: HttpException) {
+            val jsonInString = e.response()?.errorBody()?.string()
+            val errorBody = Gson().fromJson(jsonInString, UpdateResponses::class.java)
+            e.printStackTrace()
+            emit(Result.Error(errorBody.error.toString()))
+        } catch (e: Exception) {
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
     fun getUserById(id: String?): LiveData<Result<UserProfileResponses>> = liveData {
         emit(Result.Loading)
         try {
