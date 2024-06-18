@@ -37,9 +37,7 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
-        binding.btnUpdate.setOnClickListener {
-            updateUserProfile()
-        }
+        binding.btnUpdate.setOnClickListener { updateUserProfile() }
     }
 
     private fun getSession() {
@@ -59,8 +57,7 @@ class EditProfileActivity : AppCompatActivity() {
                     showLoading(false)
                     binding.edtUsername.setText(result.data.username)
                     binding.edtEmail.setText(result.data.email)
-                    binding.edtPassword.setText(result.data.password)
-                }
+                    }
                 is Result.Error -> {
                     showLoading(false)
                     showToast(result.error)
@@ -72,11 +69,8 @@ class EditProfileActivity : AppCompatActivity() {
     private fun updateUserProfile() {
         val username = binding.edtUsername.text.toString().trim()
         val email = binding.edtEmail.text.toString().trim()
-        val password = binding.edtPassword.text.toString().trim()
 
-        Log.d("DEBUG", "$username $email $password")
-
-        viewModel.updateProfile(username, email, password).observe(this) { result ->
+        viewModel.updateProfile(username, email).observe(this) { result ->
             when (result) {
                 is Result.Loading -> {
                     showLoading(true)

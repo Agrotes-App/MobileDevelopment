@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_primary"
     tools:context=".ui.fragment.home.HomeFragment">
 
     <ScrollView
@@ -263,7 +264,7 @@
         android:backgroundTint="@color/primary"
         android:contentDescription="Scan Floating Button"
         android:src="@drawable/ic_scan"
-        app:shapeAppearanceOverlay="@style/fab_rounded"
+        app:shapeAppearanceOverlay="@style/circle"
         app:tint="@color/white" />
 
 </FrameLayout>

@@ -89,7 +89,6 @@ class SignupActivity : AppCompatActivity() {
 
                         is Result.Error -> {
                             showToast(result.error)
-                            Log.e(TAG, "Error: ${result.error}")
                             showLoading(false)
                         }
                     }

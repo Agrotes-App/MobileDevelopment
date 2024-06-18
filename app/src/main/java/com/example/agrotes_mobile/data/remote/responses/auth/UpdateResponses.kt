@@ -7,6 +7,9 @@ data class UpdateResponses(
 	@field:SerializedName("userUpdate")
 	val userUpdate: UserUpdate? = null,
 
+	@field:SerializedName("error")
+	val error: String? = null,
+
 	@field:SerializedName("message")
 	val message: String? = null
 )

@@ -34,7 +34,7 @@ class DiseaseAdapter : ListAdapter<DiseaseResponses, DiseaseAdapter.ViewHolder>(
                 tvPlantName.text = result.plantNames
                 Glide
                     .with(itemView.context)
-                    .load("https://th.bing.com/th/id/R.c226737a808cdbf3dafd25da793209ca?rik=284TtDMHKDbLPw&riu=http%3a%2f%2fwww.bio.brandeis.edu%2ffieldbio%2fmedicinal_plants%2fimages%2fpitcher_plant_close_full.jpg&ehk=6l3O%2f8BHLhC2udyF9tHFgvgZ7k9Y%2fTeLm6aF1sk8JSk%3d&risl=&pid=ImgRaw&r=0")
+                    .load(result.photo)
                     .into(ivPhoto)
 
                 itemView.setOnClickListener {

@@ -1,11 +1,15 @@
 package com.example.agrotes_mobile.data.remote.responses.auth
 
 import com.google.gson.annotations.SerializedName
+import java.lang.Error
 
 data class LoginResponses(
 
 	@field:SerializedName("message")
 	val message: String? = null,
+
+	@field:SerializedName("error")
+	val error: String? = null,
 
 	@field:SerializedName("user")
 	val user: User? = null,

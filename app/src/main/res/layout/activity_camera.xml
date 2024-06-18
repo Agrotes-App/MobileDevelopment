@@ -26,7 +26,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:shapeAppearanceOverlay="@style/fab_rounded"
+        app:shapeAppearanceOverlay="@style/circle"
         app:tint="@color/white" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -39,7 +39,7 @@
         app:layout_constraintEnd_toStartOf="@id/fab_capture"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/fab_capture"
-        app:shapeAppearanceOverlay="@style/fab_rounded"
+        app:shapeAppearanceOverlay="@style/circle"
         app:tint="@color/primary" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -52,7 +52,44 @@
         app:layout_constraintBottom_toBottomOf="@id/fab_capture"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/fab_capture"
-        app:shapeAppearanceOverlay="@style/fab_rounded"
+        app:shapeAppearanceOverlay="@style/circle"
         app:tint="@color/primary" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_scanner_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0"
+        android:backgroundTint="@color/black_50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_scanner_overlay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="SCANNING..."
+                android:textColor="@color/white"/>
+
+            <ProgressBar
+                android:id="@+id/scanner_progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"/>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

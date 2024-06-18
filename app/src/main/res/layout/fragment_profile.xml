@@ -99,20 +99,31 @@
 
         <Button
             style="@style/Widget.Material3.Button.TextButton.Icon"
+            android:id="@+id/btn_change_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
             android:gravity="center_vertical"
-            android:text="Change Language"
+            android:text="Change Password"
             android:textColor="@color/black"
             android:textStyle="bold"
             app:iconPadding="10dp"
-            app:icon="@drawable/ic_language"
+            app:icon="@drawable/ic_password"
             app:iconGravity="textStart"
             app:iconTint="@color/primary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btn_edit_profile" />
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progressIndicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

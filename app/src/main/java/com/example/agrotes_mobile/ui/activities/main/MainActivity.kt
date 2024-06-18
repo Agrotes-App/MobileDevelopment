@@ -1,7 +1,9 @@
 package com.example.agrotes_mobile.ui.activities.main
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -37,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         getSession()
         initFragment()
         setupBottomBar()
+        setupStatusBar()
     }
 
     private fun getSession() {
@@ -82,4 +85,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun setupStatusBar() {
+        val window = this.window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        @Suppress("DEPRECATION")
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        @Suppress("DEPRECATION")
+        window.statusBarColor = this.resources.getColor(R.color.background_primary)
+    }
+
 }

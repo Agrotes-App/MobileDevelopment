@@ -1,14 +1,18 @@
 package com.example.agrotes_mobile.ui.activities.prediction
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.net.toUri
+import androidx.core.util.Pair
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.agrotes_mobile.R
@@ -16,9 +20,12 @@ import com.example.agrotes_mobile.data.local.entity.DiseaseEntity
 import com.example.agrotes_mobile.databinding.ActivityPredictionBinding
 import com.example.agrotes_mobile.helper.DateHelper
 import com.example.agrotes_mobile.helper.ImageClassifierHelper
+import com.example.agrotes_mobile.ui.activities.main.MainActivity
+import com.example.agrotes_mobile.ui.activities.welcome.WelcomeActivity
 import com.example.agrotes_mobile.utils.Result
 import com.example.agrotes_mobile.utils.modelFactory.ViewModelFactory
 import org.tensorflow.lite.task.vision.classifier.Classifications
+import java.net.URLEncoder
 
 class PredictionActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPredictionBinding
@@ -63,9 +70,10 @@ class PredictionActivity : AppCompatActivity() {
 
     private fun startAnalyze(uri: Uri) {
         val model: String = intent.getStringExtra(EXTRA_MODEL).toString()
+        Log.d("MODELL", "DEBUG: $model")
         imageClassifierHelper = ImageClassifierHelper(
             context = this,
-            modelName = model,
+            modelName = "$model.tflite",
             classifierListener = object : ImageClassifierHelper.ClassifierListener {
                 override fun onError(error: String) {
                     showToast(error)
@@ -75,8 +83,9 @@ class PredictionActivity : AppCompatActivity() {
                     results?.let {
                         if (it.isNotEmpty() && it[0].categories.isNotEmpty()) {
                             val categories = it[0].categories[0]
-                            val label = categories.label
-                            setupPrediction("Blight")
+                            val label = categories.label.replace("%20"," ")
+                            setupPrediction(label)
+                            binding.tvDiseaseName.text = label
                         } else {
                             showToast(getString(R.string.error_model_result))
                         }
@@ -89,6 +98,7 @@ class PredictionActivity : AppCompatActivity() {
 
     private fun setupPrediction(label: String) {
         viewModel.getDiseaseByName(label).observe(this@PredictionActivity) { result ->
+                    Log.d("TES", label)
             when (result) {
                 is Result.Loading -> {
                     showLoading(true)
@@ -130,14 +140,26 @@ class PredictionActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
-        binding.btnSave.setOnClickListener {
-            predictionResult.let {
-                if (it != null) {
-                    viewModel.insert(it)
-                }
-                showToast(getString(R.string.data_saved))
-            }
+        binding.btnSave.setOnClickListener { saveData() }
+        onBackPressedDispatcher.addCallback { goBack() }
+    }
+
+    private fun saveData() {
+        predictionResult.let {
+            if (it != null) { viewModel.insert(it) }
+            Log.d("SAVE DATA", "saveData: $it")
+            showToast(getString(R.string.data_saved))
+
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finishAffinity()
         }
+    }
+
+    private fun goBack() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finishAffinity()
     }
 
     private fun showLoading(isLoading: Boolean) {

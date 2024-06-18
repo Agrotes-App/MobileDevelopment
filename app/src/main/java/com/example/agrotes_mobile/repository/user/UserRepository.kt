@@ -7,7 +7,7 @@ import com.example.agrotes_mobile.data.local.entity.DiseaseEntity
 import com.example.agrotes_mobile.data.pref.UserPreference
 import com.example.agrotes_mobile.data.remote.retrofit.app.ApiService
 import com.example.agrotes_mobile.utils.Result
-import com.example.agrotes_mobile.data.pref.UserModel
+import com.example.agrotes_mobile.data.local.entity.UserEntity
 import com.example.agrotes_mobile.data.remote.responses.auth.LoginRequest
 import com.example.agrotes_mobile.data.remote.responses.auth.LoginResponses
 import com.example.agrotes_mobile.data.remote.responses.auth.RegisterRequest
@@ -16,9 +16,8 @@ import com.example.agrotes_mobile.data.remote.responses.auth.UpdateResponses
 import com.example.agrotes_mobile.data.remote.responses.auth.UserProfileResponses
 import com.example.agrotes_mobile.data.remote.responses.auth.UserUpdate
 import com.example.agrotes_mobile.data.remote.responses.disease.DiseaseResponses
-import com.example.agrotes_mobile.data.remote.responses.weather.WeatherResponse
 import com.example.agrotes_mobile.data.remote.retrofit.app.ApiConfig
-import com.example.agrotes_mobile.data.remote.retrofit.weather.WeatherConfig
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -33,6 +32,11 @@ class UserRepository(private var apiService: ApiService, private var userPrefere
             val result = apiService.register(request)
             emit(Result.Success(result))
         } catch (e: HttpException) {
+            val jsonInString = e.response()?.errorBody()?.string()
+            val errorBody = Gson().fromJson(jsonInString, RegisterResponses::class.java)
+            e.printStackTrace()
+            emit(Result.Error(errorBody.error.toString()))
+        }catch (e: HttpException) {
             emit(Result.Error(e.message.toString()))
         }
     }
@@ -43,19 +47,29 @@ class UserRepository(private var apiService: ApiService, private var userPrefere
         try {
             val result = apiService.login(request)
             emit(Result.Success(result))
-        } catch (e: Exception) {
+        } catch (e: HttpException) {
+            val jsonInString = e.response()?.errorBody()?.string()
+            val errorBody = Gson().fromJson(jsonInString, LoginResponses::class.java)
+            e.printStackTrace()
+            emit(Result.Error(errorBody.error.toString()))
+        }catch (e: Exception) {
             emit(Result.Error(e.message.toString()))
         }
     }
 
-    fun updateProfile(username: String, email: String, password: String): LiveData<Result<UpdateResponses>> = liveData {
+    fun updateProfile(username: String, email: String): LiveData<Result<UpdateResponses>> = liveData {
         emit(Result.Loading)
-        val request = UserUpdate(username = username, email = email, password = password)
+        val request = UserUpdate(username = username, email = email)
         try {
             val token = runBlocking { userPreference.getSession().first().token }
             apiService = ApiConfig.getApiService(token)
             val result = apiService.update(request)
             emit(Result.Success(result))
+        }catch (e: HttpException) {
+            val jsonInString = e.response()?.errorBody()?.string()
+            val errorBody = Gson().fromJson(jsonInString, UpdateResponses::class.java)
+            e.printStackTrace()
+            emit(Result.Error(errorBody.error.toString()))
         } catch (e: Exception) {
             emit(Result.Error(e.message.toString()))
         }
@@ -86,6 +100,7 @@ class UserRepository(private var apiService: ApiService, private var userPrefere
     }
 
     fun getDiseaseById(id: String?): LiveData<Result<DiseaseResponses>> = liveData {
+        emit(Result.Loading)
         try {
             val token = runBlocking { userPreference.getSession().first().token }
             apiService = ApiConfig.getApiService(token)
@@ -97,6 +112,7 @@ class UserRepository(private var apiService: ApiService, private var userPrefere
     }
 
     fun getDiseaseByName(name: String?): LiveData<Result<DiseaseResponses>> = liveData {
+        emit(Result.Loading)
         try {
             val token = runBlocking { userPreference.getSession().first().token }
             apiService = ApiConfig.getApiService(token)
@@ -107,12 +123,14 @@ class UserRepository(private var apiService: ApiService, private var userPrefere
         }
     }
 
-    suspend fun saveSession(user: UserModel) = userPreference.saveSession(user)
-    suspend fun logout() = userPreference.logOut()
+    suspend fun saveSession(user: UserEntity) = userPreference.saveSession(user)
     suspend fun insert(entity: DiseaseEntity) = diseaseDao.insert(entity)
+    suspend fun delete(entity: DiseaseEntity) = diseaseDao.delete(entity)
+    suspend fun logout() = userPreference.logOut()
 
-    fun getSession(): Flow<UserModel> = userPreference.getSession()
+    fun getSession(): Flow<UserEntity> = userPreference.getSession()
     fun getAllHistory(): LiveData<List<DiseaseEntity>> = diseaseDao.getAllHistory()
+
 
     companion object {
         @Volatile

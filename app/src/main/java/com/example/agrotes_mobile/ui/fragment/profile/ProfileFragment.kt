@@ -3,13 +3,18 @@ package com.example.agrotes_mobile.ui.fragment.profile
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import com.example.agrotes_mobile.databinding.FragmentProfileBinding
 import com.example.agrotes_mobile.ui.activities.editProfile.EditProfileActivity
+import com.example.agrotes_mobile.ui.activities.password.PasswordActivity
+import com.example.agrotes_mobile.utils.Result
 import com.example.agrotes_mobile.utils.modelFactory.ViewModelFactory
 
 
@@ -24,11 +29,7 @@ class ProfileFragment : Fragment() {
         arguments?.let {}
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -36,35 +37,76 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        getSession()
         setupAction()
     }
 
     private fun setupAction() {
         with(binding) {
             btnEditProfile.setOnClickListener { toEditProfileActivity() }
+            btnChangePassword.setOnClickListener { toChangePasswordActivity() }
             btnLogout.setOnClickListener { logout() }
         }
     }
 
-    private fun logout() {
-        val context = context
-        val permissionsToRevoke: List<String> = mutableListOf(
-            "android.permission.ACCESS_FINE_LOCATION",
-            "android.permission.ACCESS_COARSE_LOCATION"
-        )
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            context?.revokeSelfPermissionsOnKill(permissionsToRevoke)
+    private fun getSession() {
+        viewModel.getSession().observe(requireActivity()) { user ->
+            val id = user.userId
+            getUserProfile(id)
         }
+    }
 
-        viewModel.logOut()
-        requireActivity()
-            .finishAffinity()
+    private fun getUserProfile(id: String?) {
+        viewModel.getUserById(id).observe(requireActivity()) { result ->
+            when (result) {
+                is Result.Loading -> {
+                    showLoading(true)
+                }
+
+                is Result.Success -> {
+                    showLoading(false)
+                    with(binding) {
+                        tvUsername.text = result.data.username
+                        tvEmail.text = result.data.email
+                        Glide
+                            .with(requireContext())
+                            .load(result.data.profilePhoto)
+                            .into(ivProfilePhoto)
+                    }
+                    Log.d("DEBUG", result.data.toString())
+                }
+
+                is Result.Error -> {
+                    showLoading(false)
+                    showToast(result.error)
+                }
+            }
+        }
     }
 
     private fun toEditProfileActivity() {
         val intent = Intent(requireContext(), EditProfileActivity::class.java)
         startActivity(intent)
+    }
+
+
+    private fun toChangePasswordActivity() {
+        val intent = Intent(requireContext(), PasswordActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun logout() {
+        viewModel.logOut()
+        requireActivity()
+            .finishAffinity()
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun showToast(message: String?) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
 }

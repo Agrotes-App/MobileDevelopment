@@ -1,13 +1,13 @@
 package com.example.agrotes_mobile.data.pref
 
 import android.content.Context
-import androidx.core.app.ActivityCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.agrotes_mobile.data.local.entity.UserEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -15,7 +15,7 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "us
 
 class UserPreference private constructor(private val dataStore: DataStore<Preferences>) {
 
-    suspend fun saveSession(user: UserModel) {
+    suspend fun saveSession(user: UserEntity) {
         dataStore.edit { preferences ->
             preferences[TOKEN] = user.token
             preferences[NAME] = user.name
@@ -24,9 +24,9 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         }
     }
 
-    fun getSession(): Flow<UserModel> {
+    fun getSession(): Flow<UserEntity> {
         return dataStore.data.map { preferences ->
-            UserModel(
+            UserEntity(
                 preferences[TOKEN].toString(),
                 preferences[NAME].toString(),
                 preferences[USER_ID].toString(),

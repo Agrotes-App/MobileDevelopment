@@ -14,4 +14,20 @@
     <string name="error_invalid_email">Invalid Email</string>
     <string name="error_password_invalid">Password must be at least 8 characters</string>
 
+    <string-array name="array_plant">
+        <item>Tomato</item>
+        <item>Chili</item>
+        <item>Rice</item>
+        <item>Corn</item>
+        <item>Potato</item>
+    </string-array>
+
+    <string-array name="array_icon_plant">
+        <item>@drawable/ic_tomato</item>
+        <item>@drawable/ic_chili</item>
+        <item>@drawable/ic_rice</item>
+        <item>@drawable/ic_corn</item>
+        <item>@drawable/ic_potato</item>
+    </string-array>
+
 </resources>

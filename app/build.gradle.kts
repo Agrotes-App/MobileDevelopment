@@ -94,6 +94,7 @@ dependencies {
     //room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.fragment.ktx)
     ksp(libs.room.compiler)
 
     //retrofit

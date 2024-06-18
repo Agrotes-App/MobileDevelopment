@@ -13,8 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.agrotes_mobile.data.local.entity.DiseaseEntity
 import com.example.agrotes_mobile.databinding.ItemHistoryBinding
 import com.example.agrotes_mobile.ui.activities.detailHistory.DetailHistoryActivity
+import com.example.agrotes_mobile.ui.fragment.history.HistoryViewModel
 
-class HistoryAdapter: ListAdapter<DiseaseEntity, HistoryAdapter.ViewHolder>(DIFF_CALLBACK) {
+class HistoryAdapter(private val historyViewModel: HistoryViewModel): ListAdapter<DiseaseEntity, HistoryAdapter.ViewHolder>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemHistoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
@@ -25,13 +26,17 @@ class HistoryAdapter: ListAdapter<DiseaseEntity, HistoryAdapter.ViewHolder>(DIFF
         holder.bind(data)
     }
 
-    class ViewHolder(val binding: ItemHistoryBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(val binding: ItemHistoryBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(data: DiseaseEntity) {
             with(binding){
                 tvPlantName.text = data.plantName
                 tvDiseaseName.text = data.diseaseName
                 tvDate.text = data.date
                 ivPhoto.setImageURI(data.imageUri?.toUri())
+
+                btnDelete.setOnClickListener {
+                    historyViewModel.delete(data)
+                }
 
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailHistoryActivity::class.java)

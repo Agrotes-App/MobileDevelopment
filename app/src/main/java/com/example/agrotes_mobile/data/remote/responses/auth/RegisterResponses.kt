@@ -7,6 +7,9 @@ data class RegisterResponses(
 	@field:SerializedName("message")
 	val message: String? = null,
 
+	@field:SerializedName("error")
+	val error: String? = null,
+
 	@field:SerializedName("createdUser")
 	val createdUser: CreatedUser? = null
 )

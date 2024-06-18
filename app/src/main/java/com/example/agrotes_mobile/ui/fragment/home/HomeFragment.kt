@@ -21,6 +21,7 @@ import com.example.agrotes_mobile.utils.Result
 import com.example.agrotes_mobile.databinding.FragmentHomeBinding
 import com.example.agrotes_mobile.ui.adapter.DiseaseAdapter
 import com.example.agrotes_mobile.ui.activities.camera.CameraActivity
+import com.example.agrotes_mobile.ui.activities.diseaseOption.DiseaseOptionActivity
 import com.example.agrotes_mobile.utils.modelFactory.ViewModelFactory
 import com.example.agrotes_mobile.utils.modelFactory.WeatherViewModelFactory
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -61,6 +62,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // check permission
         if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) && checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)){
             with(binding) {
                 btnLocationPermission.visibility = View.GONE
@@ -83,8 +85,8 @@ class HomeFragment : Fragment() {
 
     private fun setupAction() {
         with(binding) {
-            fabScan.setOnClickListener { toCameraActivity() }
-            btnScan.setOnClickListener { toCameraActivity() }
+            fabScan.setOnClickListener { toDiseaseOptionActivity() }
+            btnScan.setOnClickListener { toDiseaseOptionActivity() }
             btnLocationPermission.setOnClickListener{ getLocation() }
         }
     }
@@ -111,8 +113,8 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun toCameraActivity() {
-        val intent = Intent(requireContext(), CameraActivity::class.java)
+    private fun toDiseaseOptionActivity() {
+        val intent = Intent(requireContext(), DiseaseOptionActivity::class.java)
         startActivity(intent)
     }
 

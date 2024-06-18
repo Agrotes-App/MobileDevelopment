@@ -5,12 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agrotes_mobile.data.local.entity.DiseaseEntity
 import com.example.agrotes_mobile.databinding.FragmentHistoryBinding
 import com.example.agrotes_mobile.ui.adapter.HistoryAdapter
+import com.example.agrotes_mobile.utils.Result
 import com.example.agrotes_mobile.utils.modelFactory.ViewModelFactory
 
 class HistoryFragment : Fragment() {
@@ -31,6 +33,7 @@ class HistoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        showLoading(true)
 
         getAllHistory()
         setupView()
@@ -38,12 +41,14 @@ class HistoryFragment : Fragment() {
 
     private fun getAllHistory() {
         viewmodel.getAllHistory().observe(viewLifecycleOwner) { result ->
-            setupAdapter(result)
+            val data = result.reversed()
+            setupAdapter(data)
+            showLoading(false)
         }
     }
 
-    private fun setupAdapter(result: List<DiseaseEntity>?){
-        val adapter = HistoryAdapter()
+    private fun setupAdapter(result: List<DiseaseEntity>?) {
+        val adapter = HistoryAdapter(viewmodel)
         adapter.submitList(result)
         binding.rvHistory.adapter = adapter
     }
@@ -52,9 +57,16 @@ class HistoryFragment : Fragment() {
         val layoutManager = LinearLayoutManager(context)
         with(binding) {
             rvHistory.layoutManager = layoutManager
-            val itemDecoration = DividerItemDecoration(context, layoutManager.orientation)
-            rvHistory.addItemDecoration(itemDecoration)
             rvHistory.setHasFixedSize(true)
         }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressIndicator.visibility = (if (isLoading) View.VISIBLE else View.GONE)
+        binding.tvProgressIndicator.visibility = (if (isLoading) View.VISIBLE else View.GONE)
+    }
+
+    private fun showToast(message: String?) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }
