@@ -21,7 +21,8 @@ import com.example.agrotes_mobile.utils.Result
 import com.example.agrotes_mobile.databinding.FragmentHomeBinding
 import com.example.agrotes_mobile.ui.adapter.DiseaseAdapter
 import com.example.agrotes_mobile.ui.activities.camera.CameraActivity
-import com.example.agrotes_mobile.utils.ViewModelFactory
+import com.example.agrotes_mobile.utils.modelFactory.ViewModelFactory
+import com.example.agrotes_mobile.utils.modelFactory.WeatherViewModelFactory
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 
@@ -32,6 +33,9 @@ class HomeFragment : Fragment() {
     private var lon: Double? = null
     private val viewModel: HomeViewModel by viewModels {
         ViewModelFactory.getInstance(requireContext())
+    }
+    private val weatherViewModel: WeatherViewModel by viewModels {
+        WeatherViewModelFactory.getInstance(requireContext())
     }
 
     // Location Permission
@@ -59,16 +63,16 @@ class HomeFragment : Fragment() {
 
         if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) && checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)){
             with(binding) {
-                cardLocationPermission.alpha = 0f
-                tvLocationPermission.alpha = 0f
-                btnLocationPermission.alpha = 0f
+                btnLocationPermission.visibility = View.GONE
+                cardLocationPermission.visibility = View.GONE
+                tvLocationPermission.visibility = View.GONE
             }
             getLocation()
         }else{
             with(binding) {
-                cardLocationPermission.alpha = 1f
-                tvLocationPermission.alpha = 1f
-                btnLocationPermission.alpha = 1f
+                btnLocationPermission.visibility = View.VISIBLE
+                cardLocationPermission.visibility = View.VISIBLE
+                tvLocationPermission.visibility = View.VISIBLE
             }
         }
 
@@ -140,11 +144,11 @@ class HomeFragment : Fragment() {
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                 if (location != null) {
                     with(binding) {
-                        cardLocationPermission.alpha = 0f
-                        tvLocationPermission.alpha = 0f
-                        btnLocationPermission.alpha = 0f
-                    }
+                        btnLocationPermission.visibility = View.GONE
+                        cardLocationPermission.visibility = View.GONE
+                        tvLocationPermission.visibility = View.GONE
 
+                    }
                     lat = location.latitude
                     lon = location.longitude
                     getWeather(lat, lon)
@@ -158,7 +162,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun getWeather(lat: Double?, lon: Double?) {
-        viewModel.getWeather(lat, lon).observe(requireActivity()) { result ->
+        weatherViewModel.getWeather(lat, lon).observe(requireActivity()) { result ->
             when (result) {
                 is Result.Loading -> {
                     showLoading(true)

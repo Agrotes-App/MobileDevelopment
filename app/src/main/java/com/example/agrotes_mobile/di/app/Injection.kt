@@ -1,10 +1,10 @@
-package com.example.agrotes_mobile.di
+package com.example.agrotes_mobile.di.app
 
 import android.content.Context
 import com.example.agrotes_mobile.data.local.room.DiseaseRoomDatabase
 import com.example.agrotes_mobile.data.pref.UserPreference
 import com.example.agrotes_mobile.data.pref.dataStore
-import com.example.agrotes_mobile.data.remote.retrofit.ApiConfig
+import com.example.agrotes_mobile.data.remote.retrofit.app.ApiConfig
 import com.example.agrotes_mobile.repository.user.UserRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking

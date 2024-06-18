@@ -1,4 +1,4 @@
-package com.example.agrotes_mobile.data.remote.retrofit
+package com.example.agrotes_mobile.data.remote.retrofit.app
 
 import com.example.agrotes_mobile.BuildConfig
 import com.example.agrotes_mobile.data.remote.responses.auth.LoginRequest
@@ -10,7 +10,6 @@ import com.example.agrotes_mobile.data.remote.responses.auth.UserProfileResponse
 import com.example.agrotes_mobile.data.remote.responses.auth.UserUpdate
 import com.example.agrotes_mobile.data.remote.responses.disease.DiseaseResponses
 import com.example.agrotes_mobile.data.remote.responses.weather.WeatherResponse
-import com.example.agrotes_mobile.data.remote.responses.test.DetailStoryResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -49,15 +48,8 @@ interface ApiService {
         @Path("id") id: String?,
     ): DiseaseResponses
 
-    @GET("stories/{id}")
-    suspend fun getStoriesById(
-        @Path("id") id: String?,
-    ): DetailStoryResponse
-
-    @GET("data/2.5/weather")
-    suspend fun getWeather(
-        @Query("lat") lat: Double? = null,
-        @Query("lon") lon: Double? = null,
-        @Query("appid") apiKey: String = BuildConfig.API_KEY,
-    ): WeatherResponse
+    @GET("diseases/name/{diseaseName}")
+    suspend fun getDiseaseByName(
+        @Path("diseaseName") id: String?,
+    ): DiseaseResponses
 }

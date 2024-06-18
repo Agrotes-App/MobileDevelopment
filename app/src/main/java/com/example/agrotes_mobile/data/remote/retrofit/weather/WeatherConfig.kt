@@ -1,4 +1,4 @@
-package com.example.agrotes_mobile.data.remote.retrofit
+package com.example.agrotes_mobile.data.remote.retrofit.weather
 
 import com.example.agrotes_mobile.BuildConfig
 import okhttp3.Interceptor
@@ -8,9 +8,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object WeatherConfig {
-    private const val BASE_URL = BuildConfig.WEATHER_BASE_URL
+    private const val WEATHER_BASE_URL = BuildConfig.WEATHER_BASE_URL
 
-    fun getApiService(): ApiService{
+    fun getApiService(): WeatherApiService {
         val loggingInterceptor = HttpLoggingInterceptor().setLevel(
             if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
             else HttpLoggingInterceptor.Level.NONE
@@ -23,13 +23,15 @@ object WeatherConfig {
         }
         val client = OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
-            .addInterceptor(authInterceptor) // header
+            .addInterceptor(authInterceptor)
             .build()
+
         val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(WEATHER_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
-        return retrofit.create(ApiService::class.java)
+
+        return retrofit.create(WeatherApiService::class.java)
     }
 }

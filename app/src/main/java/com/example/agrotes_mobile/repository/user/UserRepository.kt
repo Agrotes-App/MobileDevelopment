@@ -5,7 +5,7 @@ import androidx.lifecycle.liveData
 import com.example.agrotes_mobile.data.local.room.DiseaseDao
 import com.example.agrotes_mobile.data.local.entity.DiseaseEntity
 import com.example.agrotes_mobile.data.pref.UserPreference
-import com.example.agrotes_mobile.data.remote.retrofit.ApiService
+import com.example.agrotes_mobile.data.remote.retrofit.app.ApiService
 import com.example.agrotes_mobile.utils.Result
 import com.example.agrotes_mobile.data.pref.UserModel
 import com.example.agrotes_mobile.data.remote.responses.auth.LoginRequest
@@ -17,18 +17,14 @@ import com.example.agrotes_mobile.data.remote.responses.auth.UserProfileResponse
 import com.example.agrotes_mobile.data.remote.responses.auth.UserUpdate
 import com.example.agrotes_mobile.data.remote.responses.disease.DiseaseResponses
 import com.example.agrotes_mobile.data.remote.responses.weather.WeatherResponse
-import com.example.agrotes_mobile.data.remote.responses.test.DetailStoryResponse
-import com.example.agrotes_mobile.data.remote.retrofit.ApiConfig
-import com.example.agrotes_mobile.data.remote.retrofit.WeatherConfig
+import com.example.agrotes_mobile.data.remote.retrofit.app.ApiConfig
+import com.example.agrotes_mobile.data.remote.retrofit.weather.WeatherConfig
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import retrofit2.HttpException
 
-class UserRepository(
-    private var apiService: ApiService,
-    private var userPreference: UserPreference,
-    private val diseaseDao: DiseaseDao,
-) {
+class UserRepository(private var apiService: ApiService, private var userPreference: UserPreference, private val diseaseDao: DiseaseDao) {
 
     fun signup(username: String, email: String, password: String): LiveData<Result<RegisterResponses>> = liveData {
         emit(Result.Loading)
@@ -36,7 +32,7 @@ class UserRepository(
         try {
             val result = apiService.register(request)
             emit(Result.Success(result))
-        } catch (e: Exception) {
+        } catch (e: HttpException) {
             emit(Result.Error(e.message.toString()))
         }
     }
@@ -47,14 +43,14 @@ class UserRepository(
         try {
             val result = apiService.login(request)
             emit(Result.Success(result))
-        }  catch (e: Exception) {
+        } catch (e: Exception) {
             emit(Result.Error(e.message.toString()))
         }
     }
 
     fun updateProfile(username: String, email: String, password: String): LiveData<Result<UpdateResponses>> = liveData {
         emit(Result.Loading)
-        val request = UserUpdate( username = username, email = email, password = password)
+        val request = UserUpdate(username = username, email = email, password = password)
         try {
             val token = runBlocking { userPreference.getSession().first().token }
             apiService = ApiConfig.getApiService(token)
@@ -100,23 +96,23 @@ class UserRepository(
         }
     }
 
+    fun getDiseaseByName(name: String?): LiveData<Result<DiseaseResponses>> = liveData {
+        try {
+            val token = runBlocking { userPreference.getSession().first().token }
+            apiService = ApiConfig.getApiService(token)
+            val result = apiService.getDiseaseByName(name)
+            emit(Result.Success(result))
+        } catch (e: Exception) {
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
     suspend fun saveSession(user: UserModel) = userPreference.saveSession(user)
     suspend fun logout() = userPreference.logOut()
     suspend fun insert(entity: DiseaseEntity) = diseaseDao.insert(entity)
 
     fun getSession(): Flow<UserModel> = userPreference.getSession()
     fun getAllHistory(): LiveData<List<DiseaseEntity>> = diseaseDao.getAllHistory()
-
-    fun getWeather(lat: Double?, lon: Double?): LiveData<Result<WeatherResponse>> = liveData {
-        emit(Result.Loading)
-        try {
-            apiService = WeatherConfig.getApiService()
-            val result = apiService.getWeather(lat, lon)
-            emit(Result.Success(result))
-        } catch (e: Exception) {
-            emit(Result.Error(e.message.toString()))
-        }
-    }
 
     companion object {
         @Volatile

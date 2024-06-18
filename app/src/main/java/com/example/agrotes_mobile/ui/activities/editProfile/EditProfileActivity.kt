@@ -1,6 +1,5 @@
 package com.example.agrotes_mobile.ui.activities.editProfile
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -12,9 +11,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.agrotes_mobile.R
 import com.example.agrotes_mobile.databinding.ActivityEditProfileBinding
-import com.example.agrotes_mobile.ui.activities.welcome.WelcomeActivity
 import com.example.agrotes_mobile.utils.Result
-import com.example.agrotes_mobile.utils.ViewModelFactory
+import com.example.agrotes_mobile.utils.modelFactory.ViewModelFactory
 
 class EditProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditProfileBinding

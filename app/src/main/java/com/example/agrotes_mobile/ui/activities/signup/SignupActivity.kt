@@ -22,7 +22,7 @@ import com.example.agrotes_mobile.utils.Result
 import com.example.agrotes_mobile.databinding.ActivitySignupBinding
 import com.example.agrotes_mobile.ui.activities.welcome.WelcomeActivity
 import com.example.agrotes_mobile.ui.activities.login.LoginActivity
-import com.example.agrotes_mobile.utils.ViewModelFactory
+import com.example.agrotes_mobile.utils.modelFactory.ViewModelFactory
 import kotlinx.coroutines.launch
 
 class SignupActivity : AppCompatActivity() {

@@ -1,4 +1,4 @@
-package com.example.agrotes_mobile.data.remote.retrofit
+package com.example.agrotes_mobile.data.remote.retrofit.app
 
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient

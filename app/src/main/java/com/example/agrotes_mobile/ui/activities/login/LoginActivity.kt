@@ -24,7 +24,7 @@ import com.example.agrotes_mobile.databinding.ActivityLoginBinding
 import com.example.agrotes_mobile.ui.activities.main.MainActivity
 import com.example.agrotes_mobile.ui.activities.signup.SignupActivity
 import com.example.agrotes_mobile.ui.activities.welcome.WelcomeActivity
-import com.example.agrotes_mobile.utils.ViewModelFactory
+import com.example.agrotes_mobile.utils.modelFactory.ViewModelFactory
 import kotlinx.coroutines.launch
 
 

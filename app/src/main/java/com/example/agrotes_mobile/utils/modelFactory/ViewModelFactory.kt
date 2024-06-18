@@ -1,9 +1,9 @@
-package com.example.agrotes_mobile.utils
+package com.example.agrotes_mobile.utils.modelFactory
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.agrotes_mobile.di.Injection
+import com.example.agrotes_mobile.di.app.Injection
 import com.example.agrotes_mobile.repository.user.UserRepository
 import com.example.agrotes_mobile.ui.activities.detailDisease.DetailDiseaseViewModel
 import com.example.agrotes_mobile.ui.activities.editProfile.EditProfileViewModel

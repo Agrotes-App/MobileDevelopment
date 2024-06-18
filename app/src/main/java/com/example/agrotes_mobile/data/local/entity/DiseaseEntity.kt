@@ -13,11 +13,23 @@ data class DiseaseEntity(
     @ColumnInfo(name = "id")
     var id: Int = 0,
 
+    @ColumnInfo(name = "diseaseName")
+    var diseaseName: String? = null,
+
     @ColumnInfo(name = "plantName")
     var plantName: String? = null,
 
-    @ColumnInfo(name = "diseaseName")
-    var diseaseName: String? = null,
+    @ColumnInfo(name = "alternativeName")
+    var alternativeName: String? = null,
+
+    @ColumnInfo(name = "overview")
+    var overview: String? = null,
+
+    @ColumnInfo(name = "causes")
+    var causes: String? = null,
+
+    @ColumnInfo(name = "prevention")
+    var prevention: String? = null,
 
     @ColumnInfo(name = "imageUri")
     var imageUri: String? = null,

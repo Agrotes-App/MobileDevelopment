@@ -7,5 +7,6 @@ import com.example.agrotes_mobile.repository.user.UserRepository
 import kotlinx.coroutines.launch
 
 class PredictionViewModel(private val userRepository: UserRepository): ViewModel() {
+    fun getDiseaseByName(name: String?) = userRepository.getDiseaseByName(name)
     fun insert(entity: DiseaseEntity) = viewModelScope  .launch { userRepository.insert(entity) }
 }

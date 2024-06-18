@@ -35,6 +35,10 @@ class DetailHistoryActivity : AppCompatActivity() {
             tvDiseaseName.text = data.diseaseName
             tvPlantName.text = data.plantName
             tvDate.text = data.date
+            tvAlternativeDiseaseName.text = data.diseaseName
+            tvOverview.text = data.overview
+            tvCauses.text = data.causes
+            tvPrevention.text = data.prevention
             ivPhoto.setImageURI(data.imageUri?.toUri())
         }
     }

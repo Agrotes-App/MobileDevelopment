@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 import com.example.agrotes_mobile.R
 import com.example.agrotes_mobile.databinding.ActivityDetailDiseaseBinding
 import com.example.agrotes_mobile.utils.Result
-import com.example.agrotes_mobile.utils.ViewModelFactory
+import com.example.agrotes_mobile.utils.modelFactory.ViewModelFactory
 
 class DetailDiseaseActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailDiseaseBinding

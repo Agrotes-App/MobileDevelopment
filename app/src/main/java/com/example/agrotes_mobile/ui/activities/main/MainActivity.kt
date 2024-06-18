@@ -13,7 +13,7 @@ import com.example.agrotes_mobile.ui.activities.welcome.WelcomeActivity
 import com.example.agrotes_mobile.ui.fragment.history.HistoryFragment
 import com.example.agrotes_mobile.ui.fragment.home.HomeFragment
 import com.example.agrotes_mobile.ui.fragment.profile.ProfileFragment
-import com.example.agrotes_mobile.utils.ViewModelFactory
+import com.example.agrotes_mobile.utils.modelFactory.ViewModelFactory
 
 
 class MainActivity : AppCompatActivity() {

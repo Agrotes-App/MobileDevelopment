@@ -3,10 +3,10 @@ package com.example.agrotes_mobile.ui.activities.prediction
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
@@ -16,7 +16,8 @@ import com.example.agrotes_mobile.data.local.entity.DiseaseEntity
 import com.example.agrotes_mobile.databinding.ActivityPredictionBinding
 import com.example.agrotes_mobile.helper.DateHelper
 import com.example.agrotes_mobile.helper.ImageClassifierHelper
-import com.example.agrotes_mobile.utils.ViewModelFactory
+import com.example.agrotes_mobile.utils.Result
+import com.example.agrotes_mobile.utils.modelFactory.ViewModelFactory
 import org.tensorflow.lite.task.vision.classifier.Classifications
 
 class PredictionActivity : AppCompatActivity() {
@@ -73,27 +74,9 @@ class PredictionActivity : AppCompatActivity() {
                 override fun onResults(results: List<Classifications>?, inferenceTime: Long) {
                     results?.let {
                         if (it.isNotEmpty() && it[0].categories.isNotEmpty()) {
-                            println(it)
                             val categories = it[0].categories[0]
                             val label = categories.label
-                            val displayName = categories.displayName
-                            val score = categories.score
-                            val time = inferenceTime.toString()
-                            predictionResult = DiseaseEntity(
-                                plantName = displayName, // masih menunggu model dari machine learning
-                                diseaseName = label,
-                                date = DateHelper.getCurrentDate(),
-                                imageUri = currentImageUri.toString()
-                            )
-
-                            Log.d("DEBUG", model)
-                            with(binding) {
-                                tvDiseaseName.text = label
-                                tvPlantName.text = displayName
-                                tvDate.text = time
-                                tvAlternativeDiseaseName.text = score.toString()
-                            }
-
+                            setupPrediction("Blight")
                         } else {
                             showToast(getString(R.string.error_model_result))
                         }
@@ -104,6 +87,47 @@ class PredictionActivity : AppCompatActivity() {
         imageClassifierHelper.classifyImage(uri)
     }
 
+    private fun setupPrediction(label: String) {
+        viewModel.getDiseaseByName(label).observe(this@PredictionActivity) { result ->
+            when (result) {
+                is Result.Loading -> {
+                    showLoading(true)
+                }
+
+                is Result.Success -> {
+                    val data = result.data
+                    // insert data to database
+                    predictionResult = DiseaseEntity(
+                        imageUri = currentImageUri.toString(),
+                        diseaseName = label,
+                        plantName = data.plantNames,
+                        date = DateHelper.getCurrentDate(),
+                        overview = data.description,
+                        causes = data.causes,
+                        prevention = data.prevention
+                    )
+
+                    with(binding) {
+                        tvDiseaseName.text = label
+                        tvPlantName.text = data.plantNames
+                        tvDate.text = DateHelper.getCurrentDate()
+                        tvAlternativeDiseaseName.text = data.diseaseName
+                        tvOverview.text = data.description
+                        tvCauses.text = data.causes
+                        tvPrevention.text = data.prevention
+                    }
+
+                    showLoading(false)
+                }
+
+                is Result.Error -> {
+                    showLoading(false)
+                    showToast(result.error)
+                }
+            }
+
+        }
+    }
 
     private fun setupAction() {
         binding.btnSave.setOnClickListener {
@@ -114,6 +138,10 @@ class PredictionActivity : AppCompatActivity() {
                 showToast(getString(R.string.data_saved))
             }
         }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     private fun showToast(message: String?) {

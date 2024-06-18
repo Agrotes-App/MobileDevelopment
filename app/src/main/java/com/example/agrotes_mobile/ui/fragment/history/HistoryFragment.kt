@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agrotes_mobile.data.local.entity.DiseaseEntity
 import com.example.agrotes_mobile.databinding.FragmentHistoryBinding
 import com.example.agrotes_mobile.ui.adapter.HistoryAdapter
-import com.example.agrotes_mobile.utils.ViewModelFactory
+import com.example.agrotes_mobile.utils.modelFactory.ViewModelFactory
 
 class HistoryFragment : Fragment() {
     private lateinit var binding: FragmentHistoryBinding
