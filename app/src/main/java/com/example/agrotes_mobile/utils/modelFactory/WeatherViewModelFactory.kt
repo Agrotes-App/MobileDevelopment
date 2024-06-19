@@ -1,11 +1,9 @@
 package com.example.agrotes_mobile.utils.modelFactory
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.agrotes_mobile.di.weather.WeatherInjection
 import com.example.agrotes_mobile.repository.weather.WeatherRepository
-import com.example.agrotes_mobile.ui.activities.main.MainViewModel
 import com.example.agrotes_mobile.ui.fragment.home.WeatherViewModel
 
 @Suppress("UNCHECKED_CAST")
@@ -16,6 +14,7 @@ class WeatherViewModelFactory private constructor(private val weatherRepository:
             modelClass.isAssignableFrom(WeatherViewModel::class.java) -> {
                 WeatherViewModel(weatherRepository) as T
             }
+
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
     }
@@ -25,7 +24,7 @@ class WeatherViewModelFactory private constructor(private val weatherRepository:
         private var INSTANCE: WeatherViewModelFactory? = null
 
         @JvmStatic
-        fun getInstance(context: Context): WeatherViewModelFactory {
+        fun getInstance(): WeatherViewModelFactory {
             if (INSTANCE == null) {
                 synchronized(WeatherViewModelFactory::class.java) {
                     INSTANCE = WeatherViewModelFactory(WeatherInjection.provideUserRepository())

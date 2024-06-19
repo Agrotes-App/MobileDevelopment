@@ -36,6 +36,7 @@ class WelcomeActivity : AppCompatActivity() {
         setupAction()
     }
 
+    // fullscreen
     private fun setupView() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.hide(WindowInsets.Type.statusBars())
@@ -50,9 +51,7 @@ class WelcomeActivity : AppCompatActivity() {
 
     private fun setupAction() {
         with(binding) {
-            // Handle back button
             onBackPressedDispatcher.addCallback { finishAffinity() }
-
             btnLogin.setOnClickListener {
                 val optionsCompat: ActivityOptionsCompat =
                     ActivityOptionsCompat.makeSceneTransitionAnimation(

@@ -16,17 +16,11 @@ data class UpdateResponses(
 
 data class UserUpdate(
 
-	@field:SerializedName("createdAt")
-	val createdAt: String? = null,
-
 	@field:SerializedName("password")
 	val password: String? = null,
 
 	@field:SerializedName("profile_Photo")
 	val profilePhoto: Any? = null,
-
-	@field:SerializedName("updateAt")
-	val updateAt: String? = null,
 
 	@field:SerializedName("id")
 	val id: String? = null,

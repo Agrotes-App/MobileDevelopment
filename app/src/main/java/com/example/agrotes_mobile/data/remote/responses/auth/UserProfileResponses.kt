@@ -13,9 +13,6 @@ data class UserProfileResponses(
 	@field:SerializedName("profile_Photo")
 	val profilePhoto: Any? = null,
 
-	@field:SerializedName("updateAt")
-	val updateAt: String? = null,
-
 	@field:SerializedName("id")
 	val id: String? = null,
 

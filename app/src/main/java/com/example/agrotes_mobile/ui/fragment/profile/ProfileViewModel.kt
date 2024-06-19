@@ -5,9 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.agrotes_mobile.data.local.entity.UserEntity
-import com.example.agrotes_mobile.data.remote.responses.disease.DiseaseResponses
-import com.example.agrotes_mobile.repository.user.UserRepository
-import com.example.agrotes_mobile.utils.Result
+import com.example.agrotes_mobile.repository.app.UserRepository
 import kotlinx.coroutines.launch
 
 class ProfileViewModel(private val userRepository: UserRepository): ViewModel() {

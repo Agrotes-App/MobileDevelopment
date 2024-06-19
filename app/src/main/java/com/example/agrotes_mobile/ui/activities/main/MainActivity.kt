@@ -1,7 +1,6 @@
 package com.example.agrotes_mobile.ui.activities.main
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.enableEdgeToEdge
@@ -43,10 +42,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getSession() {
-        viewModel.getSession().observe(this){user ->
-            if (user.isLogin){
+        viewModel.getSession().observe(this) { user ->
+            if (user.isLogin) {
                 // nanti lakukan tutor !!!!!!!
-            }else{
+            } else {
                 intent = Intent(this@MainActivity, WelcomeActivity::class.java)
                 startActivity(intent)
                 finishAffinity()
@@ -65,10 +64,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupBottomBar() {
         binding.bottomBar.setOnItemSelectedListener { menu ->
             when (menu) {
-                R.id.navigation_main -> {
-                    initFragment()
-                }
-
+                R.id.navigation_main -> initFragment()
                 R.id.navigation_history -> {
                     val historyFragment = HistoryFragment()
                     supportFragmentManager.beginTransaction()
@@ -86,12 +82,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @Suppress("DEPRECATION")
     private fun setupStatusBar() {
         val window = this.window
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        @Suppress("DEPRECATION")
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-        @Suppress("DEPRECATION")
         window.statusBarColor = this.resources.getColor(R.color.background_primary)
     }
 

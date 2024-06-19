@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.agrotes_mobile.data.local.entity.PlantEntity
 import com.example.agrotes_mobile.databinding.ItemPlantBinding
 import com.example.agrotes_mobile.ui.activities.camera.CameraActivity
-import com.example.agrotes_mobile.ui.activities.prediction.PredictionActivity
+import com.example.agrotes_mobile.ui.activities.camera.CameraActivity.Companion.EXTRA_PLANT
 
 class PlantAdapter: ListAdapter<PlantEntity, PlantAdapter.ViewModel>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewModel {
@@ -31,7 +31,7 @@ class PlantAdapter: ListAdapter<PlantEntity, PlantAdapter.ViewModel>(DIFF_CALLBA
 
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, CameraActivity::class.java)
-                intent.putExtra("plant", plant.name)
+                intent.putExtra(EXTRA_PLANT, plant.name)
                 itemView.context.startActivity(intent)
             }
         }

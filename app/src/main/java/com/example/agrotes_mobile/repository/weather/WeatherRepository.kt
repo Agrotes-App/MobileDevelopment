@@ -5,7 +5,7 @@ import androidx.lifecycle.liveData
 import com.example.agrotes_mobile.data.remote.responses.weather.WeatherResponse
 import com.example.agrotes_mobile.data.remote.retrofit.weather.WeatherApiService
 import com.example.agrotes_mobile.data.remote.retrofit.weather.WeatherConfig
-import com.example.agrotes_mobile.utils.Result
+import com.example.agrotes_mobile.utils.helper.Result
 
 class WeatherRepository(private var weatherApiService: WeatherApiService) {
 

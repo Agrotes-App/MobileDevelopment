@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.agrotes_mobile.data.local.entity.DiseaseEntity
-import com.example.agrotes_mobile.repository.user.UserRepository
+import com.example.agrotes_mobile.repository.app.UserRepository
 import kotlinx.coroutines.launch
 
 class HistoryViewModel(private val userRepository: UserRepository): ViewModel() {

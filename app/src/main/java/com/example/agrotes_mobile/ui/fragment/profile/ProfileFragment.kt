@@ -1,20 +1,22 @@
 package com.example.agrotes_mobile.ui.fragment.profile
 
+import android.app.AlertDialog
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
+import com.example.agrotes_mobile.R
 import com.example.agrotes_mobile.databinding.FragmentProfileBinding
 import com.example.agrotes_mobile.ui.activities.editProfile.EditProfileActivity
 import com.example.agrotes_mobile.ui.activities.password.PasswordActivity
-import com.example.agrotes_mobile.utils.Result
+import com.example.agrotes_mobile.ui.activities.welcome.WelcomeActivity
+import com.example.agrotes_mobile.utils.helper.Result
 import com.example.agrotes_mobile.utils.modelFactory.ViewModelFactory
 
 
@@ -73,7 +75,6 @@ class ProfileFragment : Fragment() {
                             .load(result.data.profilePhoto)
                             .into(ivProfilePhoto)
                     }
-                    Log.d("DEBUG", result.data.toString())
                 }
 
                 is Result.Error -> {
@@ -96,17 +97,25 @@ class ProfileFragment : Fragment() {
     }
 
     private fun logout() {
-        viewModel.logOut()
-        requireActivity()
-            .finishAffinity()
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.alert_title_logout))
+            .setMessage(getString(R.string.alert_message_logout))
+            .setPositiveButton(getString(R.string.alert_positive_button)) { _, _ ->
+                viewModel.logOut()
+                val intent = Intent(requireContext(), WelcomeActivity::class.java)
+                startActivity(intent)
+                finishAffinity(requireActivity())
+            }
+            .setNegativeButton(getString(R.string.alert_negative_button)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
+    private fun showToast(message: String?) = Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     private fun showLoading(isLoading: Boolean) {
         binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
-    private fun showToast(message: String?) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-    }
 
 }

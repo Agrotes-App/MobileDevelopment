@@ -1,6 +1,5 @@
 package com.example.agrotes_mobile.data.remote.retrofit.app
 
-import com.example.agrotes_mobile.BuildConfig
 import com.example.agrotes_mobile.data.remote.responses.auth.LoginRequest
 import com.example.agrotes_mobile.data.remote.responses.auth.LoginResponses
 import com.example.agrotes_mobile.data.remote.responses.auth.RegisterRequest
@@ -9,16 +8,15 @@ import com.example.agrotes_mobile.data.remote.responses.auth.UpdateResponses
 import com.example.agrotes_mobile.data.remote.responses.auth.UserProfileResponses
 import com.example.agrotes_mobile.data.remote.responses.auth.UserUpdate
 import com.example.agrotes_mobile.data.remote.responses.disease.DiseaseResponses
-import com.example.agrotes_mobile.data.remote.responses.weather.WeatherResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface ApiService {
 
+    // <-- auth Service -->
     @POST("auth/register")
     suspend fun register(
         @Body registerRequest: RegisterRequest,
@@ -39,7 +37,7 @@ interface ApiService {
         @Path("id") id: String?,
     ): UserProfileResponses
 
-
+    // <-- Disease Service -->
     @GET("diseases")
     suspend fun getAllDiseases(): List<DiseaseResponses>
 

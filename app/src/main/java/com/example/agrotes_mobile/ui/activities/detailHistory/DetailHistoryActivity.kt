@@ -30,7 +30,7 @@ class DetailHistoryActivity : AppCompatActivity() {
 
     private fun setupView() {
         @Suppress("DEPRECATION")
-        val data = intent.getParcelableExtra<DiseaseEntity>("extra_history") as DiseaseEntity
+        val data = intent.getParcelableExtra<DiseaseEntity>(EXTRA_HISTORY) as DiseaseEntity
         with(binding){
             tvDiseaseName.text = data.diseaseName
             tvPlantName.text = data.plantName
@@ -41,5 +41,9 @@ class DetailHistoryActivity : AppCompatActivity() {
             tvPrevention.text = data.prevention
             ivPhoto.setImageURI(data.imageUri?.toUri())
         }
+    }
+
+    companion object{
+        const val EXTRA_HISTORY = "extra_history"
     }
 }

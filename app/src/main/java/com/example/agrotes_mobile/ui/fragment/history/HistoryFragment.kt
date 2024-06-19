@@ -7,12 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agrotes_mobile.data.local.entity.DiseaseEntity
 import com.example.agrotes_mobile.databinding.FragmentHistoryBinding
 import com.example.agrotes_mobile.ui.adapter.HistoryAdapter
-import com.example.agrotes_mobile.utils.Result
 import com.example.agrotes_mobile.utils.modelFactory.ViewModelFactory
 
 class HistoryFragment : Fragment() {
@@ -39,6 +37,7 @@ class HistoryFragment : Fragment() {
         setupView()
     }
 
+
     private fun getAllHistory() {
         viewmodel.getAllHistory().observe(viewLifecycleOwner) { result ->
             val data = result.reversed()
@@ -64,9 +63,5 @@ class HistoryFragment : Fragment() {
     private fun showLoading(isLoading: Boolean) {
         binding.progressIndicator.visibility = (if (isLoading) View.VISIBLE else View.GONE)
         binding.tvProgressIndicator.visibility = (if (isLoading) View.VISIBLE else View.GONE)
-    }
-
-    private fun showToast(message: String?) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }

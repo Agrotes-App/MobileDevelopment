@@ -29,6 +29,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Analize Disease"
+                    android:layout_marginTop="8dp"
                     android:textSize="20dp"
                     android:textStyle="bold" />
 

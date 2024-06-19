@@ -68,15 +68,15 @@
 
             <Button
                 android:id="@+id/btn_delete"
-                style="@style/Widget.Material3.Button.IconButton"
+                style="?attr/materialIconButtonStyle"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginEnd="8dp"
-                app:iconGravity="textStart"
                 app:icon="@drawable/ic_delete"
+                app:iconGravity="textStart"
                 app:iconTint="@color/danger"
                 app:iconSize="24dp"/>
 

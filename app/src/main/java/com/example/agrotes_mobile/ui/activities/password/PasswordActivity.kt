@@ -10,9 +10,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.agrotes_mobile.R
 import com.example.agrotes_mobile.databinding.ActivityPasswordBinding
-import com.example.agrotes_mobile.ui.activities.editProfile.EditProfileViewModel
-import com.example.agrotes_mobile.ui.fragment.profile.ProfileViewModel
-import com.example.agrotes_mobile.utils.Result
+import com.example.agrotes_mobile.utils.helper.Result
+import com.example.agrotes_mobile.utils.helper.error
 import com.example.agrotes_mobile.utils.modelFactory.ViewModelFactory
 
 class PasswordActivity : AppCompatActivity() {
@@ -40,40 +39,31 @@ class PasswordActivity : AppCompatActivity() {
     }
 
     private fun updatePassword() {
-        val newPassword = binding.edtPassword.text.toString().trim()
-        val confirmPassword = binding.edtConfirmPassword.text.toString().trim()
+        with(binding) {
+            val newPassword = edtPassword.text.toString().trim()
+            val confirmPassword = edtConfirmPassword.text.toString().trim()
 
-        when{
-            newPassword.isEmpty() -> {
-                binding.edtPassword.setError("Password must not be empty", null)
-                binding.edtConfirmPassword.requestFocus()
-                return
-            }
-            confirmPassword.isEmpty() -> {
-                binding.edtConfirmPassword.setError("Password must not be empty", null)
-                binding.edtConfirmPassword.requestFocus()
-                return
-            }
-            newPassword != confirmPassword -> {
-                binding.edtConfirmPassword.setError("Password does not match", null)
-                binding.edtConfirmPassword.requestFocus()
-                return
-            }
-            else -> {
-                viewModel.updateProfile(confirmPassword).observe(this) { result ->
-                    when (result) {
-                        is Result.Loading -> {
-                            showLoading(true)
-                        }
+            when {
+                newPassword.isEmpty() -> error(edtPassword, getString(R.string.warning_password))
+                newPassword.length < 6 -> error(edtPassword, getString(R.string.warning_password_lenght))
+                confirmPassword.isEmpty() -> error(edtConfirmPassword, getString(R.string.warning_confirm_password))
+                newPassword != confirmPassword -> error(edtConfirmPassword, getString(R.string.error_confirm_password))
+                else -> {
+                    viewModel.updateProfile(confirmPassword).observe(this@PasswordActivity) { result ->
+                        when (result) {
+                            is Result.Loading -> {
+                                showLoading(true)
+                            }
 
-                        is Result.Success -> {
-                            showLoading(false)
-                            showToast(result.data.message)
-                        }
+                            is Result.Success -> {
+                                showLoading(false)
+                                showToast(result.data.message)
+                            }
 
-                        is Result.Error -> {
-                            showLoading(false)
-                            showToast(result.error)
+                            is Result.Error -> {
+                                showLoading(false)
+                                showToast(result.error)
+                            }
                         }
                     }
                 }
@@ -81,11 +71,10 @@ class PasswordActivity : AppCompatActivity() {
         }
     }
 
+    private fun showToast(message: String?) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+
     private fun showLoading(isLoading: Boolean) {
         binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
-    private fun showToast(message: String?) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
 }

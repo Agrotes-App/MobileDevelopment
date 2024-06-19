@@ -1,11 +1,11 @@
 package com.example.agrotes_mobile.ui.fragment.home
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,11 +16,11 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.agrotes_mobile.R
 import com.example.agrotes_mobile.data.remote.responses.disease.DiseaseResponses
-import com.example.agrotes_mobile.utils.Result
+import com.example.agrotes_mobile.utils.helper.Result
 import com.example.agrotes_mobile.databinding.FragmentHomeBinding
 import com.example.agrotes_mobile.ui.adapter.DiseaseAdapter
-import com.example.agrotes_mobile.ui.activities.camera.CameraActivity
 import com.example.agrotes_mobile.ui.activities.diseaseOption.DiseaseOptionActivity
 import com.example.agrotes_mobile.utils.modelFactory.ViewModelFactory
 import com.example.agrotes_mobile.utils.modelFactory.WeatherViewModelFactory
@@ -36,18 +36,24 @@ class HomeFragment : Fragment() {
         ViewModelFactory.getInstance(requireContext())
     }
     private val weatherViewModel: WeatherViewModel by viewModels {
-        WeatherViewModelFactory.getInstance(requireContext())
+        WeatherViewModelFactory.getInstance()
     }
 
     // Location Permission
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             when {
-                permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> { getLocation()}
-                permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> { getLocation()}
-                else -> { Log.d("Permission", "No Permission")}
+                permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> getLocation()
+                permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> getLocation()
+                else -> showToast(getString(R.string.permission_denied))
             }
         }
+
+    // check permission
+    private fun checkPermission(permission: String): Boolean = ContextCompat.checkSelfPermission(
+        requireContext(),
+        permission
+    ) == PackageManager.PERMISSION_GRANTED
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,19 +69,11 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // check permission
-        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) && checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)){
-            with(binding) {
-                btnLocationPermission.visibility = View.GONE
-                cardLocationPermission.visibility = View.GONE
-                tvLocationPermission.visibility = View.GONE
-            }
+        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) && checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            showWeather(true)
             getLocation()
-        }else{
-            with(binding) {
-                btnLocationPermission.visibility = View.VISIBLE
-                cardLocationPermission.visibility = View.VISIBLE
-                tvLocationPermission.visibility = View.VISIBLE
-            }
+        } else {
+            showWeather(false)
         }
 
         setupAction()
@@ -87,7 +85,7 @@ class HomeFragment : Fragment() {
         with(binding) {
             fabScan.setOnClickListener { toDiseaseOptionActivity() }
             btnScan.setOnClickListener { toDiseaseOptionActivity() }
-            btnLocationPermission.setOnClickListener{ getLocation() }
+            btnLocationPermission.setOnClickListener { getLocation() }
         }
     }
 
@@ -105,7 +103,6 @@ class HomeFragment : Fragment() {
 
                 is Result.Error -> {
                     showLoading(false)
-                    Log.d("ERROR", result.error)
                     showToast(result.error)
                 }
             }
@@ -126,36 +123,26 @@ class HomeFragment : Fragment() {
 
     private fun setupAdapterView() {
         val horizontalLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-
         with(binding) {
             rvCommonProblems.layoutManager = horizontalLayoutManager
             rvCommonProblems.setHasFixedSize(true)
         }
-
     }
 
-    private fun checkPermission(permission: String): Boolean {
-        return ContextCompat.checkSelfPermission(requireContext(), permission) == PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun getLocation(){
+    private fun getLocation() {
         // Get current location
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-
+        // get latitude and longitude
         if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) && checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                 if (location != null) {
-                    with(binding) {
-                        btnLocationPermission.visibility = View.GONE
-                        cardLocationPermission.visibility = View.GONE
-                        tvLocationPermission.visibility = View.GONE
-
-                    }
                     lat = location.latitude
                     lon = location.longitude
+
+                    showWeather(true)
                     getWeather(lat, lon)
                 } else {
-                    Toast.makeText(requireContext(), "Location is not found. Try Again", Toast.LENGTH_SHORT).show()
+                    showToast(getString(R.string.error_location))
                 }
             }
         } else {
@@ -163,6 +150,7 @@ class HomeFragment : Fragment() {
         }
     }
 
+    @SuppressLint("StringFormatMatches")
     private fun getWeather(lat: Double?, lon: Double?) {
         weatherViewModel.getWeather(lat, lon).observe(requireActivity()) { result ->
             when (result) {
@@ -184,11 +172,11 @@ class HomeFragment : Fragment() {
                     val max = maxTemperature?.minus(273)
                     val min = minTemperature?.minus(273)
 
-                    val temp = "$celsius°"
-                    val maxTemp = "Max Temp: $max °C"
-                    val minTemp = "Min Temp: $min °C"
+                    val temp = getString(R.string.temperature, celsius)
+                    val maxTemp = getString(R.string.max_temperature, max)
+                    val minTemp = getString(R.string.min_temperature, min)
 
-                    with(binding){
+                    with(binding) {
                         tvTemp.text = temp
                         tvMaxTemp.text = maxTemp
                         tvMinTemp.text = minTemp
@@ -200,22 +188,26 @@ class HomeFragment : Fragment() {
                     }
                     showLoading(false)
                 }
-                is Result.Error -> {
 
+                is Result.Error -> {
+                    showLoading(false)
+                    showToast(result.error)
                 }
             }
         }
     }
 
+    private fun showWeather(show: Boolean) {
+        with(binding) {
+            val viewsToHide = listOf(btnLocationPermission, cardLocationPermission, tvLocationPermission)
+            for (view in viewsToHide) view.visibility = if (show) View.GONE else View.VISIBLE
+        }
+    }
+
+    private fun showToast(message: String?) =
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+
     private fun showLoading(isLoading: Boolean) {
         binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
-    }
-
-    private fun showToast(message: String?) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-    }
-
-    companion object {
-        const val TAG = "HomeFragment"
     }
 }

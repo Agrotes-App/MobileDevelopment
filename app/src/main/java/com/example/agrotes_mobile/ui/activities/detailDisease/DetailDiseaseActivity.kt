@@ -1,7 +1,6 @@
 package com.example.agrotes_mobile.ui.activities.detailDisease
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -12,7 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.example.agrotes_mobile.R
 import com.example.agrotes_mobile.databinding.ActivityDetailDiseaseBinding
-import com.example.agrotes_mobile.utils.Result
+import com.example.agrotes_mobile.utils.helper.Result
 import com.example.agrotes_mobile.utils.modelFactory.ViewModelFactory
 
 class DetailDiseaseActivity : AppCompatActivity() {
@@ -33,8 +32,7 @@ class DetailDiseaseActivity : AppCompatActivity() {
             insets
         }
 
-        // Get id from intent
-        val id = intent.getStringExtra(EXTRA_ID)
+        val id = intent.getStringExtra(EXTRA_ID) // get id from intent
         getDiseaseById(id)
     }
 
@@ -59,29 +57,24 @@ class DetailDiseaseActivity : AppCompatActivity() {
                             .load(data.photo)
                             .into(ivPhoto)
                     }
-                    Log.d(TAG, data.toString())
                     showLoading(false)
                 }
 
                 is Result.Error -> {
                     showLoading(false)
-                    Log.d(TAG, result.error)
                     showToast(result.error)
                 }
             }
         }
     }
 
+    private fun showToast(message: String?) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+
     private fun showLoading(isLoading: Boolean) {
         binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
-    private fun showToast(message: String?) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
-
     companion object {
         const val EXTRA_ID = "extra_id"
-        const val TAG = "DetailDiseaseActivity"
     }
 }

@@ -1,7 +1,6 @@
 package com.example.agrotes_mobile.data.remote.responses.auth
 
 import com.google.gson.annotations.SerializedName
-import java.lang.Error
 
 data class LoginResponses(
 
