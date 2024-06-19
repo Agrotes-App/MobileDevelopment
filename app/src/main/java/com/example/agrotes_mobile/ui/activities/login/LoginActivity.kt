@@ -71,7 +71,7 @@ class LoginActivity : AppCompatActivity() {
                 email.isEmpty() -> errorIcon(edtEmailLogin, getString(R.string.warning_email))
                 password.isEmpty() -> error(edtPasswordLogin, getString(R.string.warning_password))
                 password.length < 6 -> error(edtPasswordLogin, getString(R.string.warning_password_lenght))
-                !isValid(email) -> error(edtEmailLogin, getString(R.string.warning_email))
+                !isValid(email) -> error(edtEmailLogin, getString(R.string.error_invalid_email))
                 else -> {
                     lifecycleScope.launch {
                         viewModel.login(email, password).observe(this@LoginActivity) { result ->

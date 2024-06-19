@@ -5,15 +5,14 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary"
+    android:background="@color/background_primary"
     tools:context=".ui.activities.diseaseOption.DiseaseOptionActivity">
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Choose your plant"
-        android:textColor="@color/white"
+        android:text="@string/choose_your_plant"
         android:textSize="30sp"
         app:layout_constraintTop_toTopOf="parent"
         android:textStyle="bold"
@@ -27,7 +26,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:spanCount="3"
         tools:listitem="@layout/item_plant"/>
 

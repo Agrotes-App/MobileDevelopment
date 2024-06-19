@@ -19,11 +19,6 @@ class HistoryFragment : Fragment() {
         ViewModelFactory.getInstance(requireContext())
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {}
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentHistoryBinding.inflate(inflater, container, false)
         return binding.root

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:background="@color/background_primary"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.activities.detailHistory.DetailHistoryActivity">
@@ -15,6 +16,8 @@
             android:id="@+id/main_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            app:strokeWidth="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -43,8 +46,8 @@
                     android:transitionName="disease_name"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="Disease Name"
-                    android:textSize="24dp"
+                    tools:text="Disease Name"
+                    android:textSize="24sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/iv_photo" />
@@ -54,9 +57,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:transitionName="plant_name"
-                    android:text="Plant Name"
+                    tools:text="Plant Name"
                     android:textColor="@color/primary"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="@id/tv_disease_name"
                     app:layout_constraintTop_toBottomOf="@id/tv_disease_name" />
 
@@ -65,7 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Also Known As :"
+                    android:text="@string/also_known_as"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="@id/tv_disease_name"
                     app:layout_constraintTop_toBottomOf="@id/tv_date" />
@@ -75,8 +78,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="Alternative Disease Name"
-                    android:textColor="@color/black_50"
+                    tools:text="Alternative Disease Name"
+                    android:textColor="@color/grey"
                     android:textStyle="italic"
                     app:layout_constraintBottom_toBottomOf="@id/also_known_as"
                     app:layout_constraintStart_toEndOf="@id/also_known_as"
@@ -87,12 +90,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:textColor="@color/grey"
                     android:transitionName="date"
-                    android:layout_marginEnd="8dp"
-                    android:text="May 12, 2024"
-                    android:textColor="@color/black_50"
                     app:layout_constraintStart_toStartOf="@id/tv_disease_name"
-                    app:layout_constraintTop_toBottomOf="@id/tv_plant_name" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_plant_name"
+                    tools:text="May 12, 2024" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -103,6 +105,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:backgroundTint="@color/white"
+            app:strokeWidth="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/main_layout">
@@ -117,6 +121,7 @@
                     android:id="@+id/iv_overview_icon"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:importantForAccessibility="no"
                     android:src="@drawable/ic_overview"
                     app:tint="@color/primary"
                     app:layout_constraintStart_toStartOf="parent"
@@ -127,13 +132,13 @@
                     android:id="@+id/tv_overview_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Overview"
+                    android:text="@string/heading_overview"
                     android:layout_marginStart="6dp"
                     android:textColor="@color/primary"
                     app:layout_constraintTop_toTopOf="@id/iv_overview_icon"
                     app:layout_constraintBottom_toBottomOf="@id/iv_overview_icon"
                     app:layout_constraintStart_toEndOf="@id/iv_overview_icon"
-                    android:textSize="26dp"
+                    android:textSize="26sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -145,7 +150,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_margin="8dp"
-                    android:text="@string/tes"/>
+                    tools:text="Overview"/>
 
                 <View
                     android:id="@+id/overview_line1"
@@ -163,6 +168,7 @@
                     android:id="@+id/iv_causes_icon"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:importantForAccessibility="no"
                     android:src="@drawable/ic_causes"
                     android:layout_marginTop="16dp"
                     app:tint="@color/primary"
@@ -174,13 +180,13 @@
                     android:id="@+id/tv_causes_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Causes"
+                    android:text="@string/heading_causes"
                     android:layout_marginStart="6dp"
                     android:textColor="@color/primary"
                     app:layout_constraintTop_toTopOf="@id/iv_causes_icon"
                     app:layout_constraintBottom_toBottomOf="@id/iv_causes_icon"
                     app:layout_constraintStart_toEndOf="@id/iv_causes_icon"
-                    android:textSize="26dp"
+                    android:textSize="26sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -193,7 +199,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_margin="8dp"
                     android:textStyle="bold"
-                    android:text="GodZilla, Ikan Hiu, Pak Rt"/>
+                    tools:text="Causes"/>
 
                 <View
                     android:id="@+id/overview_line2"
@@ -211,6 +217,7 @@
                     android:id="@+id/iv_prevention_icon"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:importantForAccessibility="no"
                     android:src="@drawable/ic_prevention"
                     android:layout_marginTop="16dp"
                     app:tint="@color/primary"
@@ -222,13 +229,13 @@
                     android:id="@+id/tv_prevention_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Prevention"
+                    android:text="@string/heading_prevention"
                     android:layout_marginStart="6dp"
                     android:textColor="@color/primary"
                     app:layout_constraintTop_toTopOf="@id/iv_prevention_icon"
                     app:layout_constraintBottom_toBottomOf="@id/iv_prevention_icon"
                     app:layout_constraintStart_toEndOf="@id/iv_prevention_icon"
-                    android:textSize="26dp"
+                    android:textSize="26sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -240,7 +247,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_margin="8dp"
-                    android:text="@string/tes"/>
+                    tools:text="Prevention"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

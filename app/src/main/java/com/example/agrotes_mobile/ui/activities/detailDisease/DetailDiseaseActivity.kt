@@ -48,7 +48,7 @@ class DetailDiseaseActivity : AppCompatActivity() {
                     with(binding) {
                         tvDiseaseName.text = data.diseaseName
                         tvPlantName.text = data.plantNames
-                        tvAlternativeDiseaseName.text = data.diseaseName
+                        tvAlternativeDiseaseName.text = data.otherNames
                         tvOverview.text = data.description
                         tvCauses.text = data.causes
                         tvPrevention.text = data.prevention

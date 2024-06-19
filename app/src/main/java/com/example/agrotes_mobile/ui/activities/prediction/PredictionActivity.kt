@@ -101,14 +101,15 @@ class PredictionActivity : AppCompatActivity() {
                         date = DateHelper.getCurrentDate(),
                         overview = data.description,
                         causes = data.causes,
-                        prevention = data.prevention
+                        prevention = data.prevention,
+                        alternativeName = data.otherNames
                     )
 
                     with(binding) {
                         tvDiseaseName.text = label
                         tvPlantName.text = data.plantNames
                         tvDate.text = DateHelper.getCurrentDate()
-                        tvAlternativeDiseaseName.text = data.diseaseName
+                        tvAlternativeDiseaseName.text = data.otherNames
                         tvOverview.text = data.description
                         tvCauses.text = data.causes
                         tvPrevention.text = data.prevention

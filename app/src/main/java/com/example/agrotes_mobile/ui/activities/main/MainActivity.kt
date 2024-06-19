@@ -81,7 +81,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
     @Suppress("DEPRECATION")
     private fun setupStatusBar() {
         val window = this.window
@@ -89,5 +88,4 @@ class MainActivity : AppCompatActivity() {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.statusBarColor = this.resources.getColor(R.color.background_primary)
     }
-
 }

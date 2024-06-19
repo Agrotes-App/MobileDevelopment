@@ -35,7 +35,7 @@ class DetailHistoryActivity : AppCompatActivity() {
             tvDiseaseName.text = data.diseaseName
             tvPlantName.text = data.plantName
             tvDate.text = data.date
-            tvAlternativeDiseaseName.text = data.diseaseName
+            tvAlternativeDiseaseName.text = data.alternativeName
             tvOverview.text = data.overview
             tvCauses.text = data.causes
             tvPrevention.text = data.prevention

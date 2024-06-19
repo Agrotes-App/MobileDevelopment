@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Patterns
 import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.bumptech.glide.Glide
 import com.example.agrotes_mobile.R
 import com.example.agrotes_mobile.databinding.ActivityEditProfileBinding
 import com.example.agrotes_mobile.utils.helper.Result
@@ -35,11 +37,15 @@ class EditProfileActivity : AppCompatActivity() {
         }
 
         setupAction()
+        setupStatusBar()
         getSession()
     }
 
     private fun setupAction() {
-        binding.btnUpdate.setOnClickListener { updateUserProfile() }
+        with(binding) {
+            btnUpdate.setOnClickListener { updateUserProfile() }
+            btnCancel.setOnClickListener { finish() }
+        }
     }
 
     private fun getSession() {
@@ -58,8 +64,13 @@ class EditProfileActivity : AppCompatActivity() {
 
                 is Result.Success -> {
                     showLoading(false)
-                    binding.edtUsername.setText(result.data.username)
-                    binding.edtEmail.setText(result.data.email)
+                    with(binding) {
+                        edtUsername.setText(result.data.username)
+                        edtEmail.setText(result.data.email)
+                        Glide.with(this@EditProfileActivity)
+                            .load(result.data.profilePhoto)
+                            .into(ivProfilePhoto)
+                    }
                 }
 
                 is Result.Error -> {
@@ -79,7 +90,8 @@ class EditProfileActivity : AppCompatActivity() {
                 username.isEmpty() -> errorIcon(edtUsername, getString(R.string.warning_username))
                 email.isEmpty() -> errorIcon(edtEmail, getString(R.string.warning_email))
                 !isValid(email) -> errorIcon(edtEmail, getString(R.string.error_invalid_email))
-                else -> viewModel.updateProfile(username, email).observe(this@EditProfileActivity) { result ->
+                else -> viewModel.updateProfile(username, email)
+                    .observe(this@EditProfileActivity) { result ->
                         when (result) {
                             is Result.Loading -> {
                                 showLoading(true)
@@ -87,8 +99,8 @@ class EditProfileActivity : AppCompatActivity() {
 
                             is Result.Success -> {
                                 showToast(result.data.message)
-                                finish()
                                 showLoading(false)
+                                finish()
                             }
 
                             is Result.Error -> {
@@ -101,11 +113,21 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun isValid(email: String): Boolean = !TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    private fun showToast(message: String?) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    private fun isValid(email: String): Boolean =
+        !TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches()
+
+    private fun showToast(message: String?) =
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+
     private fun showLoading(isLoading: Boolean) {
         binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
-
+    @Suppress("DEPRECATION")
+    private fun setupStatusBar() {
+        val window = this.window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        window.statusBarColor = this.resources.getColor(R.color.background_primary)
+    }
 }

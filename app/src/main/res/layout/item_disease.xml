@@ -16,6 +16,7 @@
             android:id="@+id/iv_photo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:contentDescription="@string/disease_list"
             android:scaleType="centerCrop"
             android:src="@drawable/background_leaf" />
 
@@ -35,7 +36,7 @@
                     android:id="@+id/tv_disease_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Disease Name"
+                    tools:text="Disease Name"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
 
@@ -43,7 +44,7 @@
                     android:id="@+id/tv_plant_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="[Plant Name]"
+                    tools:text="[Plant Name]"
                     android:textColor="@color/black" />
 
             </LinearLayout>

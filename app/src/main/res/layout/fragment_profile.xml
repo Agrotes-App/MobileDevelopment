@@ -11,6 +11,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/header_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/header_profile"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_profile_photo"
             android:layout_width="100dp"
@@ -18,17 +30,18 @@
             android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:shapeAppearanceOverlay="@style/circle"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearance="@style/rounded_10"
             app:layout_constraintBottom_toTopOf="@id/profile_custom_background"
-            android:src="@drawable/background_leaf"/>
+            tools:src="@tools:sample/avatars"/>
         
         <TextView
             android:id="@+id/tv_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/iv_profile_photo"
-            android:text="Username"
+            tools:text="Username"
             android:gravity="center"
             android:textStyle="bold"
             android:layout_margin="8dp"
@@ -42,7 +55,7 @@
             android:textColor="@color/white"
             android:textStyle="italic"
             app:layout_constraintTop_toBottomOf="@id/tv_username"
-            android:text="username@gmail.com"/>
+            tools:text="username@gmail.com"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
@@ -70,7 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="Log Out"
+            android:text="@string/btn_logout"
             android:textColor="@color/danger"
             app:icon="@drawable/ic_logout"
             app:iconGravity="textStart"
@@ -86,7 +99,7 @@
             android:layout_marginHorizontal="8dp"
             android:layout_marginTop="16dp"
             android:gravity="center_vertical"
-            android:text="Edit Profile"
+            android:text="@string/btn_edit_profile"
             android:textColor="@color/black"
             android:textStyle="bold"
             app:iconPadding="10dp"
@@ -104,7 +117,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
             android:gravity="center_vertical"
-            android:text="Change Password"
+            android:text="@string/btn_change_password"
             android:textColor="@color/black"
             android:textStyle="bold"
             app:iconPadding="10dp"

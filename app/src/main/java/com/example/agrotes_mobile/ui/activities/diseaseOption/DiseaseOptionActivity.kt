@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agrotes_mobile.R
 import com.example.agrotes_mobile.data.local.entity.PlantEntity
 import com.example.agrotes_mobile.databinding.ActivityDiseaseOptionBinding
@@ -52,7 +53,7 @@ class DiseaseOptionActivity : AppCompatActivity() {
     }
 
     private fun setupView() {
-        val layoutManager = GridLayoutManager(this, 3)
+        val layoutManager = LinearLayoutManager(this)
         with(binding) {
             rvPlants.layoutManager = layoutManager
             rvPlants.setHasFixedSize(true)
