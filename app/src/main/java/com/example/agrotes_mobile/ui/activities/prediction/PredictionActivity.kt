@@ -1,12 +1,13 @@
 package com.example.agrotes_mobile.ui.activities.prediction
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
@@ -14,9 +15,11 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.agrotes_mobile.R
 import com.example.agrotes_mobile.data.local.entity.DiseaseEntity
 import com.example.agrotes_mobile.databinding.ActivityPredictionBinding
-import com.example.agrotes_mobile.helper.DateHelper
-import com.example.agrotes_mobile.helper.ImageClassifierHelper
-import com.example.agrotes_mobile.utils.ViewModelFactory
+import com.example.agrotes_mobile.utils.helper.DateHelper
+import com.example.agrotes_mobile.utils.helper.ImageClassifierHelper
+import com.example.agrotes_mobile.ui.activities.main.MainActivity
+import com.example.agrotes_mobile.utils.helper.Result
+import com.example.agrotes_mobile.utils.modelFactory.ViewModelFactory
 import org.tensorflow.lite.task.vision.classifier.Classifications
 
 class PredictionActivity : AppCompatActivity() {
@@ -33,8 +36,8 @@ class PredictionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPredictionBinding.inflate(layoutInflater)
         enableEdgeToEdge()
-        setContentView(binding.root)
 
+        setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -44,8 +47,6 @@ class PredictionActivity : AppCompatActivity() {
         // get image uri from CameraActivity
         val imageUri = intent.getStringExtra(EXTRA_CAMERAX_IMAGE)
         currentImageUri = imageUri?.toUri()
-
-        // start image classifier
         currentImageUri?.let { startAnalyze(it) }
 
         showImage()
@@ -54,46 +55,24 @@ class PredictionActivity : AppCompatActivity() {
     }
 
     private fun showImage() {
-        currentImageUri?.let {
-            Log.d(TAG, "showImage: $it")
-            binding.ivPhoto.setImageURI(it)
-        }
+        currentImageUri?.let { binding.ivPhoto.setImageURI(it) }
     }
 
     private fun startAnalyze(uri: Uri) {
         val model: String = intent.getStringExtra(EXTRA_MODEL).toString()
         imageClassifierHelper = ImageClassifierHelper(
             context = this,
-            modelName = model,
+            modelName = "$model.tflite",
             classifierListener = object : ImageClassifierHelper.ClassifierListener {
-                override fun onError(error: String) {
-                    showToast(error)
-                }
+                override fun onError(error: String) = showToast(error)
 
                 override fun onResults(results: List<Classifications>?, inferenceTime: Long) {
                     results?.let {
                         if (it.isNotEmpty() && it[0].categories.isNotEmpty()) {
-                            println(it)
                             val categories = it[0].categories[0]
                             val label = categories.label
-                            val displayName = categories.displayName
-                            val score = categories.score
-                            val time = inferenceTime.toString()
-                            predictionResult = DiseaseEntity(
-                                plantName = displayName, // masih menunggu model dari machine learning
-                                diseaseName = label,
-                                date = DateHelper.getCurrentDate(),
-                                imageUri = currentImageUri.toString()
-                            )
 
-                            Log.d("DEBUG", model)
-                            with(binding) {
-                                tvDiseaseName.text = label
-                                tvPlantName.text = displayName
-                                tvDate.text = time
-                                tvAlternativeDiseaseName.text = score.toString()
-                            }
-
+                            setupPrediction(label)
                         } else {
                             showToast(getString(R.string.error_model_result))
                         }
@@ -104,25 +83,78 @@ class PredictionActivity : AppCompatActivity() {
         imageClassifierHelper.classifyImage(uri)
     }
 
-
-    private fun setupAction() {
-        binding.btnSave.setOnClickListener {
-            predictionResult.let {
-                if (it != null) {
-                    viewModel.insert(it)
+    private fun setupPrediction(label: String) {
+        viewModel.getDiseaseByName(label).observe(this@PredictionActivity) { result ->
+            when (result) {
+                is Result.Loading -> {
+                    showLoading(true)
                 }
-                showToast(getString(R.string.data_saved))
+
+                is Result.Success -> {
+                    val data = result.data
+
+                    // insert data to database
+                    predictionResult = DiseaseEntity(
+                        imageUri = currentImageUri.toString(),
+                        diseaseName = label,
+                        plantName = data.plantNames,
+                        date = DateHelper.getCurrentDate(),
+                        overview = data.description,
+                        causes = data.causes,
+                        prevention = data.prevention,
+                        alternativeName = data.otherNames
+                    )
+
+                    with(binding) {
+                        tvDiseaseName.text = label
+                        tvPlantName.text = data.plantNames
+                        tvDate.text = DateHelper.getCurrentDate()
+                        tvAlternativeDiseaseName.text = data.otherNames
+                        tvOverview.text = data.description
+                        tvCauses.text = data.causes
+                        tvPrevention.text = data.prevention
+                    }
+                    showLoading(false)
+                }
+
+                is Result.Error -> {
+                    showLoading(false)
+                    showToast(result.error)
+                }
             }
+
         }
     }
 
-    private fun showToast(message: String?) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    private fun setupAction() {
+        binding.btnSave.setOnClickListener { saveData() }
+        onBackPressedDispatcher.addCallback { goBack() }
+    }
+
+    private fun saveData() {
+        predictionResult.let {
+            if (it != null) { viewModel.insert(it) }
+            showToast(getString(R.string.data_saved))
+
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finishAffinity()
+        }
+    }
+
+    private fun goBack() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finishAffinity()
+    }
+
+    private fun showToast(message: String?) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     companion object {
         const val EXTRA_CAMERAX_IMAGE = "extra_camerax_image"
         const val EXTRA_MODEL = "extra_model"
-        const val TAG = "PredictionActivity"
     }
 }

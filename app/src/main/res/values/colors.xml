@@ -3,9 +3,11 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="primary">#426D51</color>
-    <color name="background_primary">#FBFDFC</color>
+    <color name="background_primary">#FAF9F6</color>
     <color name="black_50">#80000000</color>
     <color name="light_green">#34C767</color>
     <color name="danger">#B3261E</color>
     <color name="secondary_fab">#AFB9B1</color>
+    <color name="grey">#757575</color>
+    <color name="info">#006494</color>
 </resources>

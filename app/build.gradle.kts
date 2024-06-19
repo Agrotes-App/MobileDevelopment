@@ -26,7 +26,8 @@ android {
         val apiKeyName = properties.getProperty("API_KEY") ?: ""
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "BASE_URL", "\"https://story-api.dicoding.dev/v1/\"")
+//        buildConfigField("String", "BASE_URL", "\"https://story-api.dicoding.dev/v1/\"")
+        buildConfigField("String", "BASE_URL", "\"https://agrotes-1.et.r.appspot.com/\"")
         buildConfigField("String", "WEATHER_BASE_URL", "\"https://api.openweathermap.org/\"")
         buildConfigField("String", "API_KEY", "\"$apiKeyName\"")
     }
@@ -93,13 +94,14 @@ dependencies {
     //room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.fragment.ktx)
     ksp(libs.room.compiler)
 
     //retrofit
     implementation(libs.retrofit)
     implementation(libs.retrofit2.converter.gson)
 
-    //okhttp
+    //okhttp.
     implementation(libs.logging.interceptor)
 
     //datastore

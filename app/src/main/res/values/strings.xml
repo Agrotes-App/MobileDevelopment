@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Agrotes-mobile</string>
     <string name="iv_app_icon">Application icon</string>
-    <string name="tes">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.</string>
     <string name="error_tflite">Image classifier failed to initialize. See error logs for details</string>
     <string name="permission_granted">Permission request granted</string>
     <string name="permission_denied">Permission request denied</string>
@@ -12,6 +11,83 @@
     <string name="data_saved">Data Saved</string>
     <string name="signup_success">Register Success</string>
     <string name="error_invalid_email">Invalid Email</string>
-    <string name="error_password_invalid">Password must be at least 8 characters</string>
+    <string name="error_gallery">No photo selected</string>
+    <string name="warning_username">Username cannot be empty</string>
+    <string name="warning_email">Email cannot be empty</string>
+    <string name="warning_password">Password cannot be empty</string>
+    <string name="warning_confirm_password">Confirm password cannot be empty</string>
+    <string name="error_confirm_password">Passsword not match</string>
+    <string name="warning_password_lenght">Password must be at least 6 characters</string>
+    <string name="alert_title_delete">Delete History</string>
+    <string name="alert_message_delete">Are you sure you want to delete this history?</string>
+    <string name="alert_positive_button">Yes</string>
+    <string name="alert_negative_button">No</string>
+    <string name="error_location">Location is not found. Try Again</string>
+    <string name="temperature">%1$s°</string>
+    <string name="max_temperature">Max Temp: %1$s °C</string>
+    <string name="min_temperature">Min Temp: %1$s °C</string>
+    <string name="alert_title_logout">Logout</string>
+    <string name="alert_message_logout">Are you sure want to logout?</string>
+    <string name="capture_button">Capture Button</string>
+    <string name="pick_gallery_button">Pick Gallery Button</string>
+    <string name="help_button">help_button</string>
+    <string name="alert_title_tips">Tips</string>
+
+    <string name="tips_message">Capture great photos with these simple tips:\n\n1. Clean lens for clear shots.\n\n2. Ensure good lighting for bright photos.\n\n3. Focus on subject for sharp images.</string>
+    <string name="scanning_text">SCANNING...</string>
+    <string name="capture_image">capture image</string>
+    <string name="also_known_as">Also Known As :</string>
+    <string name="heading_overview">Overview</string>
+    <string name="heading_causes">Causes</string>
+    <string name="heading_prevention">Prevention</string>
+    <string name="header_update_profile">Update Profile</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="Header_login">Login</string>
+    <string name="sub_header_login">Please Sign In to continue</string>
+    <string name="header_form">Enter your details</string>
+    <string name="password">Password</string>
+    <string name="btn_login">Log In</string>
+    <string name="don_t_have_account">Don\'t have account?</string>
+    <string name="btn_signup">Sign Up</string>
+    <string name="header_change_password">Change Password</string>
+    <string name="btn_save_prediction">Save Prediction</string>
+    <string name="header_sign_up">Sign Up</string>
+    <string name="sub_header_signup">Please Register to continue</string>
+    <string name="already_have_account">Already have account?</string>
+    <string name="header_history_diseases">History Diseases</string>
+    <string name="fetching_data">Fetching data...</string>
+    <string name="analize_disease">Analize Disease</string>
+    <string name="with_a_single_tap">with a Single Tap</string>
+    <string name="Hedline_card">Diagnoses</string>
+    <string name="btn_check_now">Check Now</string>
+    <string name="weather_interface">weather interface</string>
+    <string name="location_permission_required">Location permission required</string>
+    <string name="btn_location_allow">Allow</string>
+    <string name="header_common_problems">Common Problems</string>
+    <string name="scan_floating_button">Scan Button</string>
+    <string name="btn_logout">Log Out</string>
+    <string name="btn_edit_profile">Edit Profile</string>
+    <string name="btn_change_password">Change Password</string>
+    <string name="header_profile">User Profile</string>
+    <string name="disease_list">Disease List</string>
+    <string name="choose_your_plant">Choose your plant</string>
+    <string-array name="array_plant">
+        <item>Tomato</item>
+        <item>Chili</item>
+        <item>Rice</item>
+        <item>Corn</item>
+        <item>Potato</item>
+    </string-array>
+
+    <string-array name="array_icon_plant">
+        <item>@drawable/tomato</item>
+        <item>@drawable/chili</item>
+        <item>@drawable/rice</item>
+        <item>@drawable/corn</item>
+        <item>@drawable/potato</item>
+    </string-array>
 
 </resources>

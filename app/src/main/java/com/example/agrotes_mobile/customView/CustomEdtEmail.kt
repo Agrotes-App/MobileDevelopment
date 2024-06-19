@@ -9,16 +9,16 @@ import android.util.Patterns
 import androidx.appcompat.widget.AppCompatEditText
 import com.example.agrotes_mobile.R
 
-class CustomEdtEmail@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : AppCompatEditText(context, attrs) {
+class CustomEdtEmail @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : AppCompatEditText(context, attrs) {
     init {
         addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (!isValid(text.toString())) {
-                    error = context.getString(R.string.error_invalid_email)
+                error = if (!isValid(text.toString())) {
+                    context.getString(R.string.error_invalid_email)
                 } else {
-                    error = null
+                    null
                 }
             }
 

@@ -7,8 +7,22 @@ data class RegisterResponses(
 	@field:SerializedName("message")
 	val message: String? = null,
 
+	@field:SerializedName("error")
+	val error: String? = null,
+
 	@field:SerializedName("createdUser")
 	val createdUser: CreatedUser? = null
+)
+
+data class RegisterRequest(
+	@field:SerializedName("username")
+	val username: String? = null,
+
+	@field:SerializedName("email")
+	val email: String? = null,
+
+	@field:SerializedName("password")
+	val password: String? = null,
 )
 
 data class CreatedUser(
