@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -100,6 +101,7 @@ class CameraActivity : AppCompatActivity() {
         with(binding) {
             fabCapture.setOnClickListener { takePhoto() }
             fabGallery.setOnClickListener { startGallery() }
+            fabHelp.setOnClickListener { showDialog() }
         }
     }
 
@@ -133,28 +135,9 @@ class CameraActivity : AppCompatActivity() {
             outputOptions,
             ContextCompat.getMainExecutor(this),
             object : ImageCapture.OnImageSavedCallback {
-                override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    val intent = Intent(this@CameraActivity, PredictionActivity::class.java)
-                    intent.putExtra(
-                        PredictionActivity.EXTRA_CAMERAX_IMAGE,
-                        output.savedUri.toString()
-                    )
-                    intent.putExtra(PredictionActivity.EXTRA_MODEL, model)
-                    startActivity(intent)
-                    finish()
-                }
-
-                override fun onError(exc: ImageCaptureException) {
-                    showToast(getString(R.string.error_camera))
-                }
+                override fun onImageSaved(output: ImageCapture.OutputFileResults) = showImage(output.savedUri)
+                override fun onError(exc: ImageCaptureException) = showToast(getString(R.string.error_camera))
             })
-
-        // scanning overlay
-        with(binding) {
-            cardScannerOverlay.animate().alpha(1f).setDuration(500).start()
-            tvScannerOverlay.animate().alpha(1f).setDuration(500).start()
-            fabCapture.isEnabled = false
-        }
     }
 
     private fun startGallery() {
@@ -170,11 +153,7 @@ class CameraActivity : AppCompatActivity() {
             if (uri != null) {
                 val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION
                 contentResolver.takePersistableUriPermission(uri, flag)
-                val intent = Intent(this@CameraActivity, PredictionActivity::class.java)
-                intent.putExtra(PredictionActivity.EXTRA_CAMERAX_IMAGE, uri.toString())
-                intent.putExtra(PredictionActivity.EXTRA_MODEL, model)
-                startActivity(intent)
-                finish()
+                showImage(uri)
             } else {
                 showToast(getString(R.string.error_gallery))
             }
@@ -192,6 +171,36 @@ class CameraActivity : AppCompatActivity() {
                     else -> Surface.ROTATION_0
                 }
                 imageCapture?.targetRotation = rotation
+            }
+        }
+    }
+
+    private fun showDialog() {
+        val dialogBuilder = AlertDialog.Builder(this)
+        dialogBuilder.setIcon(R.drawable.ic_camera)
+        dialogBuilder.setTitle(getString(R.string.alert_title_tips))
+        dialogBuilder.setMessage(getString(R.string.tips_message))
+        dialogBuilder.setPositiveButton(getString(R.string.alert_positive_button)) { dialog, _ ->
+            dialog.dismiss()
+        }
+        val dialog = dialogBuilder.create()
+        dialog.show()
+    }
+
+    private fun showImage(uri: Uri?) {
+        with(binding) {
+            ivCapturePreview.visibility = android.view.View.VISIBLE
+            fabCaptureResult.visibility = android.view.View.VISIBLE
+            ivCapturePreview.setImageURI(uri)
+            fabCaptureResult.setOnClickListener {
+                cardScannerOverlay.visibility = android.view.View.VISIBLE
+                fabCaptureResult.isEnabled = false
+
+                val intent = Intent(this@CameraActivity, PredictionActivity::class.java)
+                intent.putExtra(PredictionActivity.EXTRA_CAMERAX_IMAGE, uri.toString())
+                intent.putExtra(PredictionActivity.EXTRA_MODEL, model)
+                startActivity(intent)
+                finish()
             }
         }
     }

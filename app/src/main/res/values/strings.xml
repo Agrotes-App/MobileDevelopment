@@ -29,7 +29,14 @@
     <string name="min_temperature">Min Temp: %1$s °C</string>
     <string name="alert_title_logout">Logout</string>
     <string name="alert_message_logout">Are you sure want to logout?</string>
+    <string name="capture_button">Capture Button</string>
+    <string name="pick_gallery_button">Pick Gallery Button</string>
+    <string name="help_button">help_button</string>
+    <string name="alert_title_tips">Tips</string>
 
+    <string name="tips_message">Capture great photos with these simple tips:\n\n1. Clean lens for clear shots.\n\n2. Ensure good lighting for bright photos.\n\n3. Focus on subject for sharp images.</string>
+    <string name="scanning_text">SCANNING...</string>
+    <string name="capture_image">capture image</string>
     <string-array name="array_plant">
         <item>Tomato</item>
         <item>Chili</item>
