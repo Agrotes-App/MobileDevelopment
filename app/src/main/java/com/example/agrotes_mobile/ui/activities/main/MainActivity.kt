@@ -36,14 +36,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         getSession()
-        setupBottomBar()
+        initFragment()
         setupStatusBar()
     }
 
     private fun getSession() {
         viewModel.getSession().observe(this) { user ->
             if (user.isLogin) {
-                initFragment()
+                setupBottomBar()
             } else {
                 intent = Intent(this@MainActivity, WelcomeActivity::class.java)
                 startActivity(intent)

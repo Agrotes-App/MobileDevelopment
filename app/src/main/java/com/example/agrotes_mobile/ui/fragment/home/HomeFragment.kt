@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -94,12 +95,19 @@ class HomeFragment : Fragment() {
             TapTargetView.showFor(requireActivity(),
                 TapTarget.forView(binding.fabScan,
                     getString(R.string.title_tap_target), getString(R.string.message_tap_target))
+                    .icon(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_scan_tap))
                     .targetCircleColor(R.color.white),
+
                 object : TapTargetView.Listener() {
                     override fun onTargetClick(view: TapTargetView) {
                         super.onTargetClick(view)
                         toDiseaseOptionActivity()
-                        // Set isFirstInstall to false after showing the intro
+                        sharedPreferences.edit().putBoolean("isFirstInstall", false).apply()
+                    }
+
+                    override fun onTargetDismissed(view: TapTargetView?, userInitiated: Boolean) {
+                        super.onTargetDismissed(view, userInitiated)
+                        super.onTargetClick(view)
                         sharedPreferences.edit().putBoolean("isFirstInstall", false).apply()
                     }
                 })
