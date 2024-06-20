@@ -74,6 +74,8 @@
     <string name="header_profile">User Profile</string>
     <string name="disease_list">Disease List</string>
     <string name="choose_your_plant">Choose your plant</string>
+    <string name="title_tap_target">Let\'s diagnose your plant!</string>
+    <string name="message_tap_target">Scan a plant to identify potential diseases quickly and easily.</string>
     <string-array name="array_plant">
         <item>Tomato</item>
         <item>Chili</item>

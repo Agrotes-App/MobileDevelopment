@@ -54,7 +54,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun getUserProfile(id: String?) {
-        viewModel.getUserById(id).observe(requireActivity()) { result ->
+        viewModel.getUserById(id).observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Loading -> {
                     showLoading(true)
@@ -83,6 +83,7 @@ class ProfileFragment : Fragment() {
     private fun toEditProfileActivity() {
         val intent = Intent(requireContext(), EditProfileActivity::class.java)
         startActivity(intent)
+        finishAffinity(requireActivity())
     }
 
 
@@ -111,6 +112,4 @@ class ProfileFragment : Fragment() {
     private fun showLoading(isLoading: Boolean) {
         binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
-
-
 }

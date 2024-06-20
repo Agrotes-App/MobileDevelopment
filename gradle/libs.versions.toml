@@ -53,6 +53,8 @@ kotlinxCoroutinesCore = "1.5.2"
 kotlinxCoroutinesAndroid = "1.5.2"
 fragmentKtx = "1.7.1"
 
+#taptarget
+taptargetviewVersion = "1.13.3"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
@@ -106,6 +108,8 @@ kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutine
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
 androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx" }
 
+#taptarget
+getkeepsafe-taptargetview = { module = "com.getkeepsafe.taptargetview:taptargetview", version.ref = "taptargetviewVersion" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

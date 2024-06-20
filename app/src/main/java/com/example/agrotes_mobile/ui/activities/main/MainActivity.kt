@@ -36,7 +36,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         getSession()
-        initFragment()
         setupBottomBar()
         setupStatusBar()
     }
@@ -44,7 +43,7 @@ class MainActivity : AppCompatActivity() {
     private fun getSession() {
         viewModel.getSession().observe(this) { user ->
             if (user.isLogin) {
-                // nanti lakukan tutor !!!!!!!
+                initFragment()
             } else {
                 intent = Intent(this@MainActivity, WelcomeActivity::class.java)
                 startActivity(intent)
@@ -81,6 +80,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
     @Suppress("DEPRECATION")
     private fun setupStatusBar() {
         val window = this.window

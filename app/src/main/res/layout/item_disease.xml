@@ -18,7 +18,7 @@
             android:layout_height="match_parent"
             android:contentDescription="@string/disease_list"
             android:scaleType="centerCrop"
-            android:src="@drawable/background_leaf" />
+            tools:src="@tools:sample/avatars" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

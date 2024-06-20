@@ -2,30 +2,34 @@ package com.example.agrotes_mobile.ui.fragment.home
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.agrotes_mobile.R
 import com.example.agrotes_mobile.data.remote.responses.disease.DiseaseResponses
-import com.example.agrotes_mobile.utils.helper.Result
 import com.example.agrotes_mobile.databinding.FragmentHomeBinding
-import com.example.agrotes_mobile.ui.adapter.DiseaseAdapter
 import com.example.agrotes_mobile.ui.activities.diseaseOption.DiseaseOptionActivity
+import com.example.agrotes_mobile.ui.adapter.DiseaseAdapter
+import com.example.agrotes_mobile.utils.helper.Result
 import com.example.agrotes_mobile.utils.modelFactory.ViewModelFactory
 import com.example.agrotes_mobile.utils.modelFactory.WeatherViewModelFactory
+import com.getkeepsafe.taptargetview.TapTarget
+import com.getkeepsafe.taptargetview.TapTargetView
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
@@ -50,10 +54,7 @@ class HomeFragment : Fragment() {
         }
 
     // check permission
-    private fun checkPermission(permission: String): Boolean = ContextCompat.checkSelfPermission(
-        requireContext(),
-        permission
-    ) == PackageManager.PERMISSION_GRANTED
+    private fun checkPermission(permission: String): Boolean = ContextCompat.checkSelfPermission(requireContext(), permission) == PackageManager.PERMISSION_GRANTED
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
@@ -71,6 +72,7 @@ class HomeFragment : Fragment() {
             showWeather(false)
         }
 
+        showTapTarget()
         setupAction()
         setupCommonProblems()
         setupAdapterView()
@@ -81,6 +83,26 @@ class HomeFragment : Fragment() {
             fabScan.setOnClickListener { toDiseaseOptionActivity() }
             btnScan.setOnClickListener { toDiseaseOptionActivity() }
             btnLocationPermission.setOnClickListener { getLocation() }
+        }
+    }
+
+    private fun showTapTarget() {
+        val sharedPreferences = requireActivity().getSharedPreferences("app_intro", Context.MODE_PRIVATE)
+        val isFirstInstall = sharedPreferences.getBoolean("isFirstInstall", true)
+
+        if (isFirstInstall) {
+            TapTargetView.showFor(requireActivity(),
+                TapTarget.forView(binding.fabScan,
+                    getString(R.string.title_tap_target), getString(R.string.message_tap_target))
+                    .targetCircleColor(R.color.white),
+                object : TapTargetView.Listener() {
+                    override fun onTargetClick(view: TapTargetView) {
+                        super.onTargetClick(view)
+                        toDiseaseOptionActivity()
+                        // Set isFirstInstall to false after showing the intro
+                        sharedPreferences.edit().putBoolean("isFirstInstall", false).apply()
+                    }
+                })
         }
     }
 
@@ -117,7 +139,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupAdapterView() {
-        val horizontalLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val horizontalLayoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         with(binding) {
             rvCommonProblems.layoutManager = horizontalLayoutManager
             rvCommonProblems.setHasFixedSize(true)
@@ -141,13 +164,18 @@ class HomeFragment : Fragment() {
                 }
             }
         } else {
-            requestPermissionLauncher.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
+            requestPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
         }
     }
 
     @SuppressLint("StringFormatMatches")
     private fun getWeather(lat: Double?, lon: Double?) {
-        weatherViewModel.getWeather(lat, lon).observe(requireActivity()) { result ->
+        weatherViewModel.getWeather(lat, lon).observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Loading -> {
                     showLoading(true)

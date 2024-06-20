@@ -99,8 +99,8 @@ class EditProfileActivity : AppCompatActivity() {
 
                             is Result.Success -> {
                                 showToast(result.data.message)
-                                showLoading(false)
                                 finish()
+                                showLoading(false)
                             }
 
                             is Result.Error -> {

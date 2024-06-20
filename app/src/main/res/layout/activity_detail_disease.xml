@@ -31,13 +31,14 @@
                     android:id="@+id/iv_photo"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/background_leaf"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
                     android:transitionName="photo"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:shapeAppearance="@style/semi_circle_bottom_10" />
+                    app:shapeAppearance="@style/semi_circle_bottom_10"
+                    tools:src="@tools:sample/avatars" />
 
                 <TextView
                     android:id="@+id/tv_disease_name"
